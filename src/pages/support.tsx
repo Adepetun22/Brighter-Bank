@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+
 
 
 
@@ -100,6 +101,8 @@ function FooterLink({ children }: { children: React.ReactNode }) {
 
 export default function SupportPage() {
   const [openFaqIndex, setOpenFaqIndex] = useState<number>(0);
+  const [activeLocationId, setActiveLocationId] = useState<'main' | 'westside' | 'plaza' | 'northside'>('main');
+  const mapIframeRef = React.useRef<HTMLIFrameElement>(null);
   const navItems: NavItem[] = [
 
     { label: 'Personal', active: true },
@@ -110,8 +113,29 @@ export default function SupportPage() {
     { label: 'Investing' },
   ];
 
+
+  const sendToMap = (id: string) => {
+    mapIframeRef.current?.contentWindow?.postMessage({ type: 'SET_ACTIVE_LOCATION', id }, '*');
+  };
+
+  const mapSetActiveLocation = (id: 'main' | 'westside' | 'plaza' | 'northside') => {
+    setActiveLocationId(id);
+    sendToMap(id);
+  };
+
+  useEffect(() => {
+    const iframe = mapIframeRef.current;
+    if (!iframe) return;
+    const onLoad = () => sendToMap(activeLocationId);
+    iframe.addEventListener('load', onLoad);
+    return () => iframe.removeEventListener('load', onLoad);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
   return (
     <div className="flex flex-col items-center relative min-h-screen bg-gradient-to-r from-[#f8f9ff] to-snow">
+
       {/* Header */}
       <div className="w-full bg-snow border-b border-border shadow-sm">
         <div className="px-6 h-20 flex items-center justify-between max-w-[1440px] mx-auto">
@@ -388,37 +412,77 @@ export default function SupportPage() {
             <div className="grid gap-6 p-0 grid-cols-1 md:grid-cols-3">
               <div className="bg-snow p-6 min-h-[500px]">
                 <div className="flex flex-col gap-4">
-                  <div className="bg-[#e6eeff] rounded border border-primary border-l-4 p-4">
+                  <button
+                    type="button"
+                    onClick={() => mapSetActiveLocation('main')}
+                    className={
+                      activeLocationId === 'main'
+                        ? 'bg-[#e6eeff] rounded border border-primary border-l-4 p-4 text-left'
+                        : 'rounded p-4 text-left'
+                    }
+                  >
                     <div className="text-ink text-b1">Main Street Branch</div>
                     <div className="text-slate text-p3 mt-0">123 Finance Way, Downtown</div>
                     <div className="flex items-center gap-1 mt-0">
                       <img className="h-auto" src={container36} alt="" />
                       <div className="text-tertiary text-p3">Open until 6:00 PM</div>
                     </div>
-                  </div>
+                  </button>
 
-                  <div className="rounded p-4">
+                  <button
+                    type="button"
+                    onClick={() => mapSetActiveLocation('westside')}
+                    className={
+                      activeLocationId === 'westside'
+                        ? 'bg-[#e6eeff] rounded border border-primary border-l-4 p-4 text-left'
+                        : 'rounded p-4 text-left'
+                    }
+                  >
                     <div className="text-ink text-b1">Westside Hub</div>
                     <div className="text-slate text-p3">455 Commerce Ave, Westside</div>
                     <div className="text-slate text-p3">2.4 miles away</div>
-                  </div>
+                  </button>
 
-                  <div className="rounded p-4">
+                  <button
+                    type="button"
+                    onClick={() => mapSetActiveLocation('plaza')}
+                    className={
+                      activeLocationId === 'plaza'
+                        ? 'bg-[#e6eeff] rounded border border-primary border-l-4 p-4 text-left'
+                        : 'rounded p-4 text-left'
+                    }
+                  >
                     <div className="text-ink text-b1">The Plaza ATM</div>
                     <div className="text-slate text-p3">88 Market Square (24/7 Access)</div>
                     <div className="text-slate text-p3">3.1 miles away</div>
-                  </div>
+                  </button>
 
-                  <div className="rounded p-4">
+                  <button
+                    type="button"
+                    onClick={() => mapSetActiveLocation('northside')}
+                    className={
+                      activeLocationId === 'northside'
+                        ? 'bg-[#e6eeff] rounded border border-primary border-l-4 p-4 text-left'
+                        : 'rounded p-4 text-left'
+                    }
+                  >
                     <div className="text-ink text-b1">Northside Branch</div>
                     <div className="text-slate text-p3">900 Corporate Blvd</div>
                     <div className="text-slate text-p3">4.8 miles away</div>
-                  </div>
+                  </button>
                 </div>
               </div>
 
               <div className="relative md:col-span-2 min-h-[400px] bg-[#e6eeff]">
-                <div className="absolute right-4 bottom-4 flex flex-col gap-2">
+                <iframe
+                  ref={mapIframeRef}
+                  title="3D Map Locator"
+                  className="absolute inset-0 w-full h-full"
+                  sandbox="allow-scripts allow-same-origin"
+                  src="/map.html"
+                />
+
+                <div className="absolute right-4 bottom-4 flex flex-col gap-2 z-10">
                   <div className="bg-snow rounded-xl border border-border w-10 h-10 flex items-center justify-center shadow-md">
                     <img className="h-auto" src={container44} alt="" />
                   </div>

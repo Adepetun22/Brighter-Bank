@@ -241,18 +241,9 @@
 
     <div id="click-label"></div>
 
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
-            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
-        }
-    }
-    </script>
-
     <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+        import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/controls/OrbitControls.js';
 
         // ── SCENE ──
         const scene = new THREE.Scene();
@@ -362,17 +353,36 @@
         scene.add(wireframe);
 
         // ── LOCATION DATA ──
+        // IDs are used by the React page via postMessage.
         const locations = [
-            { name: 'NEW YORK', lat: 40.7128, lon: -74.006, info: '40.71°N 74.01°W' },
-            { name: 'LONDON', lat: 51.5074, lon: -0.1278, info: '51.51°N 0.13°W' },
-            { name: 'TOKYO', lat: 35.6762, lon: 139.6503, info: '35.68°N 139.65°E' },
-            { name: 'SYDNEY', lat: -33.8688, lon: 151.2093, info: '33.87°S 151.21°E' },
-            { name: 'SAO PAULO', lat: -23.5505, lon: -46.6333, info: '23.55°S 46.63°W' },
-            { name: 'CAIRO', lat: 30.0444, lon: 31.2357, info: '30.04°N 31.24°E' },
-            { name: 'MUMBAI', lat: 19.076, lon: 72.8777, info: '19.08°N 72.88°E' },
-            { name: 'BEIJING', lat: 39.9042, lon: 116.4074, info: '39.90°N 116.41°E' },
-            { name: 'LAGOS', lat: 6.5244, lon: 3.3792, info: '6.52°N 3.38°E' },
-            { name: 'MEXICO CITY', lat: 19.4326, lon: -99.1332, info: '19.43°N 99.13°W' },
+            {
+                id: 'main',
+                name: 'Main Street Branch',
+                lat: 40.7128,
+                lon: -74.006,
+                info: '123 Finance Way, Downtown',
+            },
+            {
+                id: 'westside',
+                name: 'Westside Hub',
+                lat: 40.7282,
+                lon: -73.7949,
+                info: '455 Commerce Ave, Westside',
+            },
+            {
+                id: 'plaza',
+                name: 'The Plaza ATM',
+                lat: 40.758,
+                lon: -73.9855,
+                info: '88 Market Square (24/7 Access)',
+            },
+            {
+                id: 'northside',
+                name: 'Northside Branch',
+                lat: 40.761,
+                lon: -73.9352,
+                info: '900 Corporate Blvd',
+            },
         ];
 
         function latLonToVec3(lat, lon, radius) {
@@ -456,7 +466,12 @@
         const markerDotEls = [];
         const container = document.getElementById('canvas-container');
 
+        let activeLocationId = null;
+        const activeMarkerIndexById = new Map();
+
         locations.forEach((loc, i) => {
+            if (loc.id) activeMarkerIndexById.set(loc.id, i);
+
             const dot = document.createElement('div');
             dot.className = 'marker-dot pulse';
             container.appendChild(dot);
@@ -545,6 +560,32 @@
             }
         });
 
+        // ── React postMessage integration ──
+        window.addEventListener('message', (event) => {
+            const data = event.data;
+            if (!data || typeof data !== 'object') return;
+            if (data.type !== 'SET_ACTIVE_LOCATION') return;
+
+            const id = data.id;
+            if (!id || !activeMarkerIndexById.has(id)) return;
+
+            activeLocationId = id;
+            const markerIndex = activeMarkerIndexById.get(id);
+            const loc = locations[markerIndex];
+
+            // Highlight marker visually
+            markerMeshes.forEach((mesh, idx) => {
+                const isActive = idx === markerIndex;
+                if (!mesh.material) return;
+                mesh.material.color.set(isActive ? 0x04a0ff : 0xcccccc);
+            });
+
+            // Move camera to roughly show the active point
+            // Use same math as markers (place on outer radius)
+            const targetPos = latLonToVec3(loc.lat, loc.lon, 3.2);
+            animateCameraTo(targetPos, loc, true);
+        });
+
         // ── SEARCH ──
         const searchInput = document.getElementById('search-input');
         const searchBtn = document.getElementById('search-btn');
@@ -569,7 +610,7 @@
             if (e.key === 'Enter') doSearch();
         });
 
-        function animateCameraTo(targetPos, loc) {
+        function animateCameraTo(targetPos, loc, isExternal = false) {
             controls.autoRotate = false;
             const start = camera.position.clone();
             const duration = 1200;
@@ -586,6 +627,11 @@
                     controls.autoRotateSpeed = 0.15;
                     document.getElementById('active-location').textContent = loc.name;
                     document.getElementById('active-coords').textContent = loc.info;
+
+                    if (isExternal) {
+                        const infoEl = document.getElementById('active-info');
+                        if (infoEl) infoEl.textContent = 'Selected location';
+                    }
                 }
             }
             requestAnimationFrame(step);
