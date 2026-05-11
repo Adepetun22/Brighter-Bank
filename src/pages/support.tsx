@@ -307,45 +307,63 @@ export default function SupportPage() {
             <div className="bg-snow rounded-lg border border-border p-8 shadow-sm">
               <div className="text-ink text-left text-h3">Send us a message</div>
 
-              <div className="flex flex-col gap-4 self-stretch mt-6">
+              <form
+                className="flex flex-col gap-4 self-stretch mt-6"
+                onSubmit={(e) => e.preventDefault()}
+              >
                 <div className="flex flex-col gap-1 self-stretch">
                   <div className="text-slate text-p3">Full Name</div>
-                  <div className="bg-cloud rounded border border-border py-3 px-4 self-stretch">
-                    <div className="text-slate text-p2">John Doe</div>
-                  </div>
+                  <input
+                    className="bg-cloud rounded border border-border py-3 px-4 self-stretch text-slate text-p2 outline-none"
+                    type="text"
+                    placeholder="John Doe"
+                    name="fullName"
+                    defaultValue=""
+                  />
                 </div>
 
                 <div className="flex flex-col gap-1 self-stretch">
                   <div className="text-slate text-p3">Email Address</div>
-                  <div className="bg-cloud rounded border border-border py-3 px-4 self-stretch">
-                    <div className="text-slate text-p2">john@example.com</div>
-                  </div>
+                  <input
+                    className="bg-cloud rounded border border-border py-3 px-4 self-stretch text-slate text-p2 outline-none"
+                    type="email"
+                    placeholder="john@example.com"
+                    name="email"
+                    defaultValue=""
+                  />
                 </div>
 
                 <div className="flex flex-col gap-1 self-stretch">
                   <div className="text-slate text-p3">Inquiry Type</div>
-                  <div className="bg-cloud rounded border border-border py-3 px-4 self-stretch flex items-center">
-                    <div className="flex-1">
-                      <div className="text-ink text-p2">General Inquiry</div>
-                    </div>
-                    <img className="w-6 h-6" src={image0} alt="" />
-                  </div>
+                  <label className="bg-cloud rounded border border-border py-3 px-4 self-stretch flex items-center gap-3">
+                    <select
+                      className="flex-1 bg-transparent outline-none text-ink text-p2"
+                      name="inquiryType"
+                      defaultValue="general"
+                    >
+                      <option value="general">General Inquiry</option>
+                    </select>
+
+                  </label>
                 </div>
 
                 <div className="flex flex-col gap-1 self-stretch">
                   <div className="text-slate text-p3">Message</div>
-                  <div className="bg-cloud rounded border border-border py-3 px-4 self-stretch h-[84px]">
-                    <div className="text-slate text-p2">How can we help you?</div>
-                  </div>
+                  <textarea
+                    className="bg-cloud rounded border border-border py-3 px-4 self-stretch h-[84px] text-slate text-p2 outline-none resize-none"
+                    name="message"
+                    defaultValue="How can we help you?"
+                  />
                 </div>
 
+
                 <button
-                  type="button"
+                  type="submit"
                   className="bg-primary rounded py-3 w-full flex items-center justify-center"
                 >
                   <div className="text-snow text-b2">Submit Message</div>
                 </button>
-              </div>
+              </form>
             </div>
 
             <div className="bg-[#ffdad6] rounded border border-[rgba(239,68,68,0.20)] p-4 flex gap-4 items-start">
