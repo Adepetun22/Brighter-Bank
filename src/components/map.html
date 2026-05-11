@@ -473,7 +473,8 @@
             if (loc.id) activeMarkerIndexById.set(loc.id, i);
 
             const dot = document.createElement('div');
-            dot.className = 'marker-dot pulse';
+            // Only the active dot should pulse
+            dot.className = 'marker-dot';
             container.appendChild(dot);
             markerDotEls.push(dot);
 
@@ -483,6 +484,7 @@
             container.appendChild(label);
             markerLabelEls.push(label);
         });
+
 
         function updateMarkerLabels() {
             const w = window.innerWidth;
@@ -578,9 +580,14 @@
                 const isActive = idx === markerIndex;
                 if (!mesh.material) return;
                 mesh.material.color.set(isActive ? 0x04a0ff : 0xcccccc);
+
+                // Only the active pin dot pulses
+                const dotEl = markerDotEls[idx];
+                if (dotEl) dotEl.classList.toggle('pulse', isActive);
             });
 
             // Move camera to roughly show the active point
+
             // Use same math as markers (place on outer radius)
             const targetPos = latLonToVec3(loc.lat, loc.lon, 3.2);
             animateCameraTo(targetPos, loc, true);
@@ -621,21 +628,21 @@
                 const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
                 camera.position.lerpVectors(start, targetPos, ease);
                 camera.lookAt(0, 0, 0);
-                if (t < 1) requestAnimationFrame(step);
+            if (t < 1) requestAnimationFrame(step);
                 else {
                     controls.autoRotate = true;
                     controls.autoRotateSpeed = 0.15;
+
                     document.getElementById('active-location').textContent = loc.name;
                     document.getElementById('active-coords').textContent = loc.info;
 
-                    if (isExternal) {
-                        const infoEl = document.getElementById('active-info');
-                        if (infoEl) infoEl.textContent = 'Selected location';
-                    }
+                    const infoEl = document.getElementById('active-info');
+                    if (infoEl) infoEl.textContent = isExternal ? 'Selected location' : '';
                 }
             }
             requestAnimationFrame(step);
         }
+
 
         // ── FPS ──
         let frameCount = 0;

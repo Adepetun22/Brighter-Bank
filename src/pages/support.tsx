@@ -124,11 +124,11 @@ export default function SupportPage() {
   };
 
   useEffect(() => {
-    const iframe = mapIframeRef.current;
-    if (!iframe) return;
-    const onLoad = () => sendToMap(activeLocationId);
-    iframe.addEventListener('load', onLoad);
-    return () => iframe.removeEventListener('load', onLoad);
+    const onMessage = (e: MessageEvent) => {
+      if (e.data?.type === 'MAP_READY') sendToMap(activeLocationId);
+    };
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
