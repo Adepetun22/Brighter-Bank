@@ -113,6 +113,15 @@ export default function SupportPage() {
     { label: 'Investing' },
   ];
 
+  const [zoomLevel, setZoomLevel] = useState<number>(1);
+
+  const handleZoomIn = () => {
+    setZoomLevel((prev) => Math.min(prev + 0.1, 2));
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel((prev) => Math.max(prev - 0.1, 0.5));
+  };
 
   const sendToMap = (id: string) => {
     mapIframeRef.current?.contentWindow?.postMessage({ type: 'SET_ACTIVE_LOCATION', id }, '*');
@@ -480,14 +489,15 @@ export default function SupportPage() {
                   className="absolute inset-0 w-full h-full"
                   sandbox="allow-scripts allow-same-origin"
                   src="/map.html"
+                  style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'top left' }}
                 />
 
-                <div className="absolute right-4 bottom-4 flex flex-col gap-2 z-10">
-                  <div className="bg-snow rounded-xl border border-border w-10 h-10 flex items-center justify-center shadow-md">
-                    <img className="h-auto" src={container44} alt="" />
+                <div className="absolute right-4 bottom-4 flex flex-col gap-2 z-10" style={{ display: 'none' }}>
+                  <div className="bg-snow rounded-xl border border-border w-10 h-10 flex items-center justify-center shadow-md" onClick={handleZoomIn}>
+                    <img className="h-auto" alt="" src="data:image/svg+xml,%3csvg%20width='14'%20height='14'%20viewBox='0%200%2014%2014'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M6%208H0V6H6V0H8V6H14V8H8V14H6V8Z'%20fill='%23004AC6'/%3e%3c/svg%3e" />
                   </div>
-                  <div className="bg-snow rounded-xl border border-border w-10 h-10 flex items-center justify-center shadow-md">
-                    <img className="h-auto" src={container45} alt="" />
+                  <div className="bg-snow rounded-xl border border-border w-10 h-10 flex items-center justify-center shadow-md" onClick={handleZoomOut}>
+                    <img className="h-auto" alt="" src="data:image/svg+xml,%3csvg%20width='14'%20height='2'%20viewBox='0%200%2014%202'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M0%202V0H14V2H0Z'%20fill='%23004AC6'/%3e%3c/svg%3e" />
                   </div>
                 </div>
               </div>

@@ -276,6 +276,7 @@
         scene.add(markerGroup);
         const markerMeshes = [];
         const activeMarkerIndexById = new Map();
+        let activeMarkerIndex = -1;
 
         locations.forEach((loc, i) => {
             activeMarkerIndexById.set(loc.id, i);
@@ -295,6 +296,37 @@
             ]);
             markerGroup.add(new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color: 0x555555, transparent: true, opacity: 0.6 })));
         });
+
+        // ── ACTIVE PIN ──
+        const pinGroup = new THREE.Group();
+        markerGroup.add(pinGroup);
+
+        const pinHead = new THREE.Mesh(
+            new THREE.SphereGeometry(0.028, 12, 12),
+            new THREE.MeshBasicMaterial({ color: 0x04a0ff })
+        );
+        pinHead.position.set(0, 0.09, 0);
+        pinGroup.add(pinHead);
+
+        const pinStem = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.004, 0.004, 0.09, 6),
+            new THREE.MeshBasicMaterial({ color: 0x04a0ff })
+        );
+        pinStem.position.set(0, 0.045, 0);
+        pinGroup.add(pinStem);
+
+        pinGroup.visible = false;
+
+        function movePinTo(lat, lon) {
+            const surface = latLonToVec3(lat, lon, 1.01);
+            pinGroup.position.copy(surface);
+            // Orient pin outward from globe center
+            pinGroup.quaternion.setFromUnitVectors(
+                new THREE.Vector3(0, 1, 0),
+                surface.clone().normalize()
+            );
+            pinGroup.visible = true;
+        }
 
         // ── HTML MARKER LABELS ──
         const markerLabelEls = [];
@@ -341,7 +373,10 @@
 
                 const opacity = Math.min(1, (dotP - 0.15) * 3);
                 markerDotEls[i].style.cssText = `display:block;left:${x}px;top:${y}px;opacity:${opacity}`;
-                markerLabelEls[i].style.cssText = `display:block;left:${x + 8}px;top:${y - 8}px;opacity:${opacity}`;
+                const showLabel = i === activeMarkerIndex;
+                markerLabelEls[i].style.cssText = showLabel
+                    ? `display:block;left:${x + 8}px;top:${y - 8}px;opacity:${opacity}`
+                    : 'display:none';
             });
         }
 
@@ -370,8 +405,10 @@
             if (!data || data.type !== 'SET_ACTIVE_LOCATION') return;
             const i = activeMarkerIndexById.get(data.id);
             if (i === undefined) return;
+            activeMarkerIndex = i;
             const loc = locations[i];
             markerMeshes.forEach((m, idx) => m.material.color.set(idx === i ? 0x04a0ff : 0xcccccc));
+            movePinTo(loc.lat, loc.lon);
             animateCameraTo(latLonToVec3(loc.lat, loc.lon, 3.2), loc);
         });
 
@@ -431,6 +468,7 @@
         });
 
         animate();
+        window.parent.postMessage({ type: 'MAP_READY' }, '*');
     </script>
 </body>
 </html>
