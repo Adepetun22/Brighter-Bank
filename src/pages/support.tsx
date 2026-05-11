@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-
-
+import Navigation from '../components/Navigation';
+import Footer from '../components/Footer';
 
 import container3 from '../assets/container3.svg';
 import container4 from '../assets/container4.svg';
@@ -144,32 +144,6 @@ export default function SupportPage() {
 
   return (
     <div className="flex flex-col items-center relative min-h-screen bg-gradient-to-r from-[#f8f9ff] to-snow">
-
-      {/* Header */}
-      <div className="w-full bg-snow border-b border-border shadow-sm">
-        <div className="px-6 h-20 flex items-center justify-between max-w-[1440px] mx-auto">
-          <div className="text-primary text-h2">Brighter Bank</div>
-
-          <div className="hidden md:flex items-start gap-6">
-            {navItems.map((item) => (
-              <div key={item.label} className={item.active ? 'border-primary border-b-2 pb-1' : 'pb-1'}>
-                <div className={item.active ? 'text-primary text-b2' : 'text-slate text-b2'}>
-                  {item.label}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="rounded-lg border border-primary px-4 py-2">
-              <div className="text-primary text-b2 text-center">Sign In</div>
-            </div>
-            <div className="rounded-lg bg-primary px-6 py-2">
-              <div className="text-snow text-b2 text-center">Open an Account</div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Hero + Search */}
       <div className="w-full max-w-[1200px] px-6 py-16 flex flex-col gap-12 items-center">
@@ -507,28 +481,6 @@ export default function SupportPage() {
       </div>
 
       {/* Footer */}
-      <div className="w-full bg-[#121c2a] px-6 desktop:px-20">
-        <div className="py-16 flex flex-col gap-6 items-center">
-          <div className="w-full flex-col md:flex-row gap-y-4 items-center justify-between flex-wrap max-w-[1440px]">
-            <div className="text-[#dbe1ff] text-h3">Brighter Bank</div>
-
-            <div className="flex gap-[calc(var(--spacing)*4)] md:gap-6 flex-wrap items-start flex-1 max-w-[628px]">
-              <FooterLink>Privacy Policy</FooterLink>
-              <FooterLink>Terms of Service</FooterLink>
-              <FooterLink>Security</FooterLink>
-              <FooterLink>Accessibility</FooterLink>
-              <FooterLink>Cookie Settings</FooterLink>
-              <FooterLink>Sitemap</FooterLink>
-            </div>
-          </div>
-
-          <div className="w-full border-t border-[rgba(115,118,134,0.30)] pt-6 opacity-60">
-            <div className="text-[#d9e3f6] text-p3">
-              © 2026 Brighter Bank. Member FDIC. Equal Housing Lender. All rights reserved. Registered in the United States and other countries.
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
