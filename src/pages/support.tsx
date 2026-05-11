@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+
 
 import container3 from '../assets/container3.svg';
 import container4 from '../assets/container4.svg';
@@ -49,17 +51,44 @@ function SupportCard({ iconSrc, title, description, variant = 'blue' }: SupportC
   );
 }
 
-function FAQRow({ iconSrc, question, children }: { iconSrc: string; question: string; children: React.ReactNode }) {
+function AccordionItem({
+  iconSrc,
+  question,
+  isOpen,
+  onToggle,
+  children,
+}: {
+  iconSrc: string;
+  question: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  children: React.ReactNode;
+}) {
   return (
     <div className="border-b border-border py-6 flex flex-col gap-4 items-start self-stretch">
-      <div className="flex items-center justify-between self-stretch">
+      <button
+        type="button"
+        className="flex items-center justify-between self-stretch text-left"
+        onClick={onToggle}
+        aria-expanded={isOpen}
+      >
         <div className="text-ink text-left text-h3 flex-1">{question}</div>
         <img className="h-auto" src={iconSrc} alt="" />
+      </button>
+
+      <div
+        className={
+          isOpen
+            ? 'opacity-100 max-h-[240px] transition-all duration-300 ease-out'
+            : 'opacity-0 max-h-0 overflow-hidden transition-all duration-200 ease-in'
+        }
+      >
+        <div className="pt-2">{children}</div>
       </div>
-      {children}
     </div>
   );
 }
+
 
 function FooterLink({ children }: { children: React.ReactNode }) {
   return (
@@ -70,7 +99,9 @@ function FooterLink({ children }: { children: React.ReactNode }) {
 }
 
 export default function SupportPage() {
+  const [openFaqIndex, setOpenFaqIndex] = useState<number>(0);
   const navItems: NavItem[] = [
+
     { label: 'Personal', active: true },
     { label: 'Business' },
     { label: 'Loans' },
@@ -114,7 +145,12 @@ export default function SupportPage() {
 
           <div className="relative w-full">
             <div className="bg-snow rounded-xl border border-border py-6 pr-6 pl-16 shadow-sm">
-              <div className="text-slate text-left text-p2">Search for answers, topics, or services...</div>
+              <input
+                className="w-full outline-none bg-transparent text-slate text-left text-p2 placeholder:text-slate"
+                type="text"
+                aria-label="Search for answers, topics, or services"
+                placeholder="Search for answers, topics, or services..."
+              />
             </div>
 
             <div className="absolute left-6 top-1/2 -translate-y-1/2">
@@ -194,28 +230,70 @@ export default function SupportPage() {
               <div className="text-ink text-left text-h2">Frequently Asked Questions</div>
 
               <div className="flex flex-col gap-4 self-stretch">
-                <FAQRow iconSrc={container14} question="How do I reset my online banking password?">
-                  <div className="text-slate text-left text-p2">
-                    You can reset your password by clicking 'Forgot Password' on the sign-in screen.
-                    <br />
-                    We'll send a verification code to your registered mobile number or email to help you
-                    <br />
-                    set a new one securely.
-                  </div>
-                </FAQRow>
+                {(() => {
+                  const faqs = [
+                    {
+                      iconSrc: container14,
+                      question: 'How do I reset my online banking password?',
+                      answer: (
+                        <div className="text-slate text-left text-p2">
+                          You can reset your password by clicking 'Forgot Password' on the sign-in screen.
+                          <br />
+                          We'll send a verification code to your registered mobile number or email to help you
+                          <br />
+                          set a new one securely.
+                        </div>
+                      ),
+                    },
+                    {
+                      iconSrc: container17,
+                      question: 'What should I do if my card is lost or stolen?',
+                      answer: (
+                        <div className="text-slate text-left text-p2">
+                          If your card is lost or stolen, contact us immediately to freeze your account.
+                          <br />
+                          After confirmation, we’ll help you with a replacement card and any necessary security steps.
+                        </div>
+                      ),
+                    },
+                    {
+                      iconSrc: container19,
+                      question: 'How long do international transfers take?',
+                      answer: (
+                        <div className="text-slate text-left text-p2">
+                          International transfers can take anywhere from 1–5 business days depending on the destination
+                          <br />
+                          and processing requirements. You can track status in your account once initiated.
+                        </div>
+                      ),
+                    },
+                    {
+                      iconSrc: container21,
+                      question: 'Can I open a joint account online?',
+                      answer: (
+                        <div className="text-slate text-left text-p2">
+                          Yes. You can apply for a joint account online. Both applicants will need to verify their details
+                          <br />
+                          and complete the required consent steps before approval.
+                        </div>
+                      ),
+                    },
+                  ];
 
-                <FAQRow iconSrc={container17} question="What should I do if my card is lost or stolen?">
-                  <div />
-                </FAQRow>
-
-                <FAQRow iconSrc={container19} question="How long do international transfers take?">
-                  <div />
-                </FAQRow>
-
-                <FAQRow iconSrc={container21} question="Can I open a joint account online?">
-                  <div />
-                </FAQRow>
+                  return faqs.map((faq, index) => (
+                    <AccordionItem
+                      key={faq.question}
+                      iconSrc={faq.iconSrc}
+                      question={faq.question}
+                      isOpen={index === openFaqIndex}
+                      onToggle={() => setOpenFaqIndex(index === openFaqIndex ? -1 : index)}
+                    >
+                      {faq.answer}
+                    </AccordionItem>
+                  ));
+                })()}
               </div>
+
 
               <div className="flex items-center gap-2">
                 <div className="text-primary text-b2">View all FAQs</div>
