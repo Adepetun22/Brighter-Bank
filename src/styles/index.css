@@ -1,0 +1,188 @@
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-desktop: 1440px;
+  --breakpoint-tablet: 770px;
+  --breakpoint-mobile: 440px;
+
+  --font-family-sans: Inter, system-ui, sans-serif;
+
+  --color-primary: #2563eb;
+  --color-secondary: #f59e0b;
+  --color-tertiary: #10b981;
+  --color-ink: #1f2937;
+  --color-slate: #6b7280;
+  --color-cloud: #f9fafb;
+  --color-snow: #ffffff;
+  --color-border: #e5e7eb;
+  --color-success: #10b981;
+  --color-error: #ef4444;
+  --color-warning: #f59e0b;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    font-family: Inter, system-ui, sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: #ffffff;
+    color: #1f2937;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-weight: 700;
+    color: #1f2937;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+@layer utilities {
+  /* Typography tokens (no @apply to avoid Tailwind v4 utility resolution issues) */
+  .text-h1 {
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 56px;
+  }
+  .text-h2 {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 44px;
+  }
+  .text-h3 {
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+  }
+  .text-p1 {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+  }
+  .text-p2 {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .text-p3 {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .text-b1 {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .text-b2 {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .text-b3 {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  /* Responsive overrides (pixel-accurate) */
+  @media (max-width: 1439px) {
+    .text-h1 {
+      font-size: 36px;
+      line-height: 44px;
+    }
+    .text-h2 {
+      font-size: 28px;
+      line-height: 36px;
+    }
+    .text-h3 {
+      font-size: 20px;
+      line-height: 28px;
+    }
+    .text-p1 {
+      font-size: 18px;
+      line-height: 28px;
+    }
+    .text-b1 {
+      font-size: 16px;
+      line-height: 24px;
+    }
+    .text-b2 {
+      font-size: 14px;
+      line-height: 20px;
+    }
+    .text-b3 {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+
+  @media (max-width: 769px) {
+    .text-h1 {
+      font-size: 28px;
+      line-height: 36px;
+    }
+    .text-h2 {
+      font-size: 22px;
+      line-height: 28px;
+    }
+    .text-h3 {
+      font-size: 18px;
+      line-height: 24px;
+    }
+    .text-p1 {
+      font-size: 16px;
+      line-height: 24px;
+    }
+    .text-p2 {
+      font-size: 14px;
+      line-height: 22px;
+    }
+    .text-p3 {
+      font-size: 12px;
+      line-height: 18px;
+    }
+    .text-b1 {
+      font-size: 16px;
+      line-height: 24px;
+    }
+    .text-b2 {
+      font-size: 14px;
+      line-height: 20px;
+    }
+    .text-b3 {
+      font-size: 12px;
+      line-height: 16px;
+    }
+  }
+
+  /* Section spacing tokens */
+  .mb-section {
+    margin-bottom: 96px;
+  }
+  @media (max-width: 1439px) {
+    .mb-section {
+      margin-bottom: 64px;
+    }
+  }
+  @media (max-width: 769px) {
+    .mb-section {
+      margin-bottom: 48px;
+    }
+  }
+}
+
+
+
