@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import MobileNav from './MobileNav';
 
 function Navigation() {
@@ -11,19 +12,34 @@ function Navigation() {
           <a href="/personal" className="border-primary border-b-2 pb-1 text-primary">
             <div className="text-b2">Personal</div>
           </a>
-          <a href="/business" className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer">
+          <Link
+            to="/business"
+            className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer"
+          >
             <div className="text-b2">Business</div>
-          </a>
-          <a href="/loans" className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer">
+          </Link>
+          <a
+            href="/loans"
+            className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer"
+          >
             <div className="text-b2">Loans</div>
           </a>
-          <a href="/mortgages" className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer">
+          <a
+            href="/mortgages"
+            className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer"
+          >
             <div className="text-b2">Mortgages</div>
           </a>
-          <a href="/credit-cards" className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer">
+          <a
+            href="/credit-cards"
+            className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer"
+          >
             <div className="text-b2">Credit Cards</div>
           </a>
-          <a href="/investing" className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer">
+          <a
+            href="/investing"
+            className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer"
+          >
             <div className="text-b2">Investing</div>
           </a>
         </div>
@@ -52,3 +68,4 @@ export default function ResponsiveNavigation() {
 
   return isMobile ? <MobileNav /> : <Navigation />;
 }
+

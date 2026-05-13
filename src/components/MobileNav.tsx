@@ -1,5 +1,5 @@
-// src/components/MobileNav.tsx
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -8,10 +8,7 @@ function MobileNav() {
     <div className="w-full bg-snow border-b border-border shadow-sm">
       <div className="px-6 h-20 flex items-center justify-between">
         <div className="text-primary text-h2">Brighter Bank</div>
-        <button
-          className="p-2 focus:outline-none"
-          onClick={() => setIsOpen(!isOpen)}
-        >
+        <button className="p-2 focus:outline-none" onClick={() => setIsOpen(!isOpen)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 text-primary"
@@ -28,14 +25,15 @@ function MobileNav() {
           </svg>
         </button>
       </div>
+
       {isOpen && (
         <div className="flex flex-col py-4 space-y-2 bg-snow">
           <a href="/personal" className="block px-6 py-2 text-primary hover:bg-gray-100">
             Personal
           </a>
-          <a href="/business" className="block px-6 py-2 text-slate hover:bg-gray-100">
+          <Link to="/business" className="block px-6 py-2 text-slate hover:bg-gray-100">
             Business
-          </a>
+          </Link>
           <a href="/loans" className="block px-6 py-2 text-slate hover:bg-gray-100">
             Loans
           </a>
@@ -48,6 +46,7 @@ function MobileNav() {
           <a href="/investing" className="block px-6 py-2 text-slate hover:bg-gray-100">
             Investing
           </a>
+
           <div className="flex flex-col mt-4 px-6 space-y-2">
             <button className="rounded-lg border border-primary px-4 py-2 text-primary text-b2 text-center cursor-pointer">
               Sign In
@@ -63,3 +62,4 @@ function MobileNav() {
 }
 
 export default MobileNav;
+
