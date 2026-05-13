@@ -28,31 +28,33 @@ function toNumber(input: string) {
   return Number.isFinite(n) ? n : 0;
 }
 
+function calculateAmortizedLoan(P: number, nMonths: number) {
+  if (P <= 0 || nMonths <= 0) return { monthlyPayment: 0, totalPayment: 0 };
+
+  const monthlyRate = APR / 12;
+
+  if (monthlyRate === 0) {
+    const payment = P / nMonths;
+    return { monthlyPayment: payment, totalPayment: payment * nMonths };
+  }
+
+  // payment = P * r / (1 - (1 + r)^-n)
+  const payment = P * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -nMonths)));
+  const total = payment * nMonths;
+  return { monthlyPayment: payment, totalPayment: total };
+}
+
 export default function BusinessPage() {
-  const [loanAmountText, setLoanAmountText] = useState('50,000');
+  const [loanAmountText, setLoanAmountText] = useState('');
   const [termMonths, setTermMonths] = useState<3 | 6 | 12>(3);
+
+  const [activeTab, setActiveTab] = useState(0);
 
   const loanAmount = useMemo(() => toNumber(loanAmountText), [loanAmountText]);
 
-  const { monthlyPayment, totalPayment } = useMemo(() => {
-    // Amortized loan payment formula.
-    // payment = P * r / (1 - (1 + r)^-n)
-    const n = termMonths;
-    const monthlyRate = APR / 12;
-
-    if (loanAmount <= 0 || n <= 0) {
-      return { monthlyPayment: 0, totalPayment: 0 };
-    }
-
-    if (monthlyRate === 0) {
-      const payment = loanAmount / n;
-      return { monthlyPayment: payment, totalPayment: payment * n };
-    }
-
-    const payment = loanAmount * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -n)));
-    const total = payment * n;
-    return { monthlyPayment: payment, totalPayment: total };
-  }, [loanAmount, termMonths]);
+  // Display values only update when the user clicks the submit button.
+  const [monthlyPayment, setMonthlyPayment] = useState(0);
+  const [totalPayment, setTotalPayment] = useState(0);
 
   return (
     <div className="flex flex-col gap-16 md:gap-24 items-center justify-start bg-[#f8f9ff]">
@@ -92,66 +94,228 @@ export default function BusinessPage() {
       <div className="w-full max-w-[1200px] px-6 flex flex-col gap-8">
         {/* Tabs */}
         <div className="border-b border-border flex flex-row gap-6 overflow-x-auto">
-          {tabs.map((tab, i) => (
-            <div
-              key={tab}
-              className={`pb-4 shrink-0 border-b-2 ${i === 0 ? 'border-[#004ac6]' : 'border-transparent'}`}
-            >
-              <span className={`text-b3 ${i === 0 ? 'text-[#004ac6]' : 'text-slate'}`}>{tab}</span>
-            </div>
-          ))}
+          {tabs.map((tab, i) => {
+            const isActive = i === activeTab;
+            return (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => setActiveTab(i)}
+                className="pb-4 shrink-0 border-b-2"
+                style={{ borderColor: isActive ? '#004ac6' : 'transparent' }}
+              >
+                <span className={`text-b3 ${isActive ? 'text-[#004ac6]' : 'text-slate'}`}>{tab}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Cards grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Business Plus card — spans 2 cols on md+ */}
-          <div className="bg-snow rounded-lg border border-border p-8 flex flex-col gap-4 shadow-sm md:col-span-2">
-            <div className="flex flex-row items-start justify-between">
-              <div className="flex flex-col gap-2 flex-1">
-                <h3 className="text-ink text-h3">Brighter Business Plus</h3>
-                <p className="text-slate text-p2">The all-in-one checking account for high-growth teams.</p>
-              </div>
-              <img src={icon0} alt="" className="w-[30px] h-[30px]" />
-            </div>
-            <div className="flex flex-col gap-3">
-              {[
-                { icon: check10, label: 'Unlimited transaction processing' },
-                { icon: check20, label: 'Next-day deposit availability' },
-                { icon: check30, label: 'Zero monthly maintenance fees' },
-              ].map(({ icon, label }) => (
-                <div key={label} className="flex flex-row gap-3 items-center">
-                  <img src={icon} alt="" />
-                  <span className="text-ink text-p2">{label}</span>
+          {activeTab === 0 && (
+            <>
+              <div className="bg-snow rounded-lg border border-border p-8 flex flex-col gap-4 shadow-sm md:col-span-2">
+                <div className="flex flex-row items-start justify-between">
+                  <div className="flex flex-col gap-2 flex-1">
+                    <h3 className="text-ink text-h3">Brighter Business Plus</h3>
+                    <p className="text-slate text-p2">The all-in-one checking account for high-growth teams.</p>
+                  </div>
+                  <img src={icon0} alt="" className="w-[30px] h-[30px]" />
                 </div>
-              ))}
-            </div>
-            <div className="pt-4 flex flex-row gap-2 items-center">
-              <span className="text-[#004ac6] text-b2">Learn More</span>
-              <img src={containerArrow0} alt="" />
-            </div>
-          </div>
+                <div className="flex flex-col gap-3">
+                  {[
+                    { icon: check10, label: 'Unlimited transaction processing' },
+                    { icon: check20, label: 'Next-day deposit availability' },
+                    { icon: check30, label: 'Zero monthly maintenance fees' },
+                  ].map(({ icon, label }) => (
+                    <div key={label} className="flex flex-row gap-3 items-center">
+                      <img src={icon} alt="" />
+                      <span className="text-ink text-p2">{label}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="pt-4 flex flex-row gap-2 items-center">
+                  <span className="text-[#004ac6] text-b2">Learn More</span>
+                  <img src={containerArrow0} alt="" />
+                </div>
+              </div>
 
-          {/* Switch Today promo card */}
-          <div className="bg-[#2563eb] rounded-lg p-8 flex flex-col justify-between gap-6">
-            <div className="flex flex-col gap-3">
-              <img src={icon1} alt="" className="w-[30px] h-[30px]" />
-              <h3 className="text-snow text-h3">Switch Today</h3>
-              <p className="text-snow text-p2 opacity-90">
-                Get a $500 bonus when you open and fund a new business checking account this month.
-              </p>
-            </div>
-            <button
-              type="button"
-              className="btn btn-secondary-on-white rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
-            >
-              <span className="text-[#004ac6] text-b2">Claim Offer</span>
-            </button>
-          </div>
+              <div className="bg-[#2563eb] rounded-lg p-8 flex flex-col justify-between gap-6">
+                <div className="flex flex-col gap-3">
+                  <img src={icon1} alt="" className="w-[30px] h-[30px]" />
+                  <h3 className="text-snow text-h3">Switch Today</h3>
+                  <p className="text-snow text-p2 opacity-90">
+                    Get a $500 bonus when you open and fund a new business checking account this month.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-secondary-on-white rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
+                >
+                  <span className="text-[#004ac6] text-b2">Claim Offer</span>
+                </button>
+              </div>
+            </>
+          )}
+
+          {activeTab === 1 && (
+            <>
+              <div className="bg-snow rounded-lg border border-border p-8 flex flex-col gap-5 shadow-sm md:col-span-2">
+                <div className="flex flex-row items-start justify-between">
+                  <div className="flex flex-col gap-2 flex-1">
+                    <h3 className="text-ink text-h3">Brighter Business Savings</h3>
+                    <p className="text-slate text-p2">
+                      Keep cash reserves working with flexible savings built for everyday business.
+                    </p>
+                  </div>
+                  <img src={icon1} alt="" className="w-[30px] h-[30px]" />
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  {[
+                    { icon: check10, label: 'Goal-based savings buckets' },
+                    { icon: check20, label: 'Instant transfers to checking' },
+                    { icon: check30, label: 'Clear monthly statements' },
+                  ].map(({ icon, label }) => (
+                    <div key={label} className="flex flex-row gap-3 items-center">
+                      <img src={icon} alt="" />
+                      <span className="text-ink text-p2">{label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-4 flex flex-row gap-2 items-center">
+                  <span className="text-[#004ac6] text-b2">View Rates</span>
+                  <img src={containerArrow0} alt="" />
+                </div>
+              </div>
+
+              <div className="bg-[#004ac6] rounded-lg p-8 flex flex-col justify-between gap-6">
+                <div className="flex flex-col gap-3">
+                  <img src={icon0} alt="" className="w-[30px] h-[30px]" />
+                  <h3 className="text-snow text-h3">Build Momentum</h3>
+                  <p className="text-snow text-p2 opacity-90">
+                    Set up recurring deposits and watch your buffers grow automatically.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-secondary-on-white rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
+                >
+                  <span className="text-[#004ac6] text-b2">Start Saving</span>
+                </button>
+              </div>
+            </>
+          )}
+
+          {activeTab === 2 && (
+            <>
+              <div className="bg-snow rounded-lg border border-border p-8 flex flex-col gap-5 shadow-sm md:col-span-2">
+                <div className="flex flex-row items-start justify-between">
+                  <div className="flex flex-col gap-2 flex-1">
+                    <h3 className="text-ink text-h3">Merchant Services</h3>
+                    <p className="text-slate text-p2">
+                      Accept payments, manage payouts, and reconcile transactions in one streamlined dashboard.
+                    </p>
+                  </div>
+                  <img src={icon0} alt="" className="w-[30px] h-[30px]" />
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  {[
+                    { icon: check10, label: 'Fast settlement for online sales' },
+                    { icon: check20, label: 'Smart refunds & chargeback tools' },
+                    { icon: check30, label: 'Team access with permissions' },
+                  ].map(({ icon, label }) => (
+                    <div key={label} className="flex flex-row gap-3 items-center">
+                      <img src={icon} alt="" />
+                      <span className="text-ink text-p2">{label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-4 flex flex-row gap-2 items-center">
+                  <span className="text-[#004ac6] text-b2">Explore Tools</span>
+                  <img src={containerArrow0} alt="" />
+                </div>
+              </div>
+
+              <div className="bg-snow rounded-lg p-8 flex flex-col justify-between gap-6 border border-border">
+                <div className="flex flex-col gap-3">
+                  <img src={icon1} alt="" className="w-[30px] h-[30px]" />
+                  <h3 className="text-ink text-h3">Reduce Friction</h3>
+                  <p className="text-slate text-p2 opacity-90">
+                    Get a smoother checkout experience with configurable payment flows.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-primary rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
+                >
+                  <span className="text-snow text-b2">Connect Payments</span>
+                </button>
+              </div>
+            </>
+          )}
+
+          {activeTab === 3 && (
+            <>
+              <div className="bg-snow rounded-lg border border-border p-8 flex flex-col gap-5 shadow-sm md:col-span-2">
+                <div className="flex flex-row items-start justify-between">
+                  <div className="flex flex-col gap-2 flex-1">
+                    <h3 className="text-ink text-h3">Loans & Lines</h3>
+                    <p className="text-slate text-p2">
+                      Flexible funding for growth—equipment, expansion, and working capital when you need it.
+                    </p>
+                  </div>
+                  <img src={icon1} alt="" className="w-[30px] h-[30px]" />
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  {[
+                    { icon: check10, label: 'Clear repayment schedules' },
+                    { icon: check20, label: 'Draw and repay when ready' },
+                    { icon: check30, label: 'Guided eligibility checks' },
+                  ].map(({ icon, label }) => (
+                    <div key={label} className="flex flex-row gap-3 items-center">
+                      <img src={icon} alt="" />
+                      <span className="text-ink text-p2">{label}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-4 flex flex-row gap-2 items-center">
+                  <span className="text-[#004ac6] text-b2">See Options</span>
+                  <img src={containerArrow0} alt="" />
+                </div>
+              </div>
+
+              <div className="bg-[#2563eb] rounded-lg p-8 flex flex-col justify-between gap-6">
+                <div className="flex flex-col gap-3">
+                  <img src={icon0} alt="" className="w-[30px] h-[30px]" />
+                  <h3 className="text-snow text-h3">Get a Funding Plan</h3>
+                  <p className="text-snow text-p2 opacity-90">
+                    Use the capital estimator below to estimate repayments in seconds.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-secondary-on-white rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
+                  onClick={() => {
+                    const el = document.getElementById('capital-estimator');
+                    el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                >
+                  <span className="text-[#004ac6] text-b2">Estimate Now</span>
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       {/* Capital Estimator */}
-      <div className="w-full max-w-[1200px] px-6">
+      <div id="capital-estimator" className="w-full max-w-[1200px] px-6">
         <div className="bg-[#f9fafb] rounded-3xl border border-border shadow-lg overflow-hidden flex flex-col md:flex-row">
           {/* Form side */}
           <div className="p-8 flex flex-col gap-6 flex-1">
@@ -196,7 +360,9 @@ export default function BusinessPage() {
                 type="button"
                 className="btn btn-primary rounded-lg py-4 flex items-center justify-center cursor-pointer"
                 onClick={() => {
-                  // calculation is live; button keeps the intended CTA feel.
+                  const { monthlyPayment: mp, totalPayment: tp } = calculateAmortizedLoan(loanAmount, termMonths);
+                  setMonthlyPayment(mp);
+                  setTotalPayment(tp);
                 }}
               >
                 <span className="text-snow text-b2">Calculate Repayment</span>
