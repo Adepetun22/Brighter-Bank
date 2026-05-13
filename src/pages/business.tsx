@@ -101,7 +101,7 @@ export default function BusinessPage() {
                 key={tab}
                 type="button"
                 onClick={() => setActiveTab(i)}
-                className="pb-4 shrink-0 border-b-2"
+                className="pb-4 shrink-0 border-b-2 cursor-pointer"
                 style={{ borderColor: isActive ? '#004ac6' : 'transparent' }}
               >
                 <span className={`text-b3 ${isActive ? 'text-[#004ac6]' : 'text-slate'}`}>{tab}</span>
@@ -150,7 +150,7 @@ export default function BusinessPage() {
                 </div>
                 <button
                   type="button"
-                  className="btn btn-secondary-on-white rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
+                  className="btn btn-secondary-on-white btn-no-hover rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
                 >
                   <span className="text-[#004ac6] text-b2">Claim Offer</span>
                 </button>
@@ -200,7 +200,7 @@ export default function BusinessPage() {
                 </div>
                 <button
                   type="button"
-                  className="btn btn-secondary-on-white rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
+                  className="btn btn-secondary-on-white btn-no-hover bg-snow rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
                 >
                   <span className="text-[#004ac6] text-b2">Start Saving</span>
                 </button>
@@ -250,9 +250,9 @@ export default function BusinessPage() {
                 </div>
                 <button
                   type="button"
-                  className="btn btn-primary rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
+                  className="btn btn-secondary-on-white bg-snow hover:bg-snow rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
                 >
-                  <span className="text-snow text-b2">Connect Payments</span>
+                  <span className="text-[#004ac6] text-b2">Estimate Now</span>
                 </button>
               </div>
             </>
@@ -300,7 +300,7 @@ export default function BusinessPage() {
                 </div>
                 <button
                   type="button"
-                  className="btn btn-secondary-on-white rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
+                  className="btn btn-secondary-on-white btn-no-hover bg-snow rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
                   onClick={() => {
                     const el = document.getElementById('capital-estimator');
                     el?.scrollIntoView({ behavior: 'smooth', block: 'start' });

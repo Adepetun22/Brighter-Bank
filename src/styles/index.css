@@ -155,6 +155,16 @@
     box-shadow: 0 10px 18px rgba(37, 99, 235, 0.18);
   }
 
+  /* Disable all hover/active effects for specific buttons */
+  .btn.btn-no-hover:hover,
+  .btn.btn-no-hover:active {
+    transform: none;
+    box-shadow: none;
+    background-color: #ffffff;
+    filter: none;
+    transition: none;
+  }
+
   .btn-primary:hover {
     filter: brightness(1.03);
   }
