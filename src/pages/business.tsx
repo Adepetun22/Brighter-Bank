@@ -29,10 +29,10 @@ export default function BusinessPage() {
               Experience enterprise-grade financial tools designed specifically for modern entrepreneurs and growing companies.
             </p>
             <div className="pt-4 flex flex-row gap-4 flex-wrap">
-              <button className="bg-[#004ac6] rounded-lg py-4 px-8 shadow-md">
+              <button className="bg-[#004ac6] rounded-lg py-4 px-8 shadow-md cursor-pointer">
                 <span className="text-snow text-b1">Get Started</span>
               </button>
-              <button className="rounded-lg border border-[#737686] py-4 px-8">
+              <button className="rounded-lg border border-[#737686] py-4 px-8 cursor-pointer">
                 <span className="text-[#004ac6] text-b1">View Products</span>
               </button>
             </div>
@@ -97,7 +97,7 @@ export default function BusinessPage() {
                 Get a $500 bonus when you open and fund a new business checking account this month.
               </p>
             </div>
-            <button className="bg-snow rounded-lg py-3 w-full flex items-center justify-center">
+            <button className="bg-snow rounded-lg py-3 w-full flex items-center justify-center cursor-pointer">
               <span className="text-[#004ac6] text-b2">Claim Offer</span>
             </button>
           </div>
@@ -131,7 +131,7 @@ export default function BusinessPage() {
                   <img src={image0} alt="" className="w-6 h-6" />
                 </div>
               </div>
-              <button className="bg-[#004ac6] rounded-lg py-4 flex items-center justify-center">
+              <button className="bg-[#004ac6] rounded-lg py-4 flex items-center justify-center cursor-pointer">
                 <span className="text-snow text-b2">Calculate Repayment</span>
               </button>
             </div>
@@ -157,10 +157,10 @@ export default function BusinessPage() {
             <h2 className="text-ink text-h2">Growing with Brighter</h2>
           </div>
           <div className="flex flex-row gap-3">
-            <button className="rounded-xl border border-border w-12 h-12 flex items-center justify-center">
+            <button className="rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer">
               <img src={containerPO0} alt="Previous" />
             </button>
-            <button className="rounded-xl border border-border w-12 h-12 flex items-center justify-center">
+            <button className="rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer">
               <img src={containerPOI0} alt="Next" />
             </button>
           </div>
@@ -210,10 +210,10 @@ export default function BusinessPage() {
             Join over 50,000 businesses that trust Brighter Bank for their financial future. Account setup takes less than 10 minutes.
           </p>
           <div className="pt-4 flex flex-col sm:flex-row gap-4 items-center justify-center flex-wrap relative">
-            <button className="bg-[#004ac6] rounded-lg py-4 px-8 shadow-md w-full sm:w-auto">
+            <button className="bg-[#004ac6] rounded-lg py-4 px-8 shadow-md w-full sm:w-auto cursor-pointer">
               <span className="text-snow text-b1">Open Account Online</span>
             </button>
-            <button className="rounded-lg border border-[#d9e3f6] py-4 px-8 w-full sm:w-auto">
+            <button className="rounded-lg border border-[#d9e3f6] py-4 px-8 w-full sm:w-auto cursor-pointer">
               <span className="text-snow text-b1">Talk to an Advisor</span>
             </button>
           </div>
