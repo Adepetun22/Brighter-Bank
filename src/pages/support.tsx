@@ -165,9 +165,9 @@ export default function SupportPage() {
             </div>
 
             <div className="absolute right-2 top-1/2 -translate-y-1/2">
-              <div className="bg-primary rounded-xl py-4 px-8">
+              <button type="button" className="btn btn-primary rounded-xl py-4 px-8">
                 <div className="text-snow text-b2">Search</div>
-              </div>
+              </button>
             </div>
           </div>
         </div>

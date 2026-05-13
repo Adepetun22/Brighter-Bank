@@ -97,6 +97,63 @@
     line-height: 20px;
   }
 
+  /* Shared button design system */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      transform 140ms ease,
+      box-shadow 140ms ease,
+      background-color 140ms ease,
+      border-color 140ms ease,
+      color 140ms ease,
+      filter 140ms ease;
+  }
+
+  .btn-primary {
+    background-color: #2563eb;
+    color: #ffffff;
+    border: 1px solid #2563eb;
+    border-radius: 10px;
+    box-shadow: 0 10px 18px rgba(37, 99, 235, 0.18);
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    color: #2563eb;
+    border: 1px solid #2563eb;
+    border-radius: 10px;
+  }
+
+  /* Hover + animation (avoid scale to prevent flicker/layout jitter) */
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 24px rgba(37, 99, 235, 0.25);
+  }
+
+  .btn:active {
+    transform: translateY(0px);
+    box-shadow: 0 10px 18px rgba(37, 99, 235, 0.18);
+  }
+
+  .btn-primary:hover {
+    filter: brightness(1.03);
+  }
+
+  .btn-secondary:hover {
+    background-color: rgba(37, 99, 235, 0.08);
+  }
+
+  .btn:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, 0.35);
+    outline-offset: 2px;
+  }
+
   /* Responsive overrides (pixel-accurate) */
   @media (max-width: 1439px) {
     .text-h1 {
@@ -183,6 +240,3 @@
     }
   }
 }
-
-
-

@@ -48,10 +48,10 @@ function MobileNav() {
           </a>
 
           <div className="flex flex-col mt-4 px-6 space-y-2">
-            <button className="rounded-lg border border-primary px-4 py-2 text-primary text-b2 text-center cursor-pointer">
+            <button type="button" className="btn btn-secondary px-4 py-2 text-primary text-b2 text-center rounded-lg">
               Sign In
             </button>
-            <button className="rounded-lg bg-primary px-6 py-2 text-snow text-b2 text-center cursor-pointer">
+            <button type="button" className="btn btn-primary px-6 py-2 text-snow text-b2 text-center rounded-lg">
               Open an Account
             </button>
           </div>
@@ -62,4 +62,3 @@ function MobileNav() {
 }
 
 export default MobileNav;
-
