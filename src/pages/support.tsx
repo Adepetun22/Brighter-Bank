@@ -366,7 +366,7 @@ export default function SupportPage() {
 
                 <button
                   type="submit"
-                  className="bg-primary rounded py-3 w-full flex items-center justify-center"
+                  className="btn btn-primary rounded-lg py-3 w-full flex items-center justify-center"
                 >
                   <div className="text-snow text-b2">Submit Message</div>
                 </button>

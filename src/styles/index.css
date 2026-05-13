@@ -130,6 +130,20 @@
     border-radius: 10px;
   }
 
+  /* Secondary variant used on colored cards: stays white while keeping blue text + hover animation */
+  .btn-secondary-on-white {
+    background-color: #ffffff;
+    color: #2563eb;
+    border: 1px solid #2563eb;
+    border-radius: 10px;
+    box-shadow: none;
+  }
+
+  .btn-secondary-on-white:hover {
+    /* keep the background white (slight tint) while preserving the shared lift animation */
+    background-color: rgba(37, 99, 235, 0.08);
+  }
+
   /* Hover + animation (avoid scale to prevent flicker/layout jitter) */
   .btn:hover {
     transform: translateY(-1px);

@@ -11,28 +11,71 @@ import containerPO0 from '../assets/containerp-o0.svg';
 import containerPOI0 from '../assets/containerp-oi0.svg';
 import moneyOverlay0 from '../assets/money-overlay0.svg';
 import image0 from '../assets/image0.svg';
+import React, { useMemo, useState } from 'react';
 
 const tabs = ['Business Checking', 'Business Savings', 'Merchant Services', 'Loans & Lines'];
 
+const APR = 0.059;
+
+function formatMoney(value: number) {
+  if (!Number.isFinite(value)) return '$0.00';
+  return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+}
+
+function toNumber(input: string) {
+  const normalized = input.replace(/,/g, '').trim();
+  const n = Number(normalized);
+  return Number.isFinite(n) ? n : 0;
+}
+
 export default function BusinessPage() {
+  const [loanAmountText, setLoanAmountText] = useState('50,000');
+  const [termMonths, setTermMonths] = useState<3 | 6 | 12>(3);
+
+  const loanAmount = useMemo(() => toNumber(loanAmountText), [loanAmountText]);
+
+  const { monthlyPayment, totalPayment } = useMemo(() => {
+    // Amortized loan payment formula.
+    // payment = P * r / (1 - (1 + r)^-n)
+    const n = termMonths;
+    const monthlyRate = APR / 12;
+
+    if (loanAmount <= 0 || n <= 0) {
+      return { monthlyPayment: 0, totalPayment: 0 };
+    }
+
+    if (monthlyRate === 0) {
+      const payment = loanAmount / n;
+      return { monthlyPayment: payment, totalPayment: payment * n };
+    }
+
+    const payment = loanAmount * (monthlyRate / (1 - Math.pow(1 + monthlyRate, -n)));
+    const total = payment * n;
+    return { monthlyPayment: payment, totalPayment: total };
+  }, [loanAmount, termMonths]);
+
   return (
     <div className="flex flex-col gap-16 md:gap-24 items-center justify-start bg-[#f8f9ff]">
-
       {/* Hero */}
       <div className="bg-[#eff4ff] w-full py-16 md:py-24 px-6 flex justify-center">
         <div className="w-full max-w-[1200px] flex flex-col md:flex-row gap-8 items-center flex-wrap">
           <div className="flex flex-col gap-4 items-start flex-1 min-w-[280px]">
             <h1 className="text-ink text-h1">
-              Your business,<br />powered brighter.
+              Your business,<br />
+              powered brighter.
             </h1>
             <p className="text-slate text-p1 max-w-xl">
-              Experience enterprise-grade financial tools designed specifically for modern entrepreneurs and growing companies.
+              Experience enterprise-grade financial tools designed specifically for modern entrepreneurs and growing
+              companies.
             </p>
             <div className="pt-4 flex flex-row gap-4 flex-wrap">
               <button type="button" className="btn btn-primary rounded-lg py-4 px-8 cursor-pointer shadow-md">
                 <span className="text-snow text-b1">Get Started</span>
               </button>
-              <button type="button" className="btn btn-secondary rounded-lg py-4 px-8 cursor-pointer border-[#737686]">
+              <button
+                type="button"
+                className="btn btn-secondary rounded-lg py-4 px-8 cursor-pointer border-[#737686]"
+              >
                 <span className="text-[#004ac6] text-b1">View Products</span>
               </button>
             </div>
@@ -97,7 +140,10 @@ export default function BusinessPage() {
                 Get a $500 bonus when you open and fund a new business checking account this month.
               </p>
             </div>
-            <button type="button" className="btn btn-secondary rounded-lg py-3 w-full flex items-center justify-center cursor-pointer">
+            <button
+              type="button"
+              className="btn btn-secondary-on-white rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
+            >
               <span className="text-[#004ac6] text-b2">Claim Offer</span>
             </button>
           </div>
@@ -115,23 +161,44 @@ export default function BusinessPage() {
                 Quickly calculate potential monthly repayments for business expansion loans or equipment financing.
               </p>
             </div>
+
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
                 <label className="text-[#434655] text-p3">Loan Amount ($)</label>
                 <input
+                  value={loanAmountText}
+                  onChange={(e) => setLoanAmountText(e.target.value)}
                   className="bg-snow rounded-lg border border-border py-[18px] px-4 text-slate text-p2 outline-none"
                   placeholder="e.g. 50,000"
                   type="text"
+                  inputMode="numeric"
                 />
               </div>
+
               <div className="flex flex-col gap-2">
                 <label className="text-[#434655] text-p3">Term Length</label>
-                <div className="bg-snow rounded-lg border border-border p-4 flex items-center justify-between">
-                  <span className="text-ink text-p2">12 Months</span>
-                  <img src={image0} alt="" className="w-6 h-6" />
+                <div className="bg-snow rounded-lg border border-border p-4 flex items-center justify-between gap-4">
+                  <select
+                    value={termMonths}
+                    onChange={(e) => setTermMonths(Number(e.target.value) as 3 | 6 | 12)}
+                    className="flex-1 bg-transparent outline-none text-ink text-p2 appearance-none"
+                    aria-label="Select term length"
+                  >
+                    <option value={3}>3 Months</option>
+                    <option value={6}>6 Months</option>
+                    <option value={12}>12 Months</option>
+                  </select>
+                  <img src={image0} alt="" className="w-6 h-6 shrink-0" />
                 </div>
               </div>
-              <button type="button" className="btn btn-primary rounded-lg py-4 flex items-center justify-center cursor-pointer">
+
+              <button
+                type="button"
+                className="btn btn-primary rounded-lg py-4 flex items-center justify-center cursor-pointer"
+                onClick={() => {
+                  // calculation is live; button keeps the intended CTA feel.
+                }}
+              >
                 <span className="text-snow text-b2">Calculate Repayment</span>
               </button>
             </div>
@@ -143,8 +210,13 @@ export default function BusinessPage() {
               <img src={moneyOverlay0} alt="" className="rounded-xl" />
             </div>
             <p className="text-snow text-p1 opacity-80 text-center">Estimated Monthly Payment</p>
-            <p className="text-snow text-h1 text-center">$1,452.80*</p>
-            <p className="text-snow text-p3 opacity-60 text-center pt-4">*Based on 5.9% APR. Rates vary by creditworthiness.</p>
+            <p className="text-snow text-h1 text-center">{formatMoney(monthlyPayment)}*</p>
+            <p className="text-snow text-p3 opacity-80 text-center pt-2">
+              Total over {termMonths} months: {formatMoney(totalPayment)}*
+            </p>
+            <p className="text-snow text-p3 opacity-60 text-center pt-4">
+              *Based on {Math.round(APR * 10000) / 100}% APR. Rates vary by creditworthiness.
+            </p>
           </div>
         </div>
       </div>
@@ -157,10 +229,16 @@ export default function BusinessPage() {
             <h2 className="text-ink text-h2">Growing with Brighter</h2>
           </div>
           <div className="flex flex-row gap-3">
-            <button type="button" className="btn btn-secondary rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer">
+            <button
+              type="button"
+              className="btn btn-secondary rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer"
+            >
               <img src={containerPO0} alt="Previous" />
             </button>
-            <button type="button" className="btn btn-secondary rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer">
+            <button
+              type="button"
+              className="btn btn-secondary rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer"
+            >
               <img src={containerPOI0} alt="Next" />
             </button>
           </div>
@@ -171,14 +249,16 @@ export default function BusinessPage() {
             {
               img: businessSuccess1,
               title: 'Doubling Revenue in 12 Months',
-              quote: '"Switching our merchant services and lines of credit to Brighter Bank gave us the liquidity we needed to expand to three new locations. Their dashboard is a game changer for our operations."',
+              quote:
+                '"Switching our merchant services and lines of credit to Brighter Bank gave us the liquidity we needed to expand to three new locations. Their dashboard is a game changer for our operations."',
               name: 'Sarah Jenkins',
               role: 'FOUNDER, ARTISAN ROAST CO.',
             },
             {
               img: businessSuccess2,
               title: 'Streamlining Global Payroll',
-              quote: '"Managing a distributed team across four time zones used to be a nightmare. Brighter\'s international treasury tools automated our entire workflow, saving us 20 hours of manual work every week."',
+              quote:
+                '"Managing a distributed team across four time zones used to be a nightmare. Brighter\'s international treasury tools automated our entire workflow, saving us 20 hours of manual work every week."',
               name: 'Marcus Thorne',
               role: 'CTO, DATASTREAM AI',
             },
@@ -207,19 +287,25 @@ export default function BusinessPage() {
           <div className="bg-[#fea619] rounded-xl w-64 h-64 absolute -left-32 -bottom-32 opacity-10 blur-[60px]" />
           <h1 className="text-snow text-h1 text-center relative">Ready to power your business?</h1>
           <p className="text-[#d9e3f6] text-p1 text-center max-w-2xl relative">
-            Join over 50,000 businesses that trust Brighter Bank for their financial future. Account setup takes less than 10 minutes.
+            Join over 50,000 businesses that trust Brighter Bank for their financial future. Account setup takes less than
+            10 minutes.
           </p>
           <div className="pt-4 flex flex-col sm:flex-row gap-4 items-center justify-center flex-wrap relative">
-            <button type="button" className="btn btn-primary rounded-lg py-4 px-8 shadow-md w-full sm:w-auto cursor-pointer">
+            <button
+              type="button"
+              className="btn btn-primary rounded-lg py-4 px-8 shadow-md w-full sm:w-auto cursor-pointer"
+            >
               <span className="text-snow text-b1">Open Account Online</span>
             </button>
-            <button type="button" className="btn btn-secondary rounded-lg border border-[#d9e3f6] py-4 px-8 w-full sm:w-auto cursor-pointer">
+            <button
+              type="button"
+              className="btn btn-secondary rounded-lg border border-[#d9e3f6] py-4 px-8 w-full sm:w-auto cursor-pointer"
+            >
               <span className="text-snow text-b1">Talk to an Advisor</span>
             </button>
           </div>
         </div>
       </div>
-
     </div>
   );
 }
