@@ -69,12 +69,17 @@ function AccordionItem({
     <div className="border-b border-border py-6 flex flex-col gap-4 items-start self-stretch">
       <button
         type="button"
-        className="flex items-center justify-between self-stretch text-left"
+        className="flex items-center justify-between self-stretch text-left cursor-pointer"
         onClick={onToggle}
         aria-expanded={isOpen}
       >
         <div className="text-ink text-left text-h3 flex-1">{question}</div>
-        <img className="h-auto" src={iconSrc} alt="" />
+        <img 
+          className="h-auto transform transition-transform duration-300" // Added transform and transition for smooth rotation
+          style={{ rotate: isOpen ? '180deg' : '0deg' }} // Rotate the arrow based on accordion state
+          src={iconSrc} 
+          alt="" 
+        />
       </button>
 
       <div

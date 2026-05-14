@@ -11,6 +11,8 @@ import containerPO0 from '../assets/containerp-o0.svg';
 import containerPOI0 from '../assets/containerp-oi0.svg';
 import moneyOverlay0 from '../assets/money-overlay0.svg';
 import image0 from '../assets/image0.svg';
+import boostingEfficiencyImg from '../assets/Boosting-Efficience.jpeg';
+import expandInternationallyImg from '../assets/Expand-Internationally.jpg';
 import React, { useMemo, useState } from 'react';
 
 const tabs = ['Business Checking', 'Business Savings', 'Merchant Services', 'Loans & Lines'];
@@ -55,6 +57,55 @@ export default function BusinessPage() {
   // Display values only update when the user clicks the submit button.
   const [monthlyPayment, setMonthlyPayment] = useState(0);
   const [totalPayment, setTotalPayment] = useState(0);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % successStories.length);
+  };
+
+  const handlePrevious = () => {
+    setCurrentIndex((prev) => (prev - 1 + successStories.length) % successStories.length);
+  };
+
+  // Adding slider animation
+  const slideAnimation = {
+    transition: 'transform 0.5s ease-in-out',
+  };
+
+  // Replace images for new success stories
+  const successStories = [
+    {
+      img: businessSuccess1,
+      title: 'Doubling Revenue in 12 Months',
+      quote:
+        '"Switching our merchant services and lines of credit to Brighter Bank gave us the liquidity we needed to expand to three new locations. Their dashboard is a game changer for our operations."',
+      name: 'Sarah Jenkins',
+      role: 'FOUNDER, ARTISAN ROAST CO.',
+    },
+    {
+      img: businessSuccess2,
+      title: 'Streamlining Global Payroll',
+      quote:
+        '"Managing a distributed team across four time zones used to be a nightmare. Brighter\'s international treasury tools automated our entire workflow, saving us 20 hours of manual work every week."',
+      name: 'Marcus Thorne',
+      role: 'CTO, DATASTREAM AI',
+    },
+    {
+      img: boostingEfficiencyImg,
+      title: "Boosting Efficiency with Automation",
+      quote: "'Automation has streamlined our operations, saving us time and resources.'",
+      name: "John Doe",
+      role: "Operations Manager, TechFlow",
+    },
+    {
+      img: expandInternationallyImg,
+      title: "Expanding Internationally with Ease",
+      quote: "'Brighter’s tools made our international expansion seamless and efficient.'",
+      name: "Jane Smith",
+      role: "CEO, GlobalReach Inc.",
+    }
+  ];
 
   return (
     <div className="flex flex-col gap-16 md:gap-24 items-center justify-start bg-[#f8f9ff]">
@@ -398,12 +449,14 @@ export default function BusinessPage() {
             <button
               type="button"
               className="btn btn-secondary rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer"
+              onClick={handlePrevious}
             >
               <img src={containerPO0} alt="Previous" />
             </button>
             <button
               type="button"
               className="btn btn-secondary rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer"
+              onClick={handleNext}
             >
               <img src={containerPOI0} alt="Next" />
             </button>
@@ -411,38 +464,23 @@ export default function BusinessPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {[
-            {
-              img: businessSuccess1,
-              title: 'Doubling Revenue in 12 Months',
-              quote:
-                '"Switching our merchant services and lines of credit to Brighter Bank gave us the liquidity we needed to expand to three new locations. Their dashboard is a game changer for our operations."',
-              name: 'Sarah Jenkins',
-              role: 'FOUNDER, ARTISAN ROAST CO.',
-            },
-            {
-              img: businessSuccess2,
-              title: 'Streamlining Global Payroll',
-              quote:
-                '"Managing a distributed team across four time zones used to be a nightmare. Brighter\'s international treasury tools automated our entire workflow, saving us 20 hours of manual work every week."',
-              name: 'Marcus Thorne',
-              role: 'CTO, DATASTREAM AI',
-            },
-          ].map(({ img, title, quote, name, role }) => (
-            <div key={name} className="bg-snow rounded-3xl border border-border p-8 flex flex-col gap-6">
-              <div className="rounded-2xl h-48 overflow-hidden">
-                <img src={img} alt={title} className="w-full h-full object-cover" />
+          {successStories
+            .slice(currentIndex, currentIndex + 2)
+            .map(({ img, title, quote, name, role }) => (
+              <div key={name} className="bg-snow rounded-3xl border border-border p-8 flex flex-col gap-6">
+                <div className="rounded-2xl h-48 overflow-hidden">
+                  <img src={img} alt={title} className="w-full h-full object-cover" />
+                </div>
+                <h2 className="text-ink text-h2">{title}</h2>
+                <div className="border-l-4 border-secondary pl-4">
+                  <p className="text-slate text-p2 italic">{quote}</p>
+                </div>
+                <div>
+                  <p className="text-ink text-p3 font-bold">{name}</p>
+                  <p className="text-slate text-p3 uppercase tracking-wide">{role}</p>
+                </div>
               </div>
-              <h2 className="text-ink text-h2">{title}</h2>
-              <div className="border-l-4 border-secondary pl-4">
-                <p className="text-slate text-p2 italic">{quote}</p>
-              </div>
-              <div>
-                <p className="text-ink text-p3 font-bold">{name}</p>
-                <p className="text-slate text-p3 uppercase tracking-wide">{role}</p>
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
 
