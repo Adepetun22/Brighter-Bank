@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 import SupportPage from './pages/support';
 import BusinessPage from './pages/business';
+import LoansPage from './pages/loans';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 
@@ -14,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/business" element={<BusinessPage />} />
           <Route path="/support" element={<SupportPage />} />
+          <Route path="/loans" element={<LoansPage />} />
 
           {/* Default */}
           <Route path="/" element={<Navigate to="/business" replace />} />
@@ -26,4 +28,3 @@ function App() {
 }
 
 export default App;
-

@@ -60,18 +60,7 @@ export default function BusinessPage() {
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % successStories.length);
-  };
-
-  const handlePrevious = () => {
-    setCurrentIndex((prev) => (prev - 1 + successStories.length) % successStories.length);
-  };
-
-  // Adding slider animation
-  const slideAnimation = {
-    transition: 'transform 0.5s ease-in-out',
-  };
+  const pageSize = 2;
 
   // Replace images for new success stories
   const successStories = [
@@ -106,6 +95,22 @@ export default function BusinessPage() {
       role: "CEO, GlobalReach Inc.",
     }
   ];
+
+  const lastStartIndex =
+    successStories.length - Math.min(pageSize, successStories.length % pageSize || pageSize);
+
+  const canPrevious = currentIndex > 0;
+  const canNext = currentIndex < lastStartIndex;
+
+  const handleNext = () => {
+    if (!canNext) return;
+    setCurrentIndex((prev) => Math.min(prev + pageSize, lastStartIndex));
+  };
+
+  const handlePrevious = () => {
+    if (!canPrevious) return;
+    setCurrentIndex((prev) => Math.max(prev - pageSize, 0));
+  };
 
   return (
     <div className="flex flex-col gap-16 md:gap-24 items-center justify-start bg-[#f8f9ff]">
@@ -448,15 +453,17 @@ export default function BusinessPage() {
           <div className="flex flex-row gap-3">
             <button
               type="button"
-              className="btn btn-secondary rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer"
+              className="btn btn-secondary rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handlePrevious}
+              disabled={!canPrevious}
             >
               <img src={containerPO0} alt="Previous" />
             </button>
             <button
               type="button"
-              className="btn btn-secondary rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer"
+              className="btn btn-secondary rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               onClick={handleNext}
+              disabled={!canNext}
             >
               <img src={containerPOI0} alt="Next" />
             </button>
@@ -464,9 +471,7 @@ export default function BusinessPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {successStories
-            .slice(currentIndex, currentIndex + 2)
-            .map(({ img, title, quote, name, role }) => (
+          {successStories.slice(currentIndex, currentIndex + pageSize).map(({ img, title, quote, name, role }) => (
               <div key={name} className="bg-snow rounded-3xl border border-border p-8 flex flex-col gap-6">
                 <div className="rounded-2xl h-48 overflow-hidden">
                   <img src={img} alt={title} className="w-full h-full object-cover" />
