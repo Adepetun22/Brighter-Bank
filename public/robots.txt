@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /dashboard
+Disallow: /account
+Disallow: /login
+Disallow: /api/
+
+User-agent: *
+Allow: /
+Allow: /business
+Allow: /loans
+Allow: /mortgages
+Allow: /support
