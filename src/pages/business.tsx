@@ -157,8 +157,7 @@ export default function BusinessPage() {
                 key={tab}
                 type="button"
                 onClick={() => setActiveTab(i)}
-                className="pb-4 shrink-0 border-b-2 cursor-pointer"
-                style={{ borderColor: isActive ? '#004ac6' : 'transparent' }}
+                className={`pb-4 shrink-0 border-b-2 cursor-pointer transition-all duration-300 ${isActive ? 'border-[#004ac6]' : 'border-transparent hover:border-[#004ac6]/50'}`}
               >
                 <span className={`text-b3 ${isActive ? 'text-[#004ac6]' : 'text-slate'}`}>{tab}</span>
               </button>

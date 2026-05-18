@@ -71,12 +71,7 @@ function WizardCard() {
 
   const progressPercent = step * 25;
 
-  const [answers, setAnswers] = React.useState<{
-    goal?: string;
-    timing?: string;
-    property?: string;
-    credit?: string;
-  }>({});
+  const [answers, setAnswers] = React.useState<{ goal?: string; timing?: string; property?: string; credit?: string; }>({});
 
   const stepMeta = {
     1: {
@@ -214,7 +209,7 @@ function WizardCard() {
                   key={c.key}
                   type="button"
                   onClick={() => onChoose(c.key)}
-                  className={`bg-[#ffffff] rounded-lg border-solid border-[#e5e7eb] border pt-6 pr-[44px] pb-6 pl-6 flex flex-col gap-[3.5px] items-start justify-start relative text-left ${
+                  className={`bg-[#ffffff] rounded-lg border-solid border-[#e5e7eb] border pt-6 pr-[44px] pb-6 pl-6 flex flex-col gap-[3.5px] items-start justify-start relative text-left cursor-pointer transition-all duration-200 hover:border-[#2563eb] hover:bg-[#f0f4ff] ${
                     selected ? 'border-[#2563eb] ring-2 ring-[#2563eb]/20' : ''
                   }`}
                 >
@@ -232,7 +227,7 @@ function WizardCard() {
           <button
             type="submit"
             disabled={!canContinue}
-            className={`bg-[#2563eb] rounded-lg pt-4 pr-10 pb-4 pl-10 flex flex-row gap-0 items-center justify-center shrink-0 relative self-stretch max-w-2xl transition ${
+            className={`bg-[#2563eb] rounded-lg pt-4 pr-10 pb-4 pl-10 flex flex-row gap-0 items-center justify-center shrink-0 relative self-stretch max-w-2xl transition cursor-pointer ${
               canContinue ? 'hover:brightness-[1.05] hover:-translate-y-[1px]' : 'opacity-50 cursor-not-allowed'
             }`}
           >
