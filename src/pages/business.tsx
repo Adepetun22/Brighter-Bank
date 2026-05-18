@@ -13,7 +13,12 @@ import moneyOverlay0 from '../assets/money-overlay0.svg';
 import image0 from '../assets/image0.svg';
 import boostingEfficiencyImg from '../assets/Boosting-Efficience.jpeg';
 import expandInternationallyImg from '../assets/Expand-Internationally.jpg';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCreative, Navigation } from 'swiper/modules';
+import type { Swiper as SwiperType } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/effect-creative';
 
 const tabs = ['Business Checking', 'Business Savings', 'Merchant Services', 'Loans & Lines'];
 
@@ -58,9 +63,9 @@ export default function BusinessPage() {
   const [monthlyPayment, setMonthlyPayment] = useState(0);
   const [totalPayment, setTotalPayment] = useState(0);
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const pageSize = 2;
+  const swiperRef = useRef<SwiperType | null>(null);
+  const [isBeginning, setIsBeginning] = useState(true);
+  const [isEnd, setIsEnd] = useState(false);
 
   // Replace images for new success stories
   const successStories = [
@@ -96,21 +101,7 @@ export default function BusinessPage() {
     }
   ];
 
-  const lastStartIndex =
-    successStories.length - Math.min(pageSize, successStories.length % pageSize || pageSize);
 
-  const canPrevious = currentIndex > 0;
-  const canNext = currentIndex < lastStartIndex;
-
-  const handleNext = () => {
-    if (!canNext) return;
-    setCurrentIndex((prev) => Math.min(prev + pageSize, lastStartIndex));
-  };
-
-  const handlePrevious = () => {
-    if (!canPrevious) return;
-    setCurrentIndex((prev) => Math.max(prev - pageSize, 0));
-  };
 
   return (
     <div className="flex flex-col gap-16 md:gap-24 items-center justify-start bg-[#f8f9ff]">
@@ -453,25 +444,44 @@ export default function BusinessPage() {
             <button
               type="button"
               className="btn btn-secondary rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              onClick={handlePrevious}
-              disabled={!canPrevious}
+              onClick={() => swiperRef.current?.slidePrev()}
+              disabled={isBeginning}
             >
               <img src={containerPO0} alt="Previous" />
             </button>
             <button
               type="button"
               className="btn btn-secondary rounded-xl border border-border w-12 h-12 flex items-center justify-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-              onClick={handleNext}
-              disabled={!canNext}
+              onClick={() => swiperRef.current?.slideNext()}
+              disabled={isEnd}
             >
               <img src={containerPOI0} alt="Next" />
             </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {successStories.slice(currentIndex, currentIndex + pageSize).map(({ img, title, quote, name, role }) => (
-              <div key={name} className="bg-snow rounded-3xl border border-border p-8 flex flex-col gap-6">
+        <Swiper
+          modules={[EffectCreative, Navigation]}
+          effect="creative"
+          creativeEffect={{
+            prev: { translate: ['-110%', 0, 0] },
+            next: { translate: ['110%', 0, 0] },
+          }}
+          speed={600}
+          cssMode={false}
+          slidesPerView={1}
+          breakpoints={{ 768: { slidesPerView: 2, spaceBetween: 32 } }}
+          spaceBetween={32}
+          onSwiper={(swiper) => { swiperRef.current = swiper; }}
+          onSlideChange={(swiper) => {
+            setIsBeginning(swiper.isBeginning);
+            setIsEnd(swiper.isEnd);
+          }}
+          style={{ width: '100%' }}
+        >
+          {successStories.map(({ img, title, quote, name, role }) => (
+            <SwiperSlide key={name}>
+              <div className="bg-snow rounded-3xl border border-border p-8 flex flex-col gap-6">
                 <div className="rounded-2xl h-48 overflow-hidden">
                   <img src={img} alt={title} className="w-full h-full object-cover" />
                 </div>
@@ -484,8 +494,9 @@ export default function BusinessPage() {
                   <p className="text-slate text-p3 uppercase tracking-wide">{role}</p>
                 </div>
               </div>
-            ))}
-        </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
 
       {/* CTA Banner */}
