@@ -5,7 +5,7 @@ function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full bg-snow border-b border-border shadow-sm">
+    <div className="w-full bg-snow border-b border-border shadow-sm relative">
       <div className="px-6 h-20 flex items-center justify-between">
         <div className="text-primary text-h2">Brighter Bank</div>
         <button className="p-2 focus:outline-none" onClick={() => setIsOpen(!isOpen)}>
@@ -27,7 +27,7 @@ function MobileNav() {
       </div>
 
       {isOpen && (
-        <div className="flex flex-col py-4 space-y-2 bg-snow">
+        <div className="absolute top-full left-0 right-0 flex flex-col py-4 space-y-2 bg-snow border-b border-border shadow-md z-50">
           <a href="/personal" className="block px-6 py-2 text-primary hover:bg-gray-100">
             Personal
           </a>
