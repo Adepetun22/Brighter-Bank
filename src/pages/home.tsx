@@ -1,5 +1,5 @@
 import React from 'react';
-import businessHero from '../assets/business-hero.png';
+import HeroScene from '../components/HeroScene';
 import container16Hr0 from '../assets/container-16-hr0.svg';
 import container0 from '../assets/container0.svg';
 import containerK20 from '../assets/container-k-20.svg';
@@ -35,13 +35,7 @@ export default function HomePage() {
     <div className="flex flex-col items-center justify-start bg-cloud">
       {/* Hero */}
       <section className="w-full overflow-hidden mb-section">
-        <div className="relative h-[600px] w-full overflow-hidden tablet:h-[750px] desktop:h-[900px]">
-          <img
-            src={businessHero}
-            alt="Sunset landscape"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-        </div>
+        <HeroScene />
 
         <div className="bg-primary border-b border-border py-8 px-6 tablet:px-10 desktop:px-24">
           <div className="mx-auto flex flex-col items-center justify-between gap-6 rounded-3xl border border-white bg-primary/95 px-4 py-4 text-center tablet:flex-row tablet:text-left tablet:px-8 max-w-[1200px]">
