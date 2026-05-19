@@ -377,12 +377,12 @@ export default function HeroScene() {
     buildingGroup.add(riseParticles);
 
     // --- Animation ---
-    const clock = new THREE.Clock();
+    const startTime = performance.now();
     let animId: number;
 
     function animate() {
       animId = requestAnimationFrame(animate);
-      const t = clock.getElapsedTime();
+      const t = (performance.now() - startTime) / 1000;
 
       mouse.x += (mouse.targetX - mouse.x) * 0.05;
       mouse.y += (mouse.targetY - mouse.y) * 0.05;

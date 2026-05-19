@@ -37,21 +37,38 @@ export default function HomePage() {
       <section className="w-full overflow-hidden mb-section">
         <HeroScene />
 
-        <div className="bg-primary border-b border-border py-8 px-6 tablet:px-10 desktop:px-24">
-          <div className="mx-auto flex flex-col items-center justify-between gap-6 rounded-3xl border border-white bg-primary/95 px-4 py-4 text-center tablet:flex-row tablet:text-left tablet:px-8 max-w-[1200px]">
-            <div className="text-white text-b3 uppercase tracking-[1.6px]">
+        <div className="bg-primary border-b border-border py-6 px-10 tablet:px-28 desktop:px-48">
+          <div className="mx-auto flex flex-row flex-nowrap items-center justify-between gap-3 rounded-3xl border border-white bg-primary/95 px-4 py-4 text-center tablet:flex-row tablet:text-left tablet:px-8 tablet:gap-6 max-w-[1230px]">
+            <div className="text-white text-b3 uppercase tracking-[1.6px] shrink-0 whitespace-nowrap">
               TRUSTED BY
             </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-6 text-white text-b2 max-w-[852px]">
-              <span>FORBES</span>
-              <span>BLOOMBERG</span>
-              <span>TECHCRUNCH</span>
-              <span>WALL STREET JOURNAL</span>
-              <span>BOGGER MESSENGER</span>
+            <div className="flex-1 min-w-0 max-w-[600px] overflow-hidden">
+              <div className="trusted-by-marquee" aria-label="Trusted by">
+                <div className="trusted-by-marquee__track" aria-hidden="true">
+                  {[
+                    'FORBES',
+                    'BLOOMBERG',
+                    'TECHCRUNCH',
+                    'WALL STREET JOURNAL',
+                    'BOGGER MESSENGER',
+                    'FORBES',
+                    'BLOOMBERG',
+                    'TECHCRUNCH',
+                    'WALL STREET JOURNAL',
+                    'BOGGER MESSENGER',
+                  ].map((name, idx) => (
+                    <span
+                      // eslint-disable-next-line react/no-array-index-key
+                      key={`${name}-${idx}`}
+                      className="trusted-by-marquee__item"
+                    >
+                      {name}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
-
-            <div className="inline-flex items-center gap-2 rounded-xl border border-transparent bg-primary px-4 py-2">
+            <div className="inline-flex items-center gap-2 rounded-xl border border-transparent bg-primary px-4 py-2 shrink-0 whitespace-nowrap">
               <img src={container16Hr0} alt="Member FDIC" className="h-5 w-auto" />
               <span className="text-white text-b2">Member FDIC</span>
             </div>

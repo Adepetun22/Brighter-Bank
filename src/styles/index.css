@@ -263,4 +263,42 @@
       margin-bottom: 48px;
     }
   }
+
+  /* Trusted-by marquee */
+  .trusted-by-marquee {
+    overflow: hidden;
+  }
+
+  .trusted-by-marquee__track {
+    display: flex;
+    width: max-content;
+    gap: 48px;
+    animation: trustedByScroll 22s linear infinite;
+    will-change: transform;
+  }
+
+  .trusted-by-marquee__item {
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 600;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+  }
+
+  @keyframes trustedByScroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .trusted-by-marquee__track {
+      animation: none;
+    }
+  }
 }
+
