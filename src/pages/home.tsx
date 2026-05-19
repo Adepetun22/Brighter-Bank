@@ -32,9 +32,10 @@ import quoteImage3 from '../assets/quote-image-3.png';
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col items-center justify-start bg-cloud pb-24">
-      <section className="w-full overflow-hidden">
-        <div className="relative h-[900px] w-full overflow-hidden md:h-[950px] lg:h-[1024px]">
+    <div className="flex flex-col items-center justify-start bg-cloud">
+      {/* Hero */}
+      <section className="w-full overflow-hidden mb-section">
+        <div className="relative h-[600px] w-full overflow-hidden tablet:h-[750px] desktop:h-[900px]">
           <img
             src={businessHero}
             alt="Sunset landscape"
@@ -42,13 +43,13 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="bg-primary border-b border-border py-10 px-6 md:px-10 lg:px-24">
-          <div className="mx-auto flex flex-col items-center justify-between gap-6 rounded-3xl border border-white bg-primary/95 px-4 py-4 text-center sm:px-6 md:flex-row md:text-left md:px-8 max-w-[1200px]">
-            <div className="text-white text-b3 uppercase tracking-[1.6px] font-bold">
+        <div className="bg-primary border-b border-border py-8 px-6 tablet:px-10 desktop:px-24">
+          <div className="mx-auto flex flex-col items-center justify-between gap-6 rounded-3xl border border-white bg-primary/95 px-4 py-4 text-center tablet:flex-row tablet:text-left tablet:px-8 max-w-[1200px]">
+            <div className="text-white text-b3 uppercase tracking-[1.6px]">
               TRUSTED BY
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-6 text-white text-b2 font-semibold max-w-[852px]">
+            <div className="flex flex-wrap items-center justify-center gap-6 text-white text-b2 max-w-[852px]">
               <span>FORBES</span>
               <span>BLOOMBERG</span>
               <span>TECHCRUNCH</span>
@@ -58,48 +59,49 @@ export default function HomePage() {
 
             <div className="inline-flex items-center gap-2 rounded-xl border border-transparent bg-primary px-4 py-2">
               <img src={container16Hr0} alt="Member FDIC" className="h-5 w-auto" />
-              <span className="text-white text-b2 font-bold">Member FDIC</span>
+              <span className="text-white text-b2">Member FDIC</span>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="w-full bg-snow py-24 px-6 md:px-10 lg:px-24">
+      {/* Why Brighter Bank */}
+      <section className="w-full bg-snow px-6 tablet:px-10 desktop:px-24 mb-section">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-16">
           <div className="flex flex-col items-center gap-2 text-center">
             <p className="text-primary text-b3 uppercase tracking-[1.4px]">STABILITY & INNOVATION</p>
-            <h2 className="text-ink text-h1 font-bold">Why Brighter Bank</h2>
+            <h2 className="text-ink text-h2">Why Brighter Bank</h2>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            <article className="rounded-xl border border-border bg-snow p-6 shadow-sm md:p-8">
+          <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-3">
+            <article className="rounded-xl border border-border bg-snow p-6 shadow-sm tablet:p-8">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#6ffbbe]">
                 <img src={container0} alt="Growth icon" className="h-auto w-6" />
               </div>
-              <h3 className="pt-3 text-ink text-h3 font-semibold">Accelerated Growth</h3>
-              <p className="pt-2 text-slate text-p2 leading-6">
+              <h3 className="pt-3 text-ink text-h3">Accelerated Growth</h3>
+              <p className="pt-2 text-slate text-p2">
                 High-yield savings accounts with rates 10x the national average. Watch your wealth
                 flourish with daily compounding interest.
               </p>
             </article>
 
-            <article className="rounded-xl border border-border bg-snow p-6 shadow-sm md:p-8">
+            <article className="rounded-xl border border-border bg-snow p-6 shadow-sm tablet:p-8">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#dbe1ff]">
                 <img src={containerK20} alt="Security icon" className="h-auto w-6" />
               </div>
-              <h3 className="pt-3 text-ink text-h3 font-semibold">Fortified Security</h3>
-              <p className="pt-2 text-slate text-p2 leading-6">
+              <h3 className="pt-3 text-ink text-h3">Fortified Security</h3>
+              <p className="pt-2 text-slate text-p2">
                 Military-grade encryption and biometric authentication keep your assets protected
                 24/7. Peace of mind is our standard.
               </p>
             </article>
 
-            <article className="rounded-xl border border-border bg-snow p-6 shadow-sm md:p-8">
+            <article className="rounded-xl border border-border bg-snow p-6 shadow-sm tablet:p-8">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#ffddb8]">
                 <img src={container1} alt="Analytics icon" className="h-auto w-6" />
               </div>
-              <h3 className="pt-3 text-ink text-h3 font-semibold">Smart Analytics</h3>
-              <p className="pt-2 text-slate text-p2 leading-6">
+              <h3 className="pt-3 text-ink text-h3">Smart Analytics</h3>
+              <p className="pt-2 text-slate text-p2">
                 AI-driven insights that help you track spending, set budgets, and achieve your
                 financial milestones faster than ever.
               </p>
@@ -108,12 +110,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="w-full bg-cloud py-24 px-6 md:px-10 lg:px-24">
+      {/* Products */}
+      <section className="w-full bg-cloud px-6 tablet:px-10 desktop:px-24 mb-section">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-16">
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+          <div className="flex flex-col gap-8 desktop:flex-row desktop:items-end desktop:justify-between">
             <div className="max-w-xl">
-              <h2 className="text-ink text-h1 font-bold">Products designed for your success</h2>
-              <p className="pt-4 text-slate text-p2 leading-6">
+              <h2 className="text-ink text-h2">Products designed for your success</h2>
+              <p className="pt-4 text-slate text-p2">
                 Choose from our selection of premium financial tools tailored to empower your
                 financial journey.
               </p>
@@ -132,7 +135,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="grid gap-10 lg:grid-cols-2 rounded-xl border border-border bg-snow p-6 shadow-sm md:p-10">
+          <div className="grid gap-10 desktop:grid-cols-2 rounded-xl border border-border bg-snow p-6 shadow-sm tablet:p-10">
             <img
               src={quoteImage1}
               alt="Brighter product overview"
@@ -141,10 +144,10 @@ export default function HomePage() {
 
             <div className="flex flex-col gap-6">
               <div className="inline-flex rounded-xl bg-cloud px-3 py-1">
-                <span className="text-primary text-sm font-bold uppercase">MOST POPULAR</span>
+                <span className="text-primary text-b3 uppercase">MOST POPULAR</span>
               </div>
-              <h3 className="text-ink text-h1 font-bold">Brighter Checking</h3>
-              <p className="text-slate text-p2 leading-6">
+              <h3 className="text-ink text-h1">Brighter Checking</h3>
+              <p className="text-slate text-p2">
                 The only account you&apos;ll ever need. No hidden fees, instant transfers, and a sleek
                 metal card that reflects your ambition.
               </p>
@@ -172,14 +175,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="w-full bg-snow py-24 px-6 md:px-10 lg:px-24 overflow-hidden">
+      {/* Testimonials */}
+      <section className="w-full bg-snow px-6 tablet:px-10 desktop:px-24 overflow-hidden mb-section">
         <div className="mx-auto flex max-w-[1200px] flex-col gap-16">
           <div className="text-center">
-            <h2 className="text-ink text-h1 font-bold">Stories of Brighter Futures</h2>
+            <h2 className="text-ink text-h2">Stories of Brighter Futures</h2>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            <article className="relative overflow-hidden rounded-lg border border-border bg-cloud p-6 shadow-sm md:p-8">
+          <div className="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-3">
+            <article className="relative overflow-hidden rounded-lg border border-border bg-cloud p-6 shadow-sm tablet:p-8">
               <div className="flex items-start gap-1 mb-4">
                 <img src={containerR8Yd0} alt="Stars" className="h-5 w-auto" />
                 <img src={containerR8Yj0} alt="Stars" className="h-5 w-auto" />
@@ -187,7 +191,7 @@ export default function HomePage() {
                 <img src={containerR8Ym0} alt="Stars" className="h-5 w-auto" />
                 <img src={containerR8Yx0} alt="Stars" className="h-5 w-auto" />
               </div>
-              <p className="text-ink text-p2 italic leading-6">
+              <p className="text-ink text-p2 italic">
                 &quot;Switching to Brighter Bank was the best financial decision I&apos;ve made. Their
                 mortgage process was seamless, and the app is years ahead of the competition.&quot;
               </p>
@@ -196,8 +200,8 @@ export default function HomePage() {
                   <img src={quoteImage1} alt="David Chen" className="h-full w-full object-cover" />
                 </div>
                 <div>
-                  <div className="text-ink text-base font-normal">David Chen</div>
-                  <div className="text-slate text-base">Tech Entrepreneur</div>
+                  <div className="text-ink text-p2">David Chen</div>
+                  <div className="text-slate text-p3">Tech Entrepreneur</div>
                 </div>
               </div>
               <img
@@ -207,7 +211,7 @@ export default function HomePage() {
               />
             </article>
 
-            <article className="relative overflow-hidden rounded-lg border border-border bg-cloud p-6 shadow-sm md:p-8">
+            <article className="relative overflow-hidden rounded-lg border border-border bg-cloud p-6 shadow-sm tablet:p-8">
               <div className="flex items-start gap-1 mb-4">
                 <img src={containerR9Yd0} alt="Stars" className="h-5 w-auto" />
                 <img src={containerR9Ya0} alt="Stars" className="h-5 w-auto" />
@@ -215,7 +219,7 @@ export default function HomePage() {
                 <img src={containerR9Yj0} alt="Stars" className="h-5 w-auto" />
                 <img src={containerR9Yg1} alt="Stars" className="h-5 w-auto" />
               </div>
-              <p className="text-ink text-p2 italic leading-6">
+              <p className="text-ink text-p2 italic">
                 &quot;The savings tools actually helped me buy my first home a year earlier than planned.
                 Their AI insights are like having a personal financial advisor in my pocket.&quot;
               </p>
@@ -224,8 +228,8 @@ export default function HomePage() {
                   <img src={quoteImage2} alt="Sarah Jenkins" className="h-full w-full object-cover" />
                 </div>
                 <div>
-                  <div className="text-ink text-base font-normal">Sarah Jenkins</div>
-                  <div className="text-slate text-base">First-time Homeowner</div>
+                  <div className="text-ink text-p2">Sarah Jenkins</div>
+                  <div className="text-slate text-p3">First-time Homeowner</div>
                 </div>
               </div>
               <img
@@ -235,7 +239,7 @@ export default function HomePage() {
               />
             </article>
 
-            <article className="relative overflow-hidden rounded-lg border border-border bg-cloud p-6 shadow-sm md:p-8">
+            <article className="relative overflow-hidden rounded-lg border border-border bg-cloud p-6 shadow-sm tablet:p-8">
               <div className="flex items-start gap-1 mb-4">
                 <img src={containerF9Yt0} alt="Stars" className="h-5 w-auto" />
                 <img src={containerH9Yt0} alt="Stars" className="h-5 w-auto" />
@@ -243,7 +247,7 @@ export default function HomePage() {
                 <img src={containerA9Yt0} alt="Stars" className="h-5 w-auto" />
                 <img src={containerP9Yt0} alt="Stars" className="h-5 w-auto" />
               </div>
-              <p className="text-ink text-p2 italic leading-6">
+              <p className="text-ink text-p2 italic">
                 &quot;As a small business owner, Brighter Bank&apos;s business suite has saved me hours
                 of administrative work every week. Their customer support is world-class.&quot;
               </p>
@@ -252,8 +256,8 @@ export default function HomePage() {
                   <img src={quoteImage3} alt="James Miller" className="h-full w-full object-cover" />
                 </div>
                 <div>
-                  <div className="text-ink text-base font-normal">James Miller</div>
-                  <div className="text-slate text-base">Retail Founder</div>
+                  <div className="text-ink text-p2">James Miller</div>
+                  <div className="text-slate text-p3">Retail Founder</div>
                 </div>
               </div>
               <img
@@ -266,9 +270,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="w-full px-6 md:px-10 lg:px-24">
+      {/* CTA */}
+      <section className="w-full px-6 tablet:px-10 desktop:px-24 mb-section">
         <div
-          className="relative overflow-hidden rounded-xl p-8 max-w-[1200px] w-full md:p-16"
+          className="mx-auto relative overflow-hidden rounded-xl p-8 w-full max-w-[1200px] tablet:p-16"
           style={{ background: 'linear-gradient(135deg, rgba(18, 28, 42, 1) 0%, rgba(0, 74, 198, 1) 100%)' }}
         >
           <img
@@ -276,9 +281,9 @@ export default function HomePage() {
             alt="Subtle background"
             className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-10"
           />
-          <div className="relative flex flex-col gap-6 items-center text-center">
-            <h2 className="text-white text-h1 font-bold">Ready to start your journey?</h2>
-            <p className="max-w-2xl text-[#dbe1ff] text-p2 leading-6">
+          <div className="relative flex flex-col gap-6 items-center text-center mx-auto">
+            <h2 className="text-white text-h2">Ready to start your journey?</h2>
+            <p className="max-w-2xl text-[#dbe1ff] text-p2">
               Join over 2 million customers who have discovered a brighter way to bank. Set up your
               account in less than 5 minutes.
             </p>
