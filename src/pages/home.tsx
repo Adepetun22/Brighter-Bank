@@ -38,7 +38,7 @@ export default function HomePage() {
         <HeroScene />
 
         <div className="bg-primary border-b border-border py-6 px-10 tablet:px-28 desktop:px-48">
-          <div className="mx-auto flex flex-row flex-nowrap items-center justify-between gap-3 rounded-3xl border border-white bg-primary/95 px-4 py-4 text-center tablet:flex-row tablet:text-left tablet:px-8 tablet:gap-6 max-w-[1230px]">
+          <div className="flex flex-col items-center justify-between gap-2 rounded-3xl border border-white bg-primary/95 px-4 py-4 text-center tablet:flex-row tablet:text-left tablet:px-8 tablet:gap-6 max-w-[1230px] overflow-hidden">
             <div className="text-white text-b3 uppercase tracking-[1.6px] shrink-0 whitespace-nowrap">
               TRUSTED BY
             </div>
