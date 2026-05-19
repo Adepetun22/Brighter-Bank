@@ -480,19 +480,21 @@ export default function HeroScene() {
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pointer-events-none z-10">
         <h1
           className="text-primary text-h1 mb-3"
-          style={{ textShadow: '0 0 40px rgba(37,99,235,0.35), 0 2px 12px rgba(0,0,0,0.5)', animation: 'fadeInUp 1.2s ease 0.5s both' }}
+          style={{ animation: 'fadeInUp 1.2s ease 0.5s both' }}
         >
-          A Brighter Future, Built Together
+          Building your brighter
+          future, today
         </h1>
         <p
           className="text-secondary text-p1 max-w-[480px] mb-8"
-          style={{ textShadow: '0 1px 8px rgba(0,0,0,0.4)', animation: 'fadeInUp 1.2s ease 0.8s both' }}
+          style={{ animation: 'fadeInUp 1.2s ease 0.8s both' }}
         >
-          Secure banking that illuminates your path to financial growth
+          Experience banking that grows with you. Secure, smart, and designed
+          for your modern lifestyle.
         </p>
         <button
           type="button"
-          className="btn btn-primary pointer-events-auto px-9 py-3 text-b1"
+          className="btn btn-primary pointer-events-auto px-9 py-4 text-b1"
           style={{ animation: 'fadeInUp 1.2s ease 1.1s both' }}
         >
           Open a Free Account
