@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import HeroScene from '../components/HeroScene';
 import container16Hr0 from '../assets/container-16-hr0.svg';
 import container0 from '../assets/container0.svg';
@@ -31,6 +31,98 @@ import quoteImage2 from '../assets/quote-image-2.png';
 import quoteImage3 from '../assets/quote-image-3.png';
 
 export default function HomePage() {
+  const [activeTab, setActiveTab] = useState('Checking');
+
+  const tabContents = {
+    checking: (
+      <div className="grid gap-10 desktop:grid-cols-2 rounded-xl border border-border bg-snow p-6 shadow-sm tablet:p-10">
+        <img alt="Brighter product overview" className="rounded-lg h-[400px] w-full object-cover" src="/src/assets/quote-image-1.png" />
+        <div className="flex flex-col gap-6">
+          <div className="inline-flex rounded-xl bg-cloud px-3 py-1">
+            <span className="text-primary text-b3 uppercase">MOST POPULAR</span>
+          </div>
+          <h3 className="text-ink text-h1">Brighter Checking</h3>
+          <p className="text-slate text-p2">The only account you'll ever need. No hidden fees, instant transfers, and a sleek metal card that reflects your ambition.</p>
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <img alt="Feature check" className="h-5 w-auto" src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M8.6%2014.6L15.65%207.55L14.25%206.15L8.6%2011.8L5.75%208.95L4.35%2010.35L8.6%2014.6ZM10%2020C8.61667%2020%207.31667%2019.7375%206.1%2019.2125C4.88333%2018.6875%203.825%2017.975%202.925%2017.075C2.025%2016.175%201.3125%2015.1167%200.7875%2013.9C0.2625%2012.6833%200%2011.3833%200%2010C0%208.61667%200.2625%207.31667%200.7875%206.1C1.3125%204.88333%202.025%203.825%202.925%202.925C3.825%202.025%204.88333%201.3125%206.1%200.7875C7.31667%200.2625%208.61667%200%2010%200C11.3833%200%2012.6833%200.2625%2013.9%200.7875C15.1167%201.3125%2016.175%202.025%2017.075%202.925C17.975%203.825%2018.6875%204.88333%2019.2125%206.1C19.7375%207.31667%2020%208.61667%2020%2010C20%2011.3833%2019.7375%2012.6833%2019.2125%2013.9C18.6875%2015.1167%2017.975%2016.175%2017.075%2017.075C16.175%2017.975%2015.1167%2018.6875%2013.9%2019.2125C12.6833%2019.7375%2011.3833%2020%2010%2020ZM10%2018C12.2333%2018%2014.125%2017.225%2015.675%2015.675C17.225%2014.125%2018%2012.2333%2018%2010C18%207.76667%2017.225%205.875%2015.675%204.325C14.125%202.775%2012.2333%202%2010%202C7.76667%202%205.875%202.775%204.325%204.325C2.775%205.875%202%207.76667%202%2010C2%2012.2333%202.775%2014.125%204.325%2015.675C5.875%2017.225%207.76667%2018%2010%2018Z'%20fill='%2310B981'/%3e%3c/svg%3e" />
+              <span className="text-ink text-p2">No monthly maintenance fees</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <img alt="Feature check" className="h-5 w-auto" src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M8.6%2014.6L15.65%207.55L14.25%206.15L8.6%2011.8L5.75%208.95L4.35%2010.35L8.6%2014.6V14.6M10%2020C8.61667%2020%207.31667%2019.7375%206.1%2019.2125C4.88333%2018.6875%203.825%2017.975%202.925%2017.075C2.025%2016.175%201.3125%2015.1167%200.7875%2013.9C0.2625%2012.6833%200%2011.3833%200%2010C0%208.61667%200.2625%207.31667%200.7875%206.1C1.3125%204.88333%202.025%203.825%202.925%202.925C3.825%202.025%204.88333%201.3125%206.1%200.7875C7.31667%200.2625%208.61667%200%2010%200C11.3833%200%2012.6833%200.2625%2013.9%200.7875C15.1167%201.3125%2016.175%202.025%2017.075%202.925C17.975%203.825%2018.6875%204.88333%2019.2125%206.1C19.7375%207.31667%2020%208.61667%2020%2010C20%2011.3833%2019.7375%2012.6833%2019.2125%2013.9C18.6875%2015.1167%2017.975%2016.175%2017.075%2017.075C16.175%2017.975%2015.1167%2018.6875%2013.9%2019.2125C12.6833%2019.7375%2011.3833%2020%2010%2020V20M10%2018C12.2333%2018%2014.125%2017.225%2015.675%2015.675C17.225%2014.125%2018%2012.2333%2018%2010C18%207.76667%2017.225%205.875%2015.675%204.325C14.125%202.775%2012.2333%202%2010%202C7.76667%202%205.875%202.775%204.325%204.325C2.775%205.875%202%207.76667%202%2010C2%2012.2333%202.775%2014.125%204.325%2015.675C5.875%2017.225%207.76667%2018%2010%2018V18M10%2010V10V10V10V10V10V10V10V10V10'%20fill='%2310B981'/%3e%3c/svg%3e" />
+              <span className="text-ink text-p2">2-day early direct deposit</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <img alt="Feature check" className="h-5 w-auto" src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M8.6%2014.6L15.65%207.55L14.25%206.15L8.6%2011.8L5.75%208.95L4.35%2010.35L8.6%2014.6V14.6M10%2020C8.61667%2020%207.31667%2019.7375%206.1%2019.2125C4.88333%2018.6875%203.825%2017.975%202.925%2017.075C2.025%2016.175%201.3125%2015.1167%200.7875%2013.9C0.2625%2012.6833%200%2011.3833%200%2010C0%208.61667%200.2625%207.31667%200.7875%206.1C1.3125%204.88333%202.025%203.825%202.925%202.925C3.825%202.025%204.88333%201.3125%206.1%200.7875C7.31667%200.2625%208.61667%200%2010%200C11.3833%200%2012.6833%200.2625%2013.9%200.7875C15.1167%201.3125%2016.175%202.025%2017.075%202.925C17.975%203.825%2018.6875%204.88333%2019.2125%206.1C19.7375%207.31667%2020%208.61667%2020%2010C20%2011.3833%2019.7375%2012.6833%2019.2125%2013.9C18.6875%2015.1167%2017.975%2016.175%2017.075%2017.075C16.175%2017.975%2015.1167%2018.6875%2013.9%2019.2125C12.6833%2019.7375%2011.3833%2020%2010%2020V20M10%2018C12.2333%2018%2014.125%2017.225%2015.675%2015.675C17.225%2014.125%2018%2012.2333%2018%2010C18%207.76667%2017.225%205.875%2015.675%204.325C14.125%202.775%2012.2333%202%2010%202C7.76667%202%205.875%202.775%204.325%204.325C2.775%205.875%202%207.76667%202%2010C2%2012.2333%202.775%2014.125%204.325%2015.675C5.875%2017.225%207.76667%2018%2010%2018V18M10%2010V10V10V10V10V10V10V10V10V10'%20fill='%2310B981'/%3e%3c/svg%3e" />
+              <span className="text-ink text-p2">Fee-free ATM access nationwide</span>
+            </div>
+          </div>
+          <button type="button" className="btn btn-primary rounded-lg px-8 py-4 w-max">
+            <span className="text-snow text-b1">Learn More</span>
+          </button>
+        </div>
+      </div>
+    ),
+    savings: (
+      <div className="grid gap-10 desktop:grid-cols-2 rounded-xl border border-border bg-snow p-6 shadow-sm tablet:p-10">
+        <img alt="Savings account features" className="rounded-lg h-[400px] w-full object-cover" src="/src/assets/savings-image.webp" />
+        <div className="flex flex-col gap-6">
+          <div className="inline-flex rounded-xl bg-cloud px-3 py-1">
+            <span className="text-primary text-b3 uppercase">FEATURED</span>
+          </div>
+          <h3 className="text-ink text-h1">Brighter Savings</h3>
+          <p className="text-slate text-p2">Grow your money securely with competitive interest rates and no hidden fees.</p>
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <img alt="Feature check" className="h-5 w-auto" src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M8.6%2014.6L15.65%207.55L14.25%206.15L8.6%2011.8L5.75%208.95L4.35%2010.35L8.6%2014.6ZM10%2020C8.61667%2020%207.31667%2019.7375%206.1%2019.2125C4.88333%2018.6875%203.825%2017.975%202.925%2017.075C2.025%2016.175%201.3125%2015.1167%200.7875%2013.9C0.2625%2012.6833%200%2011.3833%200%2010C0%208.61667%200.2625%207.31667%200.7875%206.1C1.3125%204.88333%202.025%203.825%202.925%202.925C3.825%202.025%204.88333%201.3125%206.1%200.7875C7.31667%200.2625%208.61667%200%2010%200C11.3833%200%2012.6833%200.2625%2013.9%200.7875C15.1167%201.3125%2016.175%202.025%2017.075%202.925C17.975%203.825%2018.6875%204.88333%2019.2125%206.1C19.7375%207.31667%2020%208.61667%2020%2010C20%2011.3833%2019.7375%2012.6833%2019.2125%2013.9C18.6875%2015.1167%2017.975%2016.175%2017.075%2017.075C16.175%2017.975%2015.1167%2018.6875%2013.9%2019.2125C12.6833%2019.7375%2011.3833%2020%2010%2020ZM10%2018C12.2333%2018%2014.125%2017.225%2015.675%2015.675C17.225%2014.125%2018%2012.2333%2018%2010C18%207.76667%2017.225%205.875%2015.675%204.325C14.125%202.775%2012.2333%202%2010%202C7.76667%202%205.875%202.775%204.325%204.325C2.775%205.875%202%207.76667%202%2010C2%2012.2333%202.775%2014.125%204.325%2015.675C5.875%2017.225%207.76667%2018%2010%2018Z'%20fill='%2310B981'/%3e%3c/svg%3e" />
+              <span className="text-ink text-p2">High-yield interest rates</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <img alt="Feature check" className="h-5 w-auto" src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M8.6%2014.6L15.65%207.55L14.25%206.15L8.6%2011.8L5.75%208.95L4.35%2010.35L8.6%2014.6V14.6M10%2020C8.61667%2020%207.31667%2019.7375%206.1%2019.2125C4.88333%2018.6875%203.825%2017.975%202.925%2017.075C2.025%2016.175%201.3125%2015.1167%200.7875%2013.9C0.2625%2012.6833%200%2011.3833%200%2010C0%208.61667%200.2625%207.31667%200.7875%206.1C1.3125%204.88333%202.025%203.825%202.925%202.925C3.825%202.025%204.88333%201.3125%206.1%200.7875C7.31667%200.2625%208.61667%200%2010%200C11.3833%200%2012.6833%200.2625%2013.9%200.7875C15.1167%201.3125%2016.175%202.025%2017.075%202.925C17.975%203.825%2018.6875%204.88333%2019.2125%206.1C19.7375%207.31667%2020%208.61667%2020%2010C20%2011.3833%2019.7375%2012.6833%2019.2125%2013.9C18.6875%2015.1167%2017.975%2016.175%2017.075%2017.075C16.175%2017.975%2015.1167%2018.6875%2013.9%2019.2125C12.6833%2019.7375%2011.3833%2020%2010%2020V20M10%2018C12.2333%2018%2014.125%2017.225%2015.675%2015.675C17.225%2014.125%2018%2012.2333%2018%2010C18%207.76667%2017.225%205.875%2015.675%204.325C14.125%202.775%2012.2333%202%2010%202C7.76667%202%205.875%202.775%204.325%204.325C2.775%205.875%202%207.76667%202%2010C2%2012.2333%202.775%2014.125%204.325%2015.675C5.875%2017.225%207.76667%2018%2010%2018V18M10%2010V10V10V10V10V10V10V10V10V10'%20fill='%2310B981'/%3e%3c/svg%3e" />
+              <span className="text-ink text-p2">No monthly fees</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <img alt="Feature check" className="h-5 w-auto" src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M8.6%2014.6L15.65%207.55L14.25%206.15L8.6%2011.8L5.75%208.95L4.35%2010.35L8.6%2014.6V14.6M10%2020C8.61667%2020%207.31667%2019.7375%206.1%2019.2125C4.88333%2018.6875%203.825%2017.975%202.925%2017.075C2.025%2016.175%201.3125%2015.1167%200.7875%2013.9C0.2625%2012.6833%200%2011.3833%200%2010C0%208.61667%200.2625%207.31667%200.7875%206.1C1.3125%204.88333%202.025%203.825%202.925%202.925C3.825%202.025%204.88333%201.3125%206.1%200.7875C7.31667%200.2625%208.61667%200%2010%200C11.3833%200%2012.6833%200.2625%2013.9%200.7875C15.1167%201.3125%2016.175%202.025%2017.075%202.925C17.975%203.825%2018.6875%204.88333%2019.2125%206.1C19.7375%207.31667%2020%208.61667%2020%2010C20%2011.3833%2019.7375%2012.6833%2019.2125%2013.9C18.6875%2015.1167%2017.975%2016.175%2017.075%2017.075C16.175%2017.975%2015.1167%2018.6875%2013.9%2019.2125C12.6833%2019.7375%2011.3833%2020%2010%2020V20M10%2018C12.2333%2018%2014.125%2017.225%2015.675%2015.675C17.225%2014.125%2018%2012.2333%2018%2010C18%207.76667%2017.225%205.875%2015.675%204.325C14.125%202.775%2012.2333%202%2010%202C7.76667%202%205.875%202.775%204.325%204.325C2.775%205.875%202%207.76667%202%2010C2%2012.2333%202.775%2014.125%204.325%2015.675C5.875%2017.225%207.76667%2018%2010%2018V18M10%2010V10V10V10V10V10V10V10V10V10'%20fill='%2310B981'/%3e%3c/svg%3e" />
+              <span className="text-ink text-p2">Instant transfers</span>
+            </div>
+          </div>
+          <button type="button" className="btn btn-primary rounded-lg px-8 py-4 w-max">
+            <span className="text-snow text-b1">Learn More</span>
+          </button>
+        </div>
+      </div>
+    ),
+    'credit cards': (
+      <div className="grid gap-10 desktop:grid-cols-2 rounded-xl border border-border bg-snow p-6 shadow-sm tablet:p-10">
+        <img alt="Credit card benefits" className="rounded-lg h-[400px] w-full object-cover" src="/src/assets/credit-card.webp" />
+        <div className="flex flex-col gap-6">
+          <div className="inline-flex rounded-xl bg-cloud px-3 py-1">
+            <span className="text-primary text-b3 uppercase">FEATURED</span>
+          </div>
+          <h3 className="text-ink text-h1">Brighter Credit Cards</h3>
+          <p className="text-slate text-p2">Enjoy the freedom of spending with rewards and no annual fees.</p>
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <img alt="Feature check" className="h-5 w-auto" src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M8.6%2014.6L15.65%207.55L14.25%206.15L8.6%2011.8L5.75%208.95L4.35%2010.35L8.6%2014.6ZM10%2020C8.61667%2020%207.31667%2019.7375%206.1%2019.2125C4.88333%2018.6875%203.825%2017.975%202.925%2017.075C2.025%2016.175%201.3125%2015.1167%200.7875%2013.9C0.2625%2012.6833%200%2011.3833%200%2010C0%208.61667%200.2625%207.31667%200.7875%206.1C1.3125%204.88333%202.025%203.825%202.925%202.925C3.825%202.025%204.88333%201.3125%206.1%200.7875C7.31667%200.2625%208.61667%200%2010%200C11.3833%200%2012.6833%200.2625%2013.9%200.7875C15.1167%201.3125%2016.175%202.025%2017.075%202.925C17.975%203.825%2018.6875%204.88333%2019.2125%206.1C19.7375%207.31667%2020%208.61667%2020%2010C20%2011.3833%2019.7375%2012.6833%2019.2125%2013.9C18.6875%2015.1167%2017.975%2016.175%2017.075%2017.075C16.175%2017.975%2015.1167%2018.6875%2013.9%2019.2125C12.6833%2019.7375%2011.3833%2020%2010%2020ZM10%2018C12.2333%2018%2014.125%2017.225%2015.675%2015.675C17.225%2014.125%2018%2012.2333%2018%2010C18%207.76667%2017.225%205.875%2015.675%204.325C14.125%202.775%2012.2333%202%2010%202C7.76667%202%205.875%202.775%204.325%204.325C2.775%205.875%202%207.76667%202%2010C2%2012.2333%202.775%2014.125%204.325%2015.675C5.875%2017.225%207.76667%2018%2010%2018Z'%20fill='%2310B981'/%3e%3c/svg%3e" />
+              <span className="text-ink text-p2">No annual fees</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <img alt="Feature check" className="h-5 w-auto" src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M8.6%2014.6L15.65%207.55L14.25%206.15L8.6%2011.8L5.75%208.95L4.35%2010.35L8.6%2014.6V14.6M10%2020C8.61667%2020%207.31667%2019.7375%206.1%2019.2125C4.88333%2018.6875%203.825%2017.975%202.925%2017.075C2.025%2016.175%201.3125%2015.1167%200.7875%2013.9C0.2625%2012.6833%200%2011.3833%200%2010C0%208.61667%200.2625%207.31667%200.7875%206.1C1.3125%204.88333%202.025%203.825%202.925%202.925C3.825%202.025%204.88333%201.3125%206.1%200.7875C7.31667%200.2625%208.61667%200%2010%200C11.3833%200%2012.6833%200.2625%2013.9%200.7875C15.1167%201.3125%2016.175%202.025%2017.075%202.925C17.975%203.825%2018.6875%204.88333%2019.2125%206.1C19.7375%207.31667%2020%208.61667%2020%2010C20%2011.3833%2019.7375%2012.6833%2019.2125%2013.9C18.6875%2015.1167%2017.975%2016.175%2017.075%2017.075C16.175%2017.975%2015.1167%2018.6875%2013.9%2019.2125C12.6833%2019.7375%2011.3833%2020%2010%2020V20M10%2018C12.2333%2018%2014.125%2017.225%2015.675%2015.675C17.225%2014.125%2018%2012.2333%2018%2010C18%207.76667%2017.225%205.875%2015.675%204.325C14.125%202.775%2012.2333%202%2010%202C7.76667%202%205.875%202.775%204.325%204.325C2.775%205.875%202%207.76667%202%2010C2%2012.2333%202.775%2014.125%204.325%2015.675C5.875%2017.225%207.76667%2018%2010%2018V18M10%2010V10V10V10V10V10V10V10V10V10'%20fill='%2310B981'/%3e%3c/svg%3e" />
+              <span className="text-ink text-p2">Rewards on every purchase</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <img alt="Feature check" className="h-5 w-auto" src="data:image/svg+xml,%3csvg%20width='20'%20height='20'%20viewBox='0%200%2020%2020'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M8.6%2014.6L15.65%207.55L14.25%206.15L8.6%2011.8L5.75%208.95L4.35%2010.35L8.6%2014.6V14.6M10%2020C8.61667%2020%207.31667%2019.7375%206.1%2019.2125C4.88333%2018.6875%203.825%2017.975%202.925%2017.075C2.025%2016.175%201.3125%2015.1167%200.7875%2013.9C0.2625%2012.6833%200%2011.3833%200%2010C0%208.61667%200.2625%207.31667%200.7875%206.1C1.3125%204.88333%202.025%203.825%202.925%202.925C3.825%202.025%204.88333%201.3125%206.1%200.7875C7.31667%200.2625%208.61667%200%2010%200C11.3833%200%2012.6833%200.2625%2013.9%200.7875C15.1167%201.3125%2016.175%202.025%2017.075%202.925C17.975%203.825%2018.6875%204.88333%2019.2125%206.1C19.7375%207.31667%2020%208.61667%2020%2010C20%2011.3833%2019.7375%2012.6833%2019.2125%2013.9C18.6875%2015.1167%2017.975%2016.175%2017.075%2017.075C16.175%2017.975%2015.1167%2018.6875%2013.9%2019.2125C12.6833%2019.7375%2011.3833%2020%2010%2020V20M10%2018C12.2333%2018%2014.125%2017.225%2015.675%2015.675C17.225%2014.125%2018%2012.2333%2018%2010C18%207.76667%2017.225%205.875%2015.675%204.325C14.125%202.775%2012.2333%202%2010%202C7.76667%202%205.875%202.775%204.325%204.325C2.775%205.875%202%207.76667%202%2010C2%2012.2333%202.775%2014.125%204.325%2015.675C5.875%2017.225%207.76667%2018%2010%2018V18M10%2010V10V10V10V10V10V10V10V10V10'%20fill='%2310B981'/%3e%3c/svg%3e" />
+              <span className="text-ink text-p2">Instant transfers</span>
+            </div>
+          </div>
+          <button type="button" className="btn btn-primary rounded-lg px-8 py-4 w-max">
+            <span className="text-snow text-b1">Learn More</span>
+          </button>
+        </div>
+      </div>
+    ),
+  };
+
   return (
     <div className="flex flex-col items-center justify-start bg-cloud">
       {/* Hero */}
@@ -134,55 +226,31 @@ export default function HomePage() {
             </div>
 
             <div className="flex flex-wrap items-center gap-2 rounded-lg border border-border bg-snow p-2">
-              <button type="button" className="rounded-lg bg-primary px-6 py-2 text-white text-b2">
+              <button 
+                type="button" 
+                className={`rounded-lg px-6 py-2 text-b2 ${activeTab === 'Checking' ? 'bg-primary text-white' : 'text-slate'} cursor-pointer`} 
+                onClick={() => setActiveTab('Checking')}
+              >
                 Checking
               </button>
-              <button type="button" className="rounded-lg px-6 py-2 text-slate text-b2">
+              <button 
+                type="button" 
+                className={`rounded-lg px-6 py-2 text-b2 ${activeTab === 'Savings' ? 'bg-primary text-white' : 'text-slate'} cursor-pointer`} 
+                onClick={() => setActiveTab('Savings')}
+              >
                 Savings
               </button>
-              <button type="button" className="rounded-lg px-6 py-2 text-slate text-b2">
+              <button 
+                type="button" 
+                className={`rounded-lg px-6 py-2 text-b2 ${activeTab === 'Credit Cards' ? 'bg-primary text-white' : 'text-slate'} cursor-pointer`} 
+                onClick={() => setActiveTab('Credit Cards')}
+              >
                 Credit Cards
               </button>
             </div>
           </div>
 
-          <div className="grid gap-10 desktop:grid-cols-2 rounded-xl border border-border bg-snow p-6 shadow-sm tablet:p-10">
-            <img
-              src={quoteImage1}
-              alt="Brighter product overview"
-              className="rounded-lg h-[400px] w-full object-cover"
-            />
-
-            <div className="flex flex-col gap-6">
-              <div className="inline-flex rounded-xl bg-cloud px-3 py-1">
-                <span className="text-primary text-b3 uppercase">MOST POPULAR</span>
-              </div>
-              <h3 className="text-ink text-h1">Brighter Checking</h3>
-              <p className="text-slate text-p2">
-                The only account you&apos;ll ever need. No hidden fees, instant transfers, and a sleek
-                metal card that reflects your ambition.
-              </p>
-
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-3">
-                  <img src={container236H0} alt="Feature check" className="h-5 w-auto" />
-                  <span className="text-ink text-p2">No monthly maintenance fees</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <img src={container236H1} alt="Feature check" className="h-5 w-auto" />
-                  <span className="text-ink text-p2">2-day early direct deposit</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <img src={container236H2} alt="Feature check" className="h-5 w-auto" />
-                  <span className="text-ink text-p2">Fee-free ATM access nationwide</span>
-                </div>
-              </div>
-
-              <button type="button" className="btn btn-primary rounded-lg px-8 py-4 w-max">
-                <span className="text-snow text-b1">Learn More</span>
-              </button>
-            </div>
-          </div>
+          {tabContents[activeTab.toLowerCase()]}
         </div>
       </section>
 
@@ -203,7 +271,7 @@ export default function HomePage() {
                 <img src={containerR8Yx0} alt="Stars" className="h-5 w-auto" />
               </div>
               <p className="text-ink text-p2 italic">
-                &quot;Switching to Brighter Bank was the best financial decision I&apos;ve made. Their
+                &quot;Switching to Brighter Bank was the best financial decision I've made. Their
                 mortgage process was seamless, and the app is years ahead of the competition.&quot;
               </p>
               <div className="mt-4 flex items-center gap-4">
@@ -259,7 +327,7 @@ export default function HomePage() {
                 <img src={containerP9Yt0} alt="Stars" className="h-5 w-auto" />
               </div>
               <p className="text-ink text-p2 italic">
-                &quot;As a small business owner, Brighter Bank&apos;s business suite has saved me hours
+                &quot;As a small business owner, Brighter Bank's business suite has saved me hours
                 of administrative work every week. Their customer support is world-class.&quot;
               </p>
               <div className="mt-4 flex items-center gap-4">
