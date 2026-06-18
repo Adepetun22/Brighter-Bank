@@ -4,6 +4,7 @@ import SupportPage from './pages/support';
 import BusinessPage from './pages/business';
 import LoansPage from './pages/loans';
 import MortgagesPage from './pages/Mortgages';
+import PersonaPage from './pages/Persona';
 import HomePage from './pages/home';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
@@ -20,6 +21,7 @@ function App() {
           <Route path="/support" element={<SupportPage />} />
           <Route path="/loans" element={<LoansPage />} />
           <Route path="/mortgages" element={<MortgagesPage />} />
+          <Route path="/personal" element={<PersonaPage />} />
 
           {/* Default */}
           <Route path="/" element={<HomePage />} />
