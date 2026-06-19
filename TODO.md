@@ -1,6 +1,8 @@
-- [ ] Gather relevant file context (home.tsx) for the trusted-by container max-width.
-- [x] Propose and confirm an edit plan.
-- [x] Increase the trusted-by wrapper `max-w-[1220px]` to 1230px per provided input.
-- [x] Run a quick build/typecheck to ensure no JSX/Tailwind issues.
+# TODO
 
+- [x] Add route for `/credit-cards` in `src/App.tsx`.
+- [x] Import `CreditCardsPage` into `src/App.tsx`.
+
+- [ ] Ensure the route renders between `Navigation` and `Footer` (already satisfied by current layout).
+- [ ] Run dev build/tests (`npm run dev` or `npm run build`) to confirm TypeScript compiles.
 
