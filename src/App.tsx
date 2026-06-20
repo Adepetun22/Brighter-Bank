@@ -8,7 +8,7 @@ import MortgagesPage from './pages/Mortgages';
 import PersonaPage from './pages/Persona';
 import HomePage from './pages/home';
 import CreditCardsPage from './pages/credit-cards';
-import InvestPage from './pages/invest';
+import InvestPage from './pages/investing';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 
@@ -34,7 +34,7 @@ function App() {
           <Route path="/mortgages" element={<MortgagesPage />} />
           <Route path="/credit-cards" element={<CreditCardsPage />} />
           <Route path="/personal" element={<PersonaPage />} />
-          <Route path="/invest" element={<InvestPage />} />
+          <Route path="/investing" element={<InvestPage />} />
 
           {/* Default */}
           <Route path="/" element={<HomePage />} />
