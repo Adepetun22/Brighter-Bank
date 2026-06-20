@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./vars.css">
+  <link rel="stylesheet" href="./style.css">
+  <script src='https://cdn.tailwindcss.com/3.2.0' ></script>
+  <script src="./tailwind.config.js"></script>
+  <style>
+   a,
+   button,
+   input,
+   select,
+   h1,
+   h2,
+   h3,
+   h4,
+   h5,
+   * {
+       box-sizing: border-box;
+       margin: 0;
+       padding: 0;
+       border: none;
+       text-decoration: none;
+       background: none;
+   
+       -webkit-font-smoothing: antialiased;
+   }
+   
+   menu, ol, ul {
+       list-style-type: none;
+       margin: 0;
+       padding: 0;
+   }
+   </style>
+  <title>Document</title>
+</head>
+<body>
+  <div
+    class="bg-[#ffffff] rounded-lg border-solid border-[#e5e7eb] border p-10 flex flex-col gap-2 items-start justify-start shrink-0 max-w-[440px] relative"
+    style="box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05)"
+  >
+    <div
+      class="flex flex-row gap-2 items-center justify-start self-stretch shrink-0 relative"
+    >
+      <img
+        class="flex flex-col gap-0 items-start justify-start shrink-0 h-[auto] relative overflow-visible"
+        src="lock-icon-110.svg"
+      />
+      <div class="flex flex-col gap-0 items-start justify-start flex-1 relative">
+        <div
+          class="text-[#10b981] text-left font-['Inter-SemiBold',_sans-serif] text-sm leading-5 font-semibold uppercase relative self-stretch flex items-center justify-start"
+          style="letter-spacing: 0.7px"
+        >
+          SECURE LOGIN
+        </div>
+      </div>
+    </div>
+    <div
+      class="pt-4 flex flex-col gap-0 items-start justify-start self-stretch shrink-0 relative"
+    >
+      <div
+        class="text-[#1f2937] text-left font-['Inter-Bold',_sans-serif] text-4xl leading-[44px] font-bold relative self-stretch flex items-center justify-start"
+      >
+        Welcome Back
+      </div>
+    </div>
+    <div
+      class="flex flex-col gap-0 items-start justify-start self-stretch shrink-0 relative"
+    >
+      <div
+        class="text-[#6b7280] text-left font-['Inter-Regular',_sans-serif] text-base leading-6 font-normal relative self-stretch flex items-center justify-start"
+      >
+        Access your dashboard and manage your
+        <br />
+        brighter future.
+      </div>
+    </div>
+    <div
+      class="pt-6 pb-8 flex flex-col gap-6 items-start justify-start self-stretch shrink-0 relative"
+    >
+      <div
+        class="flex flex-col gap-0 items-start justify-start self-stretch shrink-0 relative"
+      >
+        <div
+          class="bg-[#ffffff] rounded border-solid border-[#e5e7eb] border self-stretch shrink-0 h-[66px] relative overflow-hidden"
+        ></div>
+        <div
+          class="flex flex-col gap-0 items-start justify-start shrink-0 h-[36.36%] absolute left-4 bottom-[31.82%] top-[31.82%]"
+        >
+          <div
+            class="text-[#6b7280] text-left font-['Inter-Regular',_sans-serif] text-base leading-6 font-normal relative flex items-center justify-start"
+          >
+            Username
+          </div>
+        </div>
+      </div>
+      <div
+        class="flex flex-col gap-0 items-start justify-start self-stretch shrink-0 relative"
+      >
+        <div
+          class="bg-[#ffffff] rounded border-solid border-[#e5e7eb] border self-stretch shrink-0 h-[66px] relative overflow-hidden"
+        ></div>
+        <div
+          class="flex flex-col gap-0 items-start justify-start shrink-0 h-[36.36%] absolute left-4 bottom-[31.82%] top-[31.82%]"
+        >
+          <div
+            class="text-[#6b7280] text-left font-['Inter-Regular',_sans-serif] text-base leading-6 font-normal relative flex items-center justify-start"
+          >
+            Password
+          </div>
+        </div>
+        <div
+          class="pt-[11.63px] pb-[0.37px] flex flex-col gap-0 items-center justify-center shrink-0 h-[37.12%] absolute right-4 bottom-[31.44%] top-[31.44%]"
+        >
+          <img
+            class="flex flex-row gap-0 items-start justify-center shrink-0 h-[auto] relative overflow-visible"
+            src="eye-icon0.svg"
+          />
+        </div>
+      </div>
+      <div
+        class="flex flex-row gap-y-4 items-center justify-between flex-wrap content-center self-stretch shrink-0 relative"
+      >
+        <div
+          class="flex flex-row gap-2 items-center justify-start shrink-0 relative"
+        >
+          <div
+            class="bg-[#ffffff] rounded-sm border-solid border-[#e5e7eb] border shrink-0 w-4 h-4 relative"
+          ></div>
+          <div
+            class="flex flex-col gap-0 items-start justify-start shrink-0 relative"
+          >
+            <div
+              class="text-[#6b7280] text-left font-['Inter-Regular',_sans-serif] text-sm leading-5 font-normal relative flex items-center justify-start"
+            >
+              Remember device
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col gap-0 items-start justify-start shrink-0 relative"
+        >
+          <div
+            class="text-[#737686] text-left font-['Inter-Regular',_sans-serif] text-sm leading-5 font-normal relative flex items-center justify-start"
+          >
+            Forgot Password?
+          </div>
+        </div>
+      </div>
+      <div
+        class="bg-[#004ac6] rounded pt-4 pb-4 flex flex-row gap-0 items-center justify-center self-stretch shrink-0 relative"
+        style="box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.05)"
+      >
+        <div
+          class="text-[#ffffff] text-center font-['Inter-SemiBold',_sans-serif] text-lg leading-6 font-semibold relative flex items-center justify-center"
+        >
+          Sign In
+        </div>
+      </div>
+    </div>
+    <div
+      class="border-solid border-[#e5e7eb] border-t pt-8 flex flex-col gap-0 items-start justify-start self-stretch shrink-0 relative"
+    >
+      <div
+        class="flex flex-col gap-0 items-center justify-start self-stretch shrink-0 relative"
+      >
+        <div
+          class="text-center font-['-',_sans-serif] text-base leading-6 font-normal relative self-stretch flex items-center justify-center"
+        >
+          <span>
+            <span class="don-t-have-an-account-open-one-now-span">
+              Don&#039;t have an account?
+            </span>
+            <span class="don-t-have-an-account-open-one-now-span2">
+              Open one now
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>

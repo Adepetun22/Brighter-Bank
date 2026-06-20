@@ -1,14 +1,115 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import rateArrow from '../assets/rate-arrow0.svg';
 import identityIcon from '../assets/identity-icon0.svg';
 import robotTech from '../assets/robot-tech0.svg';
 import moneyPig from '../assets/money-pig0.svg';
 import container12 from '../assets/container12.svg';
-import playIcon from '../assets/play-icon0.svg';
 import officialTalks from '../assets/official-talks0.png';
 import technologyImage from '../assets/technology-image-led0.png';
 import sunsetBeach from '../assets/sunset-beach-image0.png';
 import officeSettings from '../assets/office-settings-enviroment0.png';
+import officeCinema from '../assets/video/3192362-uhd_3840_2160_25fps.webm';
+
+function VideoScene() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [hovered, setHovered] = useState(false);
+
+  function togglePlay() {
+    const v = videoRef.current;
+    if (!v) return;
+    if (v.paused) { v.play(); setPlaying(true); }
+    else { v.pause(); setPlaying(false); }
+  }
+
+  function onTimeUpdate() {
+    const v = videoRef.current;
+    if (!v || !v.duration) return;
+    setProgress((v.currentTime / v.duration) * 100);
+  }
+
+  function onScrub(e: React.MouseEvent<HTMLDivElement>) {
+    const v = videoRef.current;
+    if (!v) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    v.currentTime = pct * v.duration;
+  }
+
+  function onEnded() { setPlaying(false); setProgress(0); }
+
+  return (
+    <section
+      className="w-full mb-8 tablet:mb-14 desktop:mb-20 rounded-[24px] tablet:rounded-[32px] desktop:rounded-[40px] border border-border overflow-hidden relative cursor-pointer"
+      style={{ boxShadow: '0px 4px 6px -4px rgba(0,0,0,0.1), 0px 10px 15px -3px rgba(0,0,0,0.1)', aspectRatio: '16/9' }}
+      onClick={togglePlay}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      {/* Video */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover"
+        src={officeCinema}
+        poster={officeSettings}
+        onTimeUpdate={onTimeUpdate}
+        onEnded={onEnded}
+        playsInline
+        preload="metadata"
+      />
+
+      {/* Cinematic gradient overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.0) 100%)' }}
+      />
+
+      {/* Centre content */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 px-4 tablet:px-6">
+        {/* Play/Pause button — hides when playing unless hovered */}
+        <div
+          className={`bg-[rgba(255,255,255,0.20)] rounded-xl flex items-center justify-center w-14 h-14 tablet:w-20 tablet:h-20 desktop:w-24 desktop:h-24 shrink-0 transition-opacity duration-300 ${
+            playing && !hovered ? 'opacity-0' : 'opacity-100'
+          }`}
+          style={{ backdropFilter: 'blur(6px)' }}
+        >
+          {playing ? (
+            /* Pause icon */
+            <svg width="22" height="28" viewBox="0 0 22 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="0" width="7" height="28" rx="2" fill="white" />
+              <rect x="14" y="0" width="7" height="28" rx="2" fill="white" />
+            </svg>
+          ) : (
+            /* Play icon */
+            <svg width="22" height="28" viewBox="0 0 22 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 28V0L22 14L0 28Z" fill="white" />
+            </svg>
+          )}
+        </div>
+
+        <div className={`flex flex-col gap-2 items-center text-center transition-opacity duration-300 ${ playing && !hovered ? 'opacity-0' : 'opacity-100' }`}>
+          <h2 className="text-snow text-h2 text-center pt-2">Why Investors Choose Brighter</h2>
+          <p className="text-snow text-p1 text-center opacity-90 max-w-2xl">
+            Watch how we helped David secure his family&#39;s multi-generational wealth through
+            strategic retirement planning and human-led advisory.
+          </p>
+        </div>
+      </div>
+
+      {/* Progress bar — always visible at bottom */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-1 bg-[rgba(255,255,255,0.2)] cursor-pointer"
+        onClick={(e) => { e.stopPropagation(); onScrub(e); }}
+      >
+        <div
+          className="h-full bg-snow transition-all duration-100"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+    </section>
+  );
+}
 
 const serviceCards = [
   {
@@ -151,33 +252,7 @@ export default function InvestPage() {
       </section>
 
       {/* Video CTA Section */}
-      <section
-        className="w-full mb-8 tablet:mb-14 desktop:mb-20 rounded-[24px] tablet:rounded-[32px] desktop:rounded-[40px] border border-border overflow-hidden relative min-h-[320px] tablet:min-h-[420px] desktop:min-h-0"
-        style={{
-          boxShadow: '0px 4px 6px -4px rgba(0,0,0,0.1), 0px 10px 15px -3px rgba(0,0,0,0.1)',
-          aspectRatio: 'auto',
-        }}
-      >
-        <img src={officeSettings} alt="Office environment" className="absolute inset-0 w-full h-full object-cover" />
-        <div
-          className="relative flex items-center justify-center py-12 px-4 tablet:py-20 tablet:px-6 desktop:py-28"
-          style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 50%)' }}
-        >
-          <div className="flex flex-col gap-4 items-center text-center max-w-[709px]">
-            <div
-              className="bg-[rgba(255,255,255,0.20)] rounded-xl flex items-center justify-center w-14 h-14 tablet:w-20 tablet:h-20 desktop:w-24 desktop:h-24 shrink-0"
-              style={{ backdropFilter: 'blur(6px)' }}
-            >
-              <img src={playIcon} alt="Play video" className="h-auto" />
-            </div>
-            <h2 className="text-snow text-h2 text-center pt-2">Why Investors Choose Brighter</h2>
-            <p className="text-snow text-p1 text-center opacity-90 max-w-2xl">
-              Watch how we helped David secure his family&#39;s multi-generational wealth through
-              strategic retirement planning and human-led advisory.
-            </p>
-          </div>
-        </div>
-      </section>
+      <VideoScene />
 
       {/* Stats + CTA Banner */}
       <section className="bg-[#e6eeff] rounded-[24px] tablet:rounded-[36px] desktop:rounded-[48px] py-10 px-6 tablet:py-14 tablet:px-10 desktop:py-16 desktop:px-12 w-full mb-10 tablet:mb-16 desktop:mb-20">
