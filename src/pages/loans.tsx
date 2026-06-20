@@ -228,7 +228,7 @@ export default function LoansPage() {
                     step={1000}
                     value={Math.min(100000, Math.max(1000, loanAmount))}
                     onChange={(e) => setLoanAmountText(e.target.value)}
-                    className="w-full accent-[#004ac6]"
+                    className="w-full accent-[#004ac6] cursor-pointer"
                   />
                 </div>
 
@@ -253,7 +253,7 @@ export default function LoansPage() {
                     step={12}
                     value={termMonths}
                     onChange={(e) => setTermMonths(Number(e.target.value))}
-                    className="w-full accent-[#004ac6]"
+                    className="w-full accent-[#004ac6] cursor-pointer"
                   />
                 </div>
 

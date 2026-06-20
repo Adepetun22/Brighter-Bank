@@ -211,7 +211,7 @@ export default function CreditCardsPage() {
             <div className="flex flex-row items-stretch">
               <div className="w-[288px] shrink-0" />
               <div className="py-8 px-6 flex items-center justify-center flex-1">
-                <button type="button" className="text-[#004ac6] text-center text-b3">Apply Now</button>
+                <button type="button" className="text-[#004ac6] text-center text-b3 hover:underline transition-all duration-200 cursor-pointer">Apply Now</button>
               </div>
               <div className="bg-[#eff4ff] rounded-bl-lg rounded-br-lg border-x border-b border-border p-6 flex items-center justify-center flex-1">
                 <button type="button" className="btn btn-primary px-6 py-2">
@@ -219,7 +219,7 @@ export default function CreditCardsPage() {
                 </button>
               </div>
               <div className="py-8 px-6 flex items-center justify-center flex-1">
-                <button type="button" className="text-[#004ac6] text-center text-b3">Apply Now</button>
+                <button type="button" className="text-[#004ac6] text-center text-b3 hover:underline transition-all duration-200 cursor-pointer">Apply Now</button>
               </div>
             </div>
 
