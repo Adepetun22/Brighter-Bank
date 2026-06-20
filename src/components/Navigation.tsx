@@ -1,47 +1,38 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import MobileNav from './MobileNav';
+
+const navLinks = [
+  { label: 'Personal', to: '/personal' },
+  { label: 'Business', to: '/business' },
+  { label: 'Loans', to: '/loans' },
+  { label: 'Mortgages', to: '/mortgages' },
+  { label: 'Credit Cards', to: '/credit-cards' },
+  { label: 'Investing', to: '/investing' },
+];
 
 function Navigation() {
   return (
-    <div className="w-full bg-snow border-b border-border shadow-sm">
+    <div className="w-full bg-snow border-b border-border shadow-sm sticky top-0 z-50">
       <div className="px-6 h-20 flex items-center justify-between max-w-[1440px] mx-auto">
-        <div className="text-primary text-h2">Brighter Bank</div>
+        <NavLink to="/" className="text-primary text-h2">Brighter Bank</NavLink>
 
         <div className="hidden md:flex items-start gap-6">
-          <a href="/personal" className="border-primary border-b-2 pb-1 text-primary">
-            <div className="text-b2">Personal</div>
-          </a>
-          <Link
-            to="/business"
-            className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer"
-          >
-            <div className="text-b2">Business</div>
-          </Link>
-          <a
-            href="/loans"
-            className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer"
-          >
-            <div className="text-b2">Loans</div>
-          </a>
-          <a
-            href="/mortgages"
-            className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer"
-          >
-            <div className="text-b2">Mortgages</div>
-          </a>
-          <a
-            href="/credit-cards"
-            className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer"
-          >
-            <div className="text-b2">Credit Cards</div>
-          </a>
-          <a
-            href="/investing"
-            className="border-b-2 border-transparent pb-1 text-slate hover:border-primary hover:text-primary transition-all duration-300 cursor-pointer"
-          >
-            <div className="text-b2">Investing</div>
-          </a>
+          {navLinks.map(({ label, to }) => (
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) =>
+                `border-b-2 pb-1 text-b2 transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? 'border-primary text-primary'
+                    : 'border-transparent text-slate hover:border-primary hover:text-primary'
+                }`
+              }
+            >
+              {label}
+            </NavLink>
+          ))}
         </div>
 
         <div className="flex items-center gap-4">

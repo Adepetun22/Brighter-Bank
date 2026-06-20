@@ -1,14 +1,23 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+
+const navLinks = [
+  { label: 'Personal', to: '/personal' },
+  { label: 'Business', to: '/business' },
+  { label: 'Loans', to: '/loans' },
+  { label: 'Mortgages', to: '/mortgages' },
+  { label: 'Credit Cards', to: '/credit-cards' },
+  { label: 'Investing', to: '/investing' },
+];
 
 function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="w-full bg-snow border-b border-border shadow-sm relative">
+    <div className="w-full bg-snow border-b border-border shadow-sm sticky top-0 z-50">
       <div className="px-6 h-20 flex items-center justify-between">
-        <div className="text-primary text-h2">Brighter Bank</div>
-        <button className="p-2 focus:outline-none" onClick={() => setIsOpen(!isOpen)}>
+        <NavLink to="/" className="text-primary text-h2">Brighter Bank</NavLink>
+        <button type="button" className="p-2 focus:outline-none" onClick={() => setIsOpen(!isOpen)}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 text-primary"
@@ -16,38 +25,31 @@ function MobileNav() {
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16m-7 6h7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
           </svg>
         </button>
       </div>
 
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 flex flex-col py-4 space-y-2 bg-snow border-b border-border shadow-md z-50">
-          <a href="/personal" className="block px-6 py-2 text-primary hover:bg-gray-100">
-            Personal
-          </a>
-          <Link to="/business" className="block px-6 py-2 text-slate hover:bg-gray-100">
-            Business
-          </Link>
-          <a href="/loans" className="block px-6 py-2 text-slate hover:bg-gray-100">
-            Loans
-          </a>
-          <a href="/mortgages" className="block px-6 py-2 text-slate hover:bg-gray-100">
-            Mortgages
-          </a>
-          <a href="/credit-cards" className="block px-6 py-2 text-slate hover:bg-gray-100">
-            Credit Cards
-          </a>
-          <a href="/investing" className="block px-6 py-2 text-slate hover:bg-gray-100">
-            Investing
-          </a>
+        <div className="absolute top-full left-0 right-0 flex flex-col py-4 bg-snow border-b border-border shadow-md z-50">
+          {navLinks.map(({ label, to }) => (
+            <NavLink
+              key={to}
+              to={to}
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `block px-6 py-3 text-b2 border-l-2 transition-all duration-200 ${
+                  isActive
+                    ? 'border-primary text-primary bg-[#eff4ff]'
+                    : 'border-transparent text-slate hover:border-primary hover:text-primary hover:bg-[#eff4ff]'
+                }`
+              }
+            >
+              {label}
+            </NavLink>
+          ))}
 
-          <div className="flex flex-col mt-4 px-6 space-y-2">
+          <div className="flex flex-col mt-4 px-6 gap-2">
             <button type="button" className="btn btn-secondary px-4 py-2 text-primary text-b2 text-center rounded-lg">
               Sign In
             </button>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import HeroScene from '../components/HeroScene';
+import CookieBanner from '../components/CookieBanner';
 import container16Hr0 from '../assets/container-16-hr0.svg';
 import container0 from '../assets/container0.svg';
 import containerK20 from '../assets/container-k-20.svg';
@@ -377,6 +378,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <CookieBanner />
     </div>
   );
 }
