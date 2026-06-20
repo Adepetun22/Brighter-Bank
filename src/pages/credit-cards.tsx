@@ -93,7 +93,6 @@ export default function CreditCardsPage() {
             </div>
             <button type="button" className="btn btn-primary px-8 py-4 flex flex-row gap-3 items-center">
               <span className="text-snow text-b2">See your match</span>
-              <img src={container14} alt="Arrow" className="h-auto" />
             </button>
           </div>
 
