@@ -139,12 +139,12 @@ export default function CreditCardsPage() {
               {/* Horizon Gold — featured */}
               <div className="bg-[#eff4ff] rounded-tl-lg rounded-tr-lg border-t border-x border-border pt-10 px-6 pb-6 flex flex-col gap-3 items-center relative flex-1 overflow-visible">
                 <div
-                  className="bg-[#fea619] rounded-xl py-1 px-4 flex flex-row gap-[22px] items-center absolute left-1/2 top-[-15.5px] shadow-sm"
+                  className="flex flex-row gap-1.5 items-center absolute left-1/2 top-[-15.5px] shadow-md rounded-xl px-3 py-1.5 bg-gradient-to-r from-[#fea619] to-[#f97316] transition-all duration-300 hover:shadow-lg hover:scale-105 cursor-default select-none"
                   style={{ translate: '-50%' }}
                 >
-                  <img src={badge} alt="" className="h-auto" aria-hidden="true" />
-                  <span className="text-[#684000] text-center font-bold text-p3 leading-tight">
-                    MOST<br />POPULAR
+                  <img src={badge} alt="" className="h-3.5 w-auto" aria-hidden="true" />
+                  <span className="text-[#684000] font-bold text-[11px] leading-tight tracking-wide uppercase whitespace-nowrap">
+                    Most Popular
                   </span>
                 </div>
                 <img src={goldHorizonCard} alt="Horizon Gold card" className="rounded w-20 h-20 object-cover" />
