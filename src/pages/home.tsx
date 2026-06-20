@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import HeroScene from '../components/HeroScene';
+import React, { useState, lazy, Suspense } from 'react';
+const HeroScene = lazy(() => import('../components/HeroScene'));
 import CookieBanner from '../components/CookieBanner';
 import container16Hr0 from '../assets/container-16-hr0.svg';
 import container0 from '../assets/container0.svg';
@@ -128,7 +128,9 @@ export default function HomePage() {
     <div className="flex flex-col items-center justify-start bg-cloud">
       {/* Hero */}
       <section className="w-full overflow-hidden mb-section">
-        <HeroScene />
+        <Suspense fallback={<div className="w-full h-[600px] tablet:h-[750px] desktop:h-[900px] bg-gradient-to-b from-[#0a1628] to-[#1a3a5c]" />}>
+          <HeroScene />
+        </Suspense>
 
         <div className="bg-primary border-b border-border py-6 px-10 tablet:px-28 desktop:px-48">
           <div className="flex flex-col items-center justify-between gap-2 rounded-3xl border border-white bg-primary/95 px-4 py-4 text-center tablet:flex-row tablet:text-left tablet:px-8 tablet:gap-6 max-w-[1230px] overflow-hidden">
@@ -371,7 +373,7 @@ export default function HomePage() {
               <button type="button" className="btn btn-primary rounded-lg px-10 py-4 text-snow text-b1">
                 Get Started Now
               </button>
-              <button type="button" className="btn btn-secondary-on-white rounded-lg px-10 py-4 text-b1">
+              <button type="button" className="btn btn-secondary rounded-lg px-10 py-4 text-b1">
                 Contact Sales
               </button>
             </div>
