@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import MobileNav from './MobileNav';
+import { useAuth } from '../context/AuthContext';
 
 const navLinks = [
   { label: 'Personal', to: '/personal' },
@@ -12,6 +13,7 @@ const navLinks = [
 ];
 
 function Navigation() {
+  const { isLoggedIn, logout } = useAuth();
   return (
     <div className="w-full bg-snow border-b border-border shadow-sm sticky top-0 z-50">
       <div className="px-6 h-20 flex items-center justify-between max-w-[1440px] mx-auto">
@@ -36,12 +38,20 @@ function Navigation() {
         </div>
 
         <div className="flex items-center gap-4">
-          <button type="button" className="btn btn-secondary px-4 py-2 text-primary text-b2 text-center rounded-lg">
-            Sign In
-          </button>
-          <button type="button" className="btn btn-primary px-6 py-2 text-snow text-b2 text-center rounded-lg">
-            Open an Account
-          </button>
+          {!isLoggedIn ? (
+            <>
+              <NavLink to="/login" className="btn btn-secondary px-4 py-2 text-primary text-b2 text-center rounded-lg">
+                Sign In
+              </NavLink>
+              <button type="button" className="btn btn-primary px-6 py-2 text-snow text-b2 text-center rounded-lg">
+                Open an Account
+              </button>
+            </>
+          ) : (
+            <button type="button" onClick={logout} className="btn btn-secondary px-4 py-2 text-primary text-b2 text-center rounded-lg">
+              Sign Out
+            </button>
+          )}
         </div>
       </div>
     </div>

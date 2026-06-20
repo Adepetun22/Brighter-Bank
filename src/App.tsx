@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { AuthProvider } from './context/AuthContext';
 
 import SupportPage from './pages/support';
 import BusinessPage from './pages/business';
@@ -9,6 +10,7 @@ import PersonaPage from './pages/Persona';
 import HomePage from './pages/home';
 import CreditCardsPage from './pages/credit-cards';
 import InvestPage from './pages/investing';
+import LoginPage from './pages/login';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 
@@ -21,6 +23,7 @@ function ScrollToTop() {
 
 function App() {
   return (
+    <AuthProvider>
     <div className="flex flex-col min-h-screen">
       <ScrollToTop />
       <Navigation />
@@ -35,6 +38,7 @@ function App() {
           <Route path="/credit-cards" element={<CreditCardsPage />} />
           <Route path="/personal" element={<PersonaPage />} />
           <Route path="/investing" element={<InvestPage />} />
+          <Route path="/login" element={<LoginPage />} />
 
           {/* Default */}
           <Route path="/" element={<HomePage />} />
@@ -44,6 +48,7 @@ function App() {
 
       <Footer />
     </div>
+    </AuthProvider>
   );
 }
 

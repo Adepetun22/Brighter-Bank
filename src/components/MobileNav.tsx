@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const navLinks = [
   { label: 'Personal', to: '/personal' },
@@ -12,6 +13,7 @@ const navLinks = [
 
 function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
+  const { isLoggedIn, logout } = useAuth();
 
   return (
     <div className="w-full bg-snow border-b border-border shadow-sm sticky top-0 z-50">
@@ -50,12 +52,20 @@ function MobileNav() {
           ))}
 
           <div className="flex flex-col mt-4 px-6 gap-2">
-            <button type="button" className="btn btn-secondary px-4 py-2 text-primary text-b2 text-center rounded-lg">
-              Sign In
-            </button>
-            <button type="button" className="btn btn-primary px-6 py-2 text-snow text-b2 text-center rounded-lg">
-              Open an Account
-            </button>
+            {!isLoggedIn ? (
+              <>
+                <NavLink to="/login" onClick={() => setIsOpen(false)} className="btn btn-secondary px-4 py-2 text-primary text-b2 text-center rounded-lg">
+                  Sign In
+                </NavLink>
+                <button type="button" className="btn btn-primary px-6 py-2 text-snow text-b2 text-center rounded-lg">
+                  Open an Account
+                </button>
+              </>
+            ) : (
+              <button type="button" onClick={() => { logout(); setIsOpen(false); }} className="btn btn-secondary px-4 py-2 text-primary text-b2 text-center rounded-lg">
+                Sign Out
+              </button>
+            )}
           </div>
         </div>
       )}
