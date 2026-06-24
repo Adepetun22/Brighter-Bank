@@ -57,9 +57,9 @@ function MobileNav() {
                 <NavLink to="/login" onClick={() => setIsOpen(false)} className="btn btn-secondary px-4 py-2 text-primary text-b2 text-center rounded-lg">
                   Sign In
                 </NavLink>
-                <button type="button" className="btn btn-primary px-6 py-2 text-snow text-b2 text-center rounded-lg">
+                <NavLink to="/open-an-account" onClick={() => setIsOpen(false)} className="btn btn-primary px-6 py-2 text-snow text-b2 text-center rounded-lg">
                   Open an Account
-                </button>
+                </NavLink>
               </>
             ) : (
               <button type="button" onClick={() => { logout(); setIsOpen(false); }} className="btn btn-secondary px-4 py-2 text-primary text-b2 text-center rounded-lg">

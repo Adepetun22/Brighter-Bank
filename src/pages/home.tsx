@@ -1,4 +1,5 @@
 import React, { useState, lazy, Suspense } from 'react';
+import { NavLink } from 'react-router-dom';
 const HeroScene = lazy(() => import('../components/HeroScene'));
 import CookieBanner from '../components/CookieBanner';
 import container16Hr0 from '../assets/container-16-hr0.svg';
@@ -370,9 +371,9 @@ export default function HomePage() {
               account in less than 5 minutes.
             </p>
             <div className="flex flex-wrap justify-center gap-4 pt-4">
-              <button type="button" className="btn btn-primary rounded-lg px-10 py-4 text-snow text-b1">
+              <NavLink to="/open-an-account" className="btn btn-primary rounded-lg px-10 py-4 text-snow text-b1">
                 Get Started Now
-              </button>
+              </NavLink>
               <button type="button" className="btn btn-secondary rounded-lg px-10 py-4 text-b1">
                 Contact Sales
               </button>

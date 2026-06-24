@@ -153,7 +153,11 @@ export default function LoginPage() {
         <div className="border-t border-border pt-8">
           <p className="text-slate text-p2 text-center">
             Don't have an account?{' '}
-            <button type="button" className="text-primary text-b2 hover:underline cursor-pointer">
+            <button
+              type="button"
+              onClick={() => navigate('/open-an-account')}
+              className="text-primary text-b2 hover:underline cursor-pointer"
+            >
               Open one now
             </button>
           </p>

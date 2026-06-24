@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import * as THREE from 'three';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
@@ -6,6 +7,7 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 
 export default function HeroScene() {
+  const navigate = useNavigate();
   const mountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -496,6 +498,7 @@ export default function HeroScene() {
           type="button"
           className="btn btn-primary pointer-events-auto px-9 py-4 text-b1"
           style={{ animation: 'fadeInUp 1.2s ease 1.1s both' }}
+          onClick={() => navigate('/open-an-account')}
         >
           Open a Free Account
         </button>
