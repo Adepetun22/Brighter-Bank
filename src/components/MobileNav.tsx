@@ -34,6 +34,11 @@ function MobileNav() {
 
       {isOpen && (
         <div className="absolute top-full left-0 right-0 flex flex-col py-4 bg-snow border-b border-border shadow-md z-50">
+          {isLoggedIn && (
+            <div className="px-6 pb-3 text-b2 font-semibold text-primary">
+              Profile
+            </div>
+          )}
           {navLinks.map(({ label, to }) => (
             <NavLink
               key={to}
@@ -62,7 +67,11 @@ function MobileNav() {
                 </NavLink>
               </>
             ) : (
-              <button type="button" onClick={() => { logout(); setIsOpen(false); }} className="btn btn-secondary px-4 py-2 text-primary text-b2 text-center rounded-lg">
+              <button
+                type="button"
+                onClick={() => { logout(); setIsOpen(false); }}
+                className="btn btn-secondary w-full px-4 py-2 text-primary text-b2 text-center rounded-lg"
+              >
                 Sign Out
               </button>
             )}
