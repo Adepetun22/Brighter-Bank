@@ -12,6 +12,7 @@ import CreditCardsPage from './pages/credit-cards';
 import InvestPage from './pages/investing';
 import LoginPage from './pages/login';
 import OpenAnAccountPage from './pages/open-an-account';
+import ProfilePage from './pages/profile';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 
@@ -41,6 +42,7 @@ function App() {
           <Route path="/investing" element={<InvestPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/open-an-account" element={<OpenAnAccountPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
 
           {/* Default */}
           <Route path="/" element={<HomePage />} />

@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from 'react';
+import React, { useState, lazy, Suspense, type JSX } from 'react';
 import { NavLink } from 'react-router-dom';
 const HeroScene = lazy(() => import('../components/HeroScene'));
 import CookieBanner from '../components/CookieBanner';
@@ -33,9 +33,10 @@ import quoteImage2 from '../assets/quote-image-2.png';
 import quoteImage3 from '../assets/quote-image-3.png';
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState('Checking');
-
-  const tabContents = {
+  type ProductTab = 'Checking' | 'Savings' | 'Credit Cards';
+  const [activeTab, setActiveTab] = useState<ProductTab>('Checking');
+  const activeTabKey = activeTab.toLowerCase() as Lowercase<ProductTab>;
+  const tabContents: Record<Lowercase<ProductTab>, JSX.Element> = {
     checking: (
       <div className="grid gap-10 desktop:grid-cols-2 rounded-xl border border-border bg-snow p-6 shadow-sm tablet:p-10">
         <img alt="Brighter product overview" className="rounded-lg h-[400px] w-full object-cover" src="/src/assets/quote-image-1.png" />
@@ -254,7 +255,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {tabContents[activeTab.toLowerCase()]}
+          {tabContents[activeTabKey]}
         </div>
       </section>
 

@@ -49,12 +49,12 @@ function Navigation() {
             </>
           ) : (
             <div className="flex items-center gap-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" />
-                  <path d="M4 20c0-2.21 3.58-4 8-4s8 1.79 8 4" />
-                </svg>
-              </span>
+                <NavLink to="/profile" className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" />
+                    <path d="M4 20c0-2.21 3.58-4 8-4s8 1.79 8 4" />
+                  </svg>
+                </NavLink>
               <button type="button" onClick={logout} className="btn btn-secondary px-4 py-2 text-primary text-b2 text-center rounded-lg">
                 Sign Out
               </button>

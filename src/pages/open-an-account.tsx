@@ -8,6 +8,10 @@ import checkIcon from '../assets/check-10.svg';
 
 type Country = { code: string; dial: string; flag: string; placeholder: string };
 
+type FormErrors = Partial<Record<'name' | 'email' | 'phone' | 'dob' | 'ssn' | 'address' | 'city' | 'zip' | 'agreed', string>>;
+type Step1Field = 'name' | 'email' | 'phone' | 'country';
+type Step2Field = 'dob' | 'ssn' | 'address' | 'city' | 'zip';
+
 const COUNTRIES: Country[] = [
   { code: 'US', dial: '+1',   flag: '🇺🇸', placeholder: '(555) 000-0000' },
   { code: 'NG', dial: '+234', flag: '🇳🇬', placeholder: '0801 000 0000'  },
@@ -26,11 +30,22 @@ const ACCOUNT_TYPES = [
   { id: 'cd',       label: 'CD',       desc: 'Lock in rates from 6–60 months.'   },
 ];
 
+const STORAGE_KEYS = {
+  PROFILE: 'brighterBankProfile',
+  LOAN_STATUS: 'brighterBankLoanStatus',
+};
+
 // ─── Field component ─────────────────────────────────────────────────────────
+
+type FieldProps = {
+  label: string;
+  error: string;
+  children: React.ReactNode;
+};
 
 function Field({
   label, error, children,
-}: { label: string; error?: string; children: React.ReactNode }) {
+}: FieldProps) {
   return (
     <div className="flex flex-col gap-1">
       <label className="text-ink text-p2">{label}</label>
@@ -72,11 +87,12 @@ function Step1({
   data, errors, onChange,
 }: {
   data: { name: string; email: string; phone: string; country: string };
-  errors: Record<string, string>;
-  onChange: (k: string, v: string) => void;
+  errors: FormErrors;
+  onChange: (k: Step1Field, v: string) => void;
 }) {
   const [dropOpen, setDropOpen] = useState(false);
-  const selected = COUNTRIES.find(c => c.code === data.country) ?? COUNTRIES[0];
+  const selected = COUNTRIES.find(c => c.code === data.country) ?? COUNTRIES[0]!;
+  const safeSelected: Country = selected;
 
   return (
     <div className="flex flex-col gap-2">
@@ -84,7 +100,7 @@ function Step1({
 
       <div className="pt-2 flex flex-col gap-3">
         {/* Legal Name */}
-        <Field label="Legal Name" error={errors.name}>
+        <Field label="Legal Name" error={errors.name ?? ''}>
           <TextInput
             value={data.name}
             onChange={v => onChange('name', v)}
@@ -94,7 +110,7 @@ function Step1({
         </Field>
 
         {/* Email */}
-        <Field label="Email Address" error={errors.email}>
+        <Field label="Email Address" error={errors.email ?? ''}>
           <TextInput
             type="email"
             value={data.email}
@@ -105,7 +121,7 @@ function Step1({
         </Field>
 
         {/* Phone */}
-        <Field label="Phone Number" error={errors.phone}>
+        <Field label="Phone Number" error={errors.phone ?? ''}>
           <div
             className={`bg-snow rounded border flex flex-row overflow-visible ${
               errors.phone ? 'border-error' : 'border-border focus-within:border-primary'
@@ -118,8 +134,8 @@ function Step1({
                 onClick={() => setDropOpen(v => !v)}
                 className="flex items-center gap-1.5 px-3 py-3.5 border-r border-border text-p2 text-slate hover:bg-cloud transition-colors shrink-0 cursor-pointer"
               >
-                <span>{selected.flag}</span>
-                <span>{selected.dial}</span>
+                <span>{safeSelected.flag}</span>
+                <span>{safeSelected.dial}</span>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className={`transition-transform ${dropOpen ? 'rotate-180' : ''}`}>
                   <path d="M2 4l4 4 4-4" stroke="#6b7280" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
@@ -147,7 +163,7 @@ function Step1({
               type="tel"
               value={data.phone}
               onChange={e => onChange('phone', e.target.value)}
-              placeholder={selected.placeholder}
+              placeholder={safeSelected.placeholder}
               className="flex-1 px-4 py-3.5 text-p2 text-ink bg-transparent outline-none placeholder:text-slate/50"
             />
           </div>
@@ -163,15 +179,15 @@ function Step2({
   data, errors, onChange,
 }: {
   data: { dob: string; ssn: string; address: string; city: string; zip: string };
-  errors: Record<string, string>;
-  onChange: (k: string, v: string) => void;
+  errors: FormErrors;
+  onChange: (k: Step2Field, v: string) => void;
 }) {
   return (
     <div className="flex flex-col gap-2">
       <span className="text-ink text-b1">Verify your identity</span>
 
       <div className="pt-2 flex flex-col gap-3">
-        <Field label="Date of Birth" error={errors.dob}>
+        <Field label="Date of Birth" error={errors.dob ?? ''}>
           <TextInput
             type="date"
             value={data.dob}
@@ -181,7 +197,7 @@ function Step2({
           />
         </Field>
 
-        <Field label="Social Security Number (last 4 digits)" error={errors.ssn}>
+        <Field label="Social Security Number (last 4 digits)" error={errors.ssn ?? ''}>
           <TextInput
             type="password"
             value={data.ssn}
@@ -191,7 +207,7 @@ function Step2({
           />
         </Field>
 
-        <Field label="Street Address" error={errors.address}>
+        <Field label="Street Address" error={errors.address ?? ''}>
           <TextInput
             value={data.address}
             onChange={v => onChange('address', v)}
@@ -201,7 +217,7 @@ function Step2({
         </Field>
 
         <div className="grid grid-cols-2 gap-3">
-          <Field label="City" error={errors.city}>
+          <Field label="City" error={errors.city ?? ''}>
             <TextInput
               value={data.city}
               onChange={v => onChange('city', v)}
@@ -209,7 +225,7 @@ function Step2({
               hasError={!!errors.city}
             />
           </Field>
-          <Field label="ZIP Code" error={errors.zip}>
+          <Field label="ZIP Code" error={errors.zip ?? ''}>
             <TextInput
               value={data.zip}
               onChange={v => onChange('zip', v.replace(/\D/g, '').slice(0, 10))}
@@ -227,7 +243,8 @@ function Step2({
 
 function Step3({
   selected, onChange,
-}: { selected: string; onChange: (v: string) => void }) {
+}: { selected: string | undefined; onChange: (v: string) => void }) {
+  const safeSelected = selected ?? ACCOUNT_TYPES[0]!.id;
   return (
     <div className="flex flex-col gap-2">
       <span className="text-ink text-b1">Choose your account type</span>
@@ -235,7 +252,7 @@ function Step3({
 
       <div className="pt-2 flex flex-col gap-3">
         {ACCOUNT_TYPES.map(acc => {
-          const active = selected === acc.id;
+          const active = safeSelected === acc.id;
           return (
             <button
               key={acc.id}
@@ -329,8 +346,8 @@ function Step4({
 
 // ─── Validation ───────────────────────────────────────────────────────────────
 
-function validateStep1(data: { name: string; email: string; phone: string }) {
-  const e: Record<string, string> = {};
+function validateStep1(data: { name: string; email: string; phone: string }): FormErrors {
+  const e: FormErrors = {};
   if (!data.name.trim())  e.name  = 'Legal name is required.';
   if (!data.email.trim()) e.email = 'Email address is required.';
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) e.email = 'Enter a valid email address.';
@@ -339,8 +356,8 @@ function validateStep1(data: { name: string; email: string; phone: string }) {
   return e;
 }
 
-function validateStep2(data: { dob: string; ssn: string; address: string; city: string; zip: string }) {
-  const e: Record<string, string> = {};
+function validateStep2(data: { dob: string; ssn: string; address: string; city: string; zip: string }): FormErrors {
+  const e: FormErrors = {};
   if (!data.dob)     e.dob     = 'Date of birth is required.';
   if (!data.ssn || data.ssn.length < 4) e.ssn = 'Enter the last 4 digits of your SSN.';
   if (!data.address.trim()) e.address = 'Street address is required.';
@@ -360,15 +377,23 @@ export default function OpenAnAccountPage() {
   const [accountType, setAccountType] = useState('checking');
   const [agreed, setAgreed] = useState(false);
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<FormErrors>({});
 
-  function handleChange1(k: string, v: string) {
-    setS1(p => ({ ...p, [k]: v }));
-    setErrors(p => { const n = { ...p }; delete n[k]; return n; });
+  function removeError<K extends keyof FormErrors>(key: K) {
+    setErrors(prev => {
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
   }
-  function handleChange2(k: string, v: string) {
+
+  function handleChange1(k: Step1Field, v: string) {
+    setS1(p => ({ ...p, [k]: v }));
+    if (k !== 'country') removeError(k);
+  }
+  function handleChange2(k: Step2Field, v: string) {
     setS2(p => ({ ...p, [k]: v }));
-    setErrors(p => { const n = { ...p }; delete n[k]; return n; });
+    removeError(k);
   }
 
   function next() {
@@ -390,6 +415,12 @@ export default function OpenAnAccountPage() {
       return;
     }
     setErrors({});
+    localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify({
+      ...s1,
+      ...s2,
+      accountType,
+    }));
+    localStorage.setItem(STORAGE_KEYS.LOAN_STATUS, 'none');
     setSubmitted(true);
   }
 
@@ -402,7 +433,7 @@ export default function OpenAnAccountPage() {
     { title: 'Built around\nyour goals.', sub: "Choose the account that fits your lifestyle\nand we'll grow with you." },
     { title: 'Almost there.\nReview and confirm.', sub: 'One last look before we open your\nbrand-new Brighter Bank account.' },
   ];
-  const hero = heroContent[step];
+  const hero = heroContent[Math.min(Math.max(step, 0), heroContent.length - 1)]!;
 
   // ── Success screen ──
   if (submitted) {

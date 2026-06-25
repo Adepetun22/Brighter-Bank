@@ -35,9 +35,19 @@ function MobileNav() {
       {isOpen && (
         <div className="absolute top-full left-0 right-0 flex flex-col py-4 bg-snow border-b border-border shadow-md z-50">
           {isLoggedIn && (
-            <div className="px-6 pb-3 text-b2 font-semibold text-primary">
-              Profile
-            </div>
+            <NavLink
+              to="/profile"
+              onClick={() => setIsOpen(false)}
+              className="px-6 pb-3 flex items-center gap-3 text-b2 font-semibold text-primary"
+            >
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z" />
+                  <path d="M4 20c0-2.21 3.58-4 8-4s8 1.79 8 4" />
+                </svg>
+              </span>
+              <span>Profile</span>
+            </NavLink>
           )}
           {navLinks.map(({ label, to }) => (
             <NavLink

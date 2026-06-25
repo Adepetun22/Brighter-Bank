@@ -71,7 +71,14 @@ export default function LoginPage() {
                 placeholder=" "
                 autoComplete="email"
                 value={email}
-                onChange={e => { setEmail(e.target.value); setErrors(v => ({ ...v, email: undefined })); }}
+                onChange={e => {
+                  setEmail(e.target.value);
+                  setErrors(prev => {
+                    const next = { ...prev };
+                    delete next.email;
+                    return next;
+                  });
+                }}
                 className={`peer w-full h-[56px] rounded border bg-snow px-4 pt-5 pb-2 text-ink text-p2 outline-none transition-colors ${errors.email ? 'border-error focus:border-error' : 'border-border focus:border-primary'}`}
               />
               <label
@@ -93,7 +100,14 @@ export default function LoginPage() {
                 placeholder=" "
                 autoComplete="current-password"
                 value={password}
-                onChange={e => { setPassword(e.target.value); setErrors(v => ({ ...v, password: undefined })); }}
+                onChange={e => {
+                  setPassword(e.target.value);
+                  setErrors(prev => {
+                    const next = { ...prev };
+                    delete next.password;
+                    return next;
+                  });
+                }}
                 className={`peer w-full h-[56px] rounded border bg-snow px-4 pt-5 pb-2 pr-12 text-ink text-p2 outline-none transition-colors ${errors.password ? 'border-error focus:border-error' : 'border-border focus:border-primary'}`}
               />
               <label
