@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import lockIcon from '../assets/lock-icon-110.svg';
 import eyeIcon from '../assets/eye-icon0.svg';
 
@@ -30,10 +30,15 @@ export default function LoginPage() {
     setShowConfirm(true);
   }
 
-  function handleConfirm() {
+  async function handleConfirm() {
     setShowConfirm(false);
-    login();
-    navigate('/');
+    try {
+      await login(email, password);
+      navigate('/');
+    } catch (err) {
+      console.error('Login failed', err);
+      setErrors({ email: 'Invalid credentials' });
+    }
   }
 
   return (

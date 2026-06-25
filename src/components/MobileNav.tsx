@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 
 const navLinks = [
   { label: 'Personal', to: '/personal' },
@@ -13,7 +13,7 @@ const navLinks = [
 
 function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
-  const { isLoggedIn, logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
 
   return (
     <div className="w-full bg-snow border-b border-border shadow-sm sticky top-0 z-50">
@@ -34,7 +34,7 @@ function MobileNav() {
 
       {isOpen && (
         <div className="absolute top-full left-0 right-0 flex flex-col py-4 bg-snow border-b border-border shadow-md z-50">
-          {isLoggedIn && (
+          {isAuthenticated && (
             <NavLink
               to="/profile"
               onClick={() => setIsOpen(false)}
@@ -67,7 +67,7 @@ function MobileNav() {
           ))}
 
           <div className="flex flex-col mt-4 px-6 gap-2">
-            {!isLoggedIn ? (
+            {!isAuthenticated ? (
               <>
                 <NavLink to="/login" onClick={() => setIsOpen(false)} className="btn btn-secondary px-4 py-2 text-primary text-b2 text-center rounded-lg">
                   Sign In
