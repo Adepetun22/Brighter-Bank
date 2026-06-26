@@ -9,6 +9,7 @@ import MortgagesPage from './pages/Mortgages';
 import PersonaPage from './pages/Persona';
 import HomePage from './pages/home';
 import CreditCardsPage from './pages/credit-cards';
+import CreditCardMatchPage from './pages/credit-card-match';
 import InvestPage from './pages/investing';
 import LoginPage from './pages/login';
 import OpenAnAccountPage from './pages/open-an-account';
@@ -38,6 +39,7 @@ function App() {
           <Route path="/loans" element={<LoansPage />} />
           <Route path="/mortgages" element={<MortgagesPage />} />
           <Route path="/credit-cards" element={<CreditCardsPage />} />
+          <Route path="/credit-cards/match" element={<CreditCardMatchPage />} />
           <Route path="/personal" element={<PersonaPage />} />
           <Route path="/investing" element={<InvestPage />} />
           <Route path="/login" element={<LoginPage />} />
