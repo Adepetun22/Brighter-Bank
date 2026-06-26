@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import lockIcon from '../assets/lock-icon-110.svg';
 import eyeIcon from '../assets/eye-icon0.svg';
+import DialogModal from '../components/DialogModal';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -183,38 +184,20 @@ export default function LoginPage() {
         </div>
       </div>
 
-      {/* Confirmation Modal */}
-      {showConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ background: 'rgba(0,0,0,0.45)' }}>
-          <div
-            className="bg-snow rounded-2xl border border-border w-full max-w-sm p-8 flex flex-col gap-6"
-            style={{ boxShadow: '0px 20px 40px rgba(0,0,0,0.15)' }}
-          >
-            <div className="flex flex-col gap-2">
-              <h2 className="text-ink text-h3">Ready to sign in?</h2>
-              <p className="text-slate text-p2">
-                You're signing in as <span className="text-ink font-semibold">{email}</span>. Continue to your dashboard?
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 tablet:flex-row tablet:justify-end">
-              <button
-                type="button"
-                className="btn btn-secondary px-6 py-3 rounded-lg text-b2"
-                onClick={() => setShowConfirm(false)}
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary px-6 py-3 rounded-lg text-b2"
-                onClick={handleConfirm}
-              >
-                <span className="text-snow">Yes, Sign In</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <DialogModal
+        open={showConfirm}
+        title="Ready to sign in?"
+        description={
+          <span>
+            You're signing in as <strong className="text-ink font-semibold">{email}</strong>. Continue to your dashboard?
+          </span>
+        }
+        primaryLabel="Yes, Sign In"
+        onPrimary={handleConfirm}
+        secondaryLabel="Cancel"
+        onSecondary={() => setShowConfirm(false)}
+        onClose={() => setShowConfirm(false)}
+      />
     </div>
   );
 }

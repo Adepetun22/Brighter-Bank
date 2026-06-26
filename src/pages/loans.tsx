@@ -1,4 +1,6 @@
 import React, { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 import containerdiR0 from '../assets/containerdi-r0.svg';
 import containerea0 from '../assets/containerea0.svg';
@@ -9,6 +11,7 @@ import iconmark2 from '../assets/iconmark2.svg';
 import modernFamilyOffice0 from '../assets/modern-family-office0.png';
 import image0 from '../assets/image0.svg';
 import moneyOverlay0 from '../assets/money-overlay0.svg';
+import DialogModal from '../components/DialogModal';
 
 const APR = 0.0846071; // 8.46071% APR (fixed; matches UI defaults for $25,000 / 60 months)
 
@@ -42,9 +45,16 @@ function calculateAmortizedLoan(P: number, nMonths: number, apr: number) {
   return { monthlyPayment, totalInterest, totalPayment };
 }
 
+const LOAN_STATUS_KEY = 'brighterBankLoanStatus';
+
 export default function LoansPage() {
   const [loanAmountText, setLoanAmountText] = useState<string>('25,000');
   const [termMonths, setTermMonths] = useState<number>(60);
+
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [showLoanSuccess, setShowLoanSuccess] = useState(false);
 
   const loanAmount = useMemo(() => toNumber(loanAmountText), [loanAmountText]);
 
@@ -293,6 +303,20 @@ export default function LoansPage() {
                 <span className="text-[#121c2a] text-sm font-semibold">{formatMoney(totalPayment)}</span>
               </div>
             </div>
+            <button
+              type="button"
+              onClick={() => {
+                if (isAuthenticated) {
+                  localStorage.setItem(LOAN_STATUS_KEY, 'current');
+                  setShowLoanSuccess(true);
+                } else {
+                  setShowLoginPrompt(true);
+                }
+              }}
+              className="btn btn-primary w-full py-4 mt-6"
+            >
+              Apply for Loan
+            </button>
           </div>
         </div>
 
@@ -334,6 +358,34 @@ export default function LoansPage() {
           </div>
         </div>
       </div>
+
+      <DialogModal
+        open={showLoginPrompt}
+        title="Login required"
+        description="You must sign in to access loan applications and save this estimate to your profile."
+        primaryLabel="Go to Login"
+        onPrimary={() => {
+          setShowLoginPrompt(false);
+          navigate('/login');
+        }}
+        secondaryLabel="Cancel"
+        onSecondary={() => setShowLoginPrompt(false)}
+        onClose={() => setShowLoginPrompt(false)}
+      />
+
+      <DialogModal
+        open={showLoanSuccess}
+        title="Loan request submitted"
+        description="Your loan amount request was submitted successfully. Check your Profile page for the latest loan update."
+        primaryLabel="View Profile"
+        onPrimary={() => {
+          setShowLoanSuccess(false);
+          navigate('/profile');
+        }}
+        secondaryLabel="Close"
+        onSecondary={() => setShowLoanSuccess(false)}
+        onClose={() => setShowLoanSuccess(false)}
+      />
 
       {/* Bottom spacer to match other pages */}
       <div className="h-2" />
