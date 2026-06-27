@@ -1,5 +1,8 @@
 import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import LazyVideo from '../components/LazyVideo';
+import { useAuth } from '../contexts/AuthContext';
+import DialogModal from '../components/DialogModal';
 import rateArrow from '../assets/rate-arrow0.svg';
 import identityIcon from '../assets/identity-icon0.svg';
 import robotTech from '../assets/robot-tech0.svg';
@@ -199,6 +202,18 @@ function ChartCard() {
 }
 
 export default function InvestPage() {
+  const { isAuthenticated } = useAuth();
+  const [showLoggedInModal, setShowLoggedInModal] = useState(false);
+  const navigate = useNavigate();
+
+  const handleOpenAccount = () => {
+    if (isAuthenticated) {
+      setShowLoggedInModal(true);
+    } else {
+      navigate('/login');
+    }
+  };
+
   return (
     <div className="flex flex-col items-center bg-[#f8f9ff]">
     <div className="flex flex-col items-start w-full max-w-[1200px] px-6 tablet:px-10 desktop:px-6">
@@ -269,9 +284,9 @@ export default function InvestPage() {
             ))}
           </div>
 
-          <div className="bg-snow rounded-3xl border border-border p-5 tablet:p-6 flex flex-col gap-3 w-full tablet:max-w-[313px]">
+<div className="bg-snow rounded-3xl border border-border p-5 tablet:p-6 flex flex-col gap-3 w-full tablet:max-w-[313px]">
             <span className="text-ink text-b2">Ready for a brighter future?</span>
-            <button type="button" className="btn btn-primary w-full py-3 relative">
+            <button type="button" className="btn btn-primary w-full py-3 relative" onClick={handleOpenAccount}>
               <span className="text-snow text-b1">Open Investment Account</span>
             </button>
             <p className="text-slate text-p3 text-center italic">
@@ -280,6 +295,16 @@ export default function InvestPage() {
           </div>
         </div>
       </section>
+
+      <DialogModal
+        open={showLoggedInModal}
+        title="Welcome back!"
+        description="You are already logged in. Your investment account dashboard is ready for you."
+        primaryLabel="View Profile"
+        onPrimary={() => navigate('/profile')}
+        onClose={() => setShowLoggedInModal(false)}
+      />
+
     </div>
     </div>
   );

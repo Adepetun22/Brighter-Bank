@@ -14,6 +14,9 @@ import image0 from '../assets/image0.svg';
 import boostingEfficiencyImg from '../assets/Boosting-Efficience.jpeg';
 import expandInternationallyImg from '../assets/Expand-Internationally.jpg';
 import React, { useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import DialogModal from '../components/DialogModal';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCreative, Navigation } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
@@ -66,6 +69,24 @@ export default function BusinessPage() {
   const swiperRef = useRef<SwiperType | null>(null);
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
+
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+  const [showAdvisorModal, setShowAdvisorModal] = useState(false);
+
+  const handleOpenAccount = () => {
+    if (!isAuthenticated) {
+      navigate('/login');
+    }
+  };
+
+  const handleTalkToAdvisor = () => {
+    if (isAuthenticated) {
+      navigate('/advisor');
+    } else {
+      setShowAdvisorModal(true);
+    }
+  };
 
   // Replace images for new success stories
   const successStories = [
@@ -510,19 +531,34 @@ export default function BusinessPage() {
             10 minutes.
           </p>
           <div className="pt-4 flex flex-col sm:flex-row gap-4 items-center justify-center flex-wrap relative">
-            <button
-              type="button"
-              className="btn btn-primary rounded-lg py-4 px-8 shadow-md w-full sm:w-auto cursor-pointer"
-            >
-              <span className="text-snow text-b1">Open Account Online</span>
-            </button>
+            {!isAuthenticated && (
+              <button
+                type="button"
+                className="btn btn-primary rounded-lg py-4 px-8 shadow-md w-full sm:w-auto cursor-pointer"
+                onClick={handleOpenAccount}
+              >
+                <span className="text-snow text-b1">Open Account Online</span>
+              </button>
+            )}
             <button
               type="button"
               className="btn btn-secondary rounded-lg border border-[#d9e3f6] py-4 px-8 w-full sm:w-auto cursor-pointer"
+              onClick={handleTalkToAdvisor}
             >
               <span className="text-snow text-b1">Talk to an Advisor</span>
             </button>
           </div>
+
+          <DialogModal
+            open={showAdvisorModal}
+            title="Login required"
+            description="Please sign in to connect with an advisor and access personalized business consultation services."
+            primaryLabel="Go to Login"
+            onPrimary={() => navigate('/login')}
+            secondaryLabel="Cancel"
+            onSecondary={() => setShowAdvisorModal(false)}
+            onClose={() => setShowAdvisorModal(false)}
+          />
         </div>
       </div>
     </div>

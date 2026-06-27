@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 
 const SupportPage = lazy(() => import('./pages/support'));
 const BusinessPage = lazy(() => import('./pages/business'));
+const AdvisorPage = lazy(() => import('./pages/advisor'));
 const LoansPage = lazy(() => import('./pages/loans'));
 const MortgagesPage = lazy(() => import('./pages/Mortgages'));
 const PersonaPage = lazy(() => import('./pages/Persona'));
@@ -44,6 +45,7 @@ function App() {
             <Route path="/credit-cards/match" element={<CreditCardMatchPage />} />
             <Route path="/personal" element={<PersonaPage />} />
             <Route path="/investing" element={<InvestPage />} />
+            <Route path="/advisor" element={<AdvisorPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/open-an-account" element={<OpenAnAccountPage />} />
             <Route path="/profile" element={<ProfilePage />} />
