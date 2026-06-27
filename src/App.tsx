@@ -1,21 +1,22 @@
-import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { lazy, Suspense, useEffect } from 'react';
 import { AuthProvider } from './contexts/AuthContext';
 
-import SupportPage from './pages/support';
-import BusinessPage from './pages/business';
-import LoansPage from './pages/loans';
-import MortgagesPage from './pages/Mortgages';
-import PersonaPage from './pages/Persona';
-import HomePage from './pages/home';
-import CreditCardsPage from './pages/credit-cards';
-import CreditCardMatchPage from './pages/credit-card-match';
-import InvestPage from './pages/investing';
-import LoginPage from './pages/login';
-import OpenAnAccountPage from './pages/open-an-account';
-import ProfilePage from './pages/profile';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+
+const SupportPage = lazy(() => import('./pages/support'));
+const BusinessPage = lazy(() => import('./pages/business'));
+const LoansPage = lazy(() => import('./pages/loans'));
+const MortgagesPage = lazy(() => import('./pages/Mortgages'));
+const PersonaPage = lazy(() => import('./pages/Persona'));
+const HomePage = lazy(() => import('./pages/home'));
+const CreditCardsPage = lazy(() => import('./pages/credit-cards'));
+const CreditCardMatchPage = lazy(() => import('./pages/credit-card-match'));
+const InvestPage = lazy(() => import('./pages/investing'));
+const LoginPage = lazy(() => import('./pages/login'));
+const OpenAnAccountPage = lazy(() => import('./pages/open-an-account'));
+const ProfilePage = lazy(() => import('./pages/profile'));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -32,24 +33,26 @@ function App() {
       <Navigation />
 
       <main className="flex-1">
-        <Routes>
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/business" element={<BusinessPage />} />
-          <Route path="/support" element={<SupportPage />} />
-          <Route path="/loans" element={<LoansPage />} />
-          <Route path="/mortgages" element={<MortgagesPage />} />
-          <Route path="/credit-cards" element={<CreditCardsPage />} />
-          <Route path="/credit-cards/match" element={<CreditCardMatchPage />} />
-          <Route path="/personal" element={<PersonaPage />} />
-          <Route path="/investing" element={<InvestPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/open-an-account" element={<OpenAnAccountPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+        <Suspense fallback={<div className="flex min-h-[50vh] items-center justify-center text-slate">Loading…</div>}>
+          <Routes>
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/business" element={<BusinessPage />} />
+            <Route path="/support" element={<SupportPage />} />
+            <Route path="/loans" element={<LoansPage />} />
+            <Route path="/mortgages" element={<MortgagesPage />} />
+            <Route path="/credit-cards" element={<CreditCardsPage />} />
+            <Route path="/credit-cards/match" element={<CreditCardMatchPage />} />
+            <Route path="/personal" element={<PersonaPage />} />
+            <Route path="/investing" element={<InvestPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/open-an-account" element={<OpenAnAccountPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
 
-          {/* Default */}
-          <Route path="/" element={<HomePage />} />
+            {/* Default */}
+            <Route path="/" element={<HomePage />} />
 
-        </Routes>
+          </Routes>
+        </Suspense>
       </main>
 
       <Footer />

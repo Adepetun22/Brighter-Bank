@@ -131,7 +131,7 @@ export default function BusinessPage() {
           </div>
           <div className="flex-1 min-w-[280px]">
             <div className="rounded-3xl overflow-hidden shadow-2xl aspect-video">
-              <img src={businessHero} alt="Business banking" className="w-full h-full object-cover" />
+              <img src={businessHero} alt="Business banking" className="w-full h-full object-cover" loading="lazy" decoding="async" />
             </div>
           </div>
         </div>
@@ -482,9 +482,9 @@ export default function BusinessPage() {
           {successStories.map(({ img, title, quote, name, role }) => (
             <SwiperSlide key={name}>
               <div className="bg-snow rounded-3xl border border-border p-8 flex flex-col gap-6">
-                <div className="rounded-2xl h-48 overflow-hidden">
-                  <img src={img} alt={title} className="w-full h-full object-cover" />
-                </div>
+<div className="rounded-2xl h-48 overflow-hidden">
+                   <img src={img} alt={title} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                 </div>
                 <h2 className="text-ink text-h2">{title}</h2>
                 <div className="border-l-4 border-secondary pl-4">
                   <p className="text-slate text-p2 italic">{quote}</p>

@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import LazyVideo from '../components/LazyVideo';
 import rateArrow from '../assets/rate-arrow0.svg';
 import identityIcon from '../assets/identity-icon0.svg';
 import robotTech from '../assets/robot-tech0.svg';
@@ -47,16 +48,16 @@ function VideoScene() {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Video */}
-      <video
+      {/* Video with lazy loading and smaller resolution fallback */}
+<LazyVideo
         ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover"
         src={officeCinema}
         poster={officeSettings}
+        preload="none"
+        playsInline
         onTimeUpdate={onTimeUpdate}
         onEnded={onEnded}
-        playsInline
-        preload="metadata"
       />
 
       {/* Cinematic gradient overlay */}
@@ -88,10 +89,10 @@ function VideoScene() {
           )}
         </div>
 
-        <div className={`flex flex-col gap-2 items-center text-center transition-opacity duration-300 ${ playing && !hovered ? 'opacity-0' : 'opacity-100' }`}>
+        <div className={`flex flex-col gap-2 items-center text-center transition-opacity duration-300 ${playing && !hovered ? 'opacity-0' : 'opacity-100'}`}>
           <h2 className="text-snow text-h2 text-center pt-2">Why Investors Choose Brighter</h2>
           <p className="text-snow text-p1 text-center opacity-90 max-w-2xl">
-            Watch how we helped David secure his family&#39;s multi-generational wealth through
+            Watch how we helped David secure his family&apos;s multi-generational wealth through
             strategic retirement planning and human-led advisory.
           </p>
         </div>
@@ -236,7 +237,7 @@ export default function InvestPage() {
             className="bg-snow rounded-[32px] border border-border p-8 flex flex-col gap-4"
           >
             <div className={`${card.iconBg} rounded-2xl flex items-center justify-center w-16 h-16`}>
-              <img src={card.icon} alt={`${card.title} icon`} className="h-auto" />
+              <img src={card.icon} alt={`${card.title} icon`} className="h-auto" loading="lazy" decoding="async" />
             </div>
             <h3 className="text-ink text-h3">{card.title}</h3>
             <p className="text-slate text-p2">{card.description}</p>
@@ -245,7 +246,7 @@ export default function InvestPage() {
               <img src={card.arrowIcon} alt="Arrow" className="h-auto" />
             </button>
             <div className="pt-4 rounded-lg overflow-hidden h-40">
-              <img src={card.image} alt={card.imageAlt} className="w-full h-full object-cover rounded-lg" />
+              <img src={card.image} alt={card.imageAlt} className="w-full h-full object-cover rounded-lg" loading="lazy" decoding="async" />
             </div>
           </div>
         ))}

@@ -9,6 +9,7 @@ import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 export default function HeroScene() {
   const navigate = useNavigate();
   const mountRef = useRef<HTMLDivElement>(null);
+  const animationIdRef = useRef<number | null>(null);
 
   useEffect(() => {
     const mount = mountRef.current!;
@@ -97,7 +98,7 @@ export default function HeroScene() {
     scene.add(pointLight2);
 
     // --- Ground Particle Grid ---
-    const gridCount = 2000;
+    const gridCount = 1000;
     const gridGeo = new THREE.BufferGeometry();
     const gridPositions = new Float32Array(gridCount * 3);
     const gridColors = new Float32Array(gridCount * 3);
@@ -307,7 +308,7 @@ export default function HeroScene() {
     }
 
     const orbitObjects: { obj: THREE.Object3D; angle: number; radius: number; yOff: number; speed: number; bobSpeed: number }[] = [];
-    const creators: (() => THREE.Object3D)[] = [createCoin, createShield, createBar, createCoin, createShield, createBar, createCoin, createBar];
+    const creators: (() => THREE.Object3D)[] = [createCoin, createShield, createBar, createCoin, createShield];
     for (let i = 0; i < creators.length; i++) {
       const obj = creators[i]!();
       const angle = (i / creators.length) * Math.PI * 2;
@@ -359,7 +360,7 @@ export default function HeroScene() {
     scene.add(shieldGrid);
 
     // --- Rising Particles ---
-    const riseCount = 200;
+    const riseCount = 100;
     const riseGeo = new THREE.BufferGeometry();
     const risePos = new Float32Array(riseCount * 3);
     const riseSpeeds = new Float32Array(riseCount);
@@ -380,10 +381,9 @@ export default function HeroScene() {
 
     // --- Animation ---
     const startTime = performance.now();
-    let animId: number;
 
     function animate() {
-      animId = requestAnimationFrame(animate);
+      animationIdRef.current = requestAnimationFrame(animate);
       const t = (performance.now() - startTime) / 1000;
 
       mouse.x += (mouse.targetX - mouse.x) * 0.05;
@@ -467,7 +467,7 @@ export default function HeroScene() {
     window.addEventListener('resize', onResize);
 
     return () => {
-      cancelAnimationFrame(animId);
+      if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('touchmove', onTouchMove);
       window.removeEventListener('resize', onResize);
@@ -477,7 +477,7 @@ export default function HeroScene() {
   }, []);
 
   return (
-    <div className="relative w-full h-[600px] tablet:h-[750px] desktop:h-[900px] overflow-hidden">
+    <div className="relative w-full h-150 tablet:h-[750px] desktop:h-[900px] overflow-hidden">
       <div ref={mountRef} className="absolute inset-0" />
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pointer-events-none z-10">
         <h1
@@ -488,7 +488,7 @@ export default function HeroScene() {
           future, today
         </h1>
         <p
-          className="text-secondary text-p1 max-w-[480px] mb-8"
+          className="text-secondary text-p1 max-w-120 mb-8"
           style={{ animation: 'fadeInUp 1.2s ease 0.8s both' }}
         >
           Experience banking that grows with you. Secure, smart, and designed
