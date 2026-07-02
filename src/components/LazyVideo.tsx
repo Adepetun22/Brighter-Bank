@@ -1,4 +1,5 @@
 import { forwardRef, useEffect, useRef, useState } from 'react';
+import LoadingSpinner from './LoadingSpinner';
 
 type LazyVideoProps = React.VideoHTMLAttributes<HTMLVideoElement> & {
   src: string;
@@ -8,6 +9,7 @@ type LazyVideoProps = React.VideoHTMLAttributes<HTMLVideoElement> & {
 const LazyVideo = forwardRef<HTMLVideoElement, LazyVideoProps>(function LazyVideo({ src, poster, ...props }, ref) {
   const innerRef = useRef<HTMLVideoElement>(null);
   const [shouldLoad, setShouldLoad] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const node = innerRef.current;
@@ -37,7 +39,20 @@ const LazyVideo = forwardRef<HTMLVideoElement, LazyVideoProps>(function LazyVide
     }
   };
 
-  return <video ref={setRefs} {...props} src={shouldLoad ? src : undefined} poster={poster} preload="metadata" />;
+  return (
+    <div className="relative">
+      {!loaded && <LoadingSpinner overlay={false} message="Loading video..." />}
+      <video
+        ref={setRefs}
+        {...props}
+        src={shouldLoad ? src : undefined}
+        poster={poster}
+        preload="metadata"
+        onLoadedData={() => setLoaded(true)}
+        onError={() => setLoaded(true)}
+      />
+    </div>
+  );
 });
 
 export default LazyVideo;

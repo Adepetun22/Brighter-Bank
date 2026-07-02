@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as THREE from 'three';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
@@ -6,8 +6,11 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 
+import LoadingSpinner from './LoadingSpinner';
+
 export default function HeroScene() {
   const navigate = useNavigate();
+  const [sceneReady, setSceneReady] = useState(false);
   const mountRef = useRef<HTMLDivElement>(null);
   const animationIdRef = useRef<number | null>(null);
 
@@ -454,6 +457,8 @@ export default function HeroScene() {
     }
 
     animate();
+    // mark scene ready after initial animation loop starts
+    setSceneReady(true);
 
     // --- Resize ---
     const onResize = () => {
@@ -479,6 +484,7 @@ export default function HeroScene() {
   return (
     <div className="relative w-full h-150 tablet:h-[750px] desktop:h-[900px] overflow-hidden">
       <div ref={mountRef} className="absolute inset-0" />
+        {!sceneReady ? <LoadingSpinner overlay message="Loading scene..." /> : null}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 pointer-events-none z-10">
         <h1
           className="text-primary text-h1 mb-3"

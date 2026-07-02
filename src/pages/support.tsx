@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 import container3 from '../assets/container3.svg';
 import container4 from '../assets/container4.svg';
@@ -107,6 +108,7 @@ function FooterLink({ children }: { children: React.ReactNode }) {
 export default function SupportPage() {
   const [openFaqIndex, setOpenFaqIndex] = useState<number>(0);
   const [activeLocationId, setActiveLocationId] = useState<'main' | 'westside' | 'plaza' | 'northside'>('main');
+  const [mapLoaded, setMapLoaded] = useState<boolean>(false);
   const mapIframeRef = React.useRef<HTMLIFrameElement>(null);
   const navItems: NavItem[] = [
 
@@ -139,7 +141,11 @@ export default function SupportPage() {
 
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {
-      if (e.data?.type === 'MAP_READY') sendToMap(activeLocationId);
+      if (e.data?.type === 'MAP_READY') {
+        // Map signals it's ready — ensure overlay is removed and center map
+        setMapLoaded(true);
+        sendToMap(activeLocationId);
+      }
     };
     window.addEventListener('message', onMessage);
     return () => window.removeEventListener('message', onMessage);
@@ -465,13 +471,16 @@ export default function SupportPage() {
                 <iframe
                   ref={mapIframeRef}
                   title="3D Map Locator"
-                  className="absolute inset-0 w-full h-full"
+                    className="absolute inset-0 w-full h-full"
+                    onLoad={() => setMapLoaded(true)}
                   sandbox="allow-scripts allow-same-origin"
                   src="/map.html"
                   style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'top left' }}
                 />
 
-                <div className="absolute right-4 bottom-4 flex flex-col gap-2 z-10" style={{ display: 'none' }}>
+                  {!mapLoaded ? <LoadingSpinner overlay message="Loading map..." /> : null}
+
+                  <div className="absolute right-4 bottom-4 flex flex-col gap-2 z-10" style={{ display: 'none' }}>
                   <div className="bg-snow rounded-xl border border-border w-10 h-10 flex items-center justify-center shadow-md" onClick={handleZoomIn}>
                     <img className="h-auto" alt="" src="data:image/svg+xml,%3csvg%20width='14'%20height='14'%20viewBox='0%200%2014%2014'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M6%208H0V6H6V0H8V6H14V8H8V14H6V8Z'%20fill='%23004AC6'/%3e%3c/svg%3e" />
                   </div>
