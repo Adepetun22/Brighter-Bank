@@ -36,3 +36,14 @@ Thumbs.db
 # ── Testing & coverage ────────────────────────────────────────────────────────
 coverage/
 .nyc_output/
+
+# ── Secrets and encryption ─────────────────────────────────────────────────────
+secrets/
+*.pem
+*.key
+*.cert
+*.p12
+*.pfx
+
+# ── MongoDB ─────────────────────────────────────────────────────────────────────
+mongodb-keyfile
