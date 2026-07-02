@@ -1,32 +1,37 @@
-app = "brighter-bank-api"
-primary_region = "iad"
+# fly.toml app configuration file generated for brighter-bank-api on 2026-07-03T00:42:53+01:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'brighter-bank-api'
+primary_region = 'iad'
 
 [build]
-  dockerfile = "Dockerfile"
+  dockerfile = 'Dockerfile'
 
 [env]
-  NODE_ENV = "production"
-  PORT = "3000"
+  NODE_ENV = 'production'
+  PORT = '3000'
 
 [[services]]
+  protocol = 'tcp'
   internal_port = 3000
-  protocol = "tcp"
 
   [[services.ports]]
-    handlers = ["http"]
-    port = "80"
+    port = 80
+    handlers = ['http']
 
   [[services.ports]]
-    handlers = ["tls", "http"]
-    port = "443"
+    port = 443
+    handlers = ['tls', 'http']
 
   [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "15s"
-    restart_limit = 0
-    timeout = "2s"
+    interval = '15s'
+    timeout = '2s'
+    grace_period = '1s'
 
 [[vm]]
-  cpu_kind = "shared"
+  memory = '256mb'
+  cpu_kind = 'shared'
   cpus = 1
-  memory = "256mb"
+  memory_mb = 256
