@@ -15,7 +15,9 @@ export function LoadingProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     const unsub = loadingService.subscribe((c) => setCount(c));
-    return unsub;
+    return () => {
+      unsub();
+    };
   }, []);
 
   useEffect(() => {
