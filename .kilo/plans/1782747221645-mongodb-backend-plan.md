@@ -466,6 +466,44 @@ secrets/
 9. Verify PCI-DSS compliance for card data storage
 10. Test backup/restore procedures
 
+## MongoDB Atlas Secrets Configuration
+
+### Finding MONGODB_URI in MongoDB Cloud
+1. Go to https://cloud.mongodb.com → Your project (`69865d9a524912a87df7e795`)
+2. Click **Connect** → **Connect your application**
+3. Select **Node.js** driver
+4. Copy the connection string:
+```
+mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/brighterbank?retryWrites=true&w=majority
+```
+
+### Generating JWT_SECRET (PowerShell)
+```powershell
+-join ((65..90) + (97..122) + (48..57) | Get-Random -Count 32 | % {[char]$_})
+```
+Example output: `aB3dE9fGhK2mN5pQrStUvWxYz7W8eF1gH2`
+
+### Generating MONGODB_FIELD_ENCRYPTION_KEY (PowerShell)
+```powershell
+[Convert]::ToBase64String((1..96 | ForEach-Object { Get-Random -Maximum 256 }))
+```
+Output: 96-byte base64 string (required for field-level encryption)
+
+## Vercel Monorepo Deployment
+
+### Root vercel.json (Monorepo Configuration)
+Configured for frontend + backend routing. API routes proxy to backend service.
+
+### Backend vercel.json
+Configured for Node.js serverless deployment.
+
+### Vercel Environment Variables (Backend Service)
+Set these in Vercel dashboard → Settings → Environment Variables:
+- `MONGODB_URI` - MongoDB Atlas connection string
+- `MONGODB_FIELD_ENCRYPTION_KEY` - 96-byte base64 key
+- `JWT_SECRET` - 32+ random bytes
+- `MONGODB_ENCRYPTION_SALT` - Optional salt string
+
 ## Risks & Considerations
 
 - **PII Compliance**: Ensure all personal data is encrypted at rest and in transit
