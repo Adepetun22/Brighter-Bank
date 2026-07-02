@@ -1,0 +1,10 @@
+# Exclude backend from frontend Vercel deployment
+backend/
+backend/**
+*.md
+.env*
+secrets/
+.git/
+.gitignore
+Dockerfile*
+docker-compose.yml
