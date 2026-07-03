@@ -5,7 +5,7 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import { connectDatabase, disconnectDatabase } from './config/database.js';
+import { connectDatabase, disconnectDatabase, initEncryptionPlugin } from './config/database.js';
 import { UserRepository } from './repositories/UserRepository.js';
 import { AccountRepository } from './repositories/AccountRepository.js';
 import { TransactionRepository } from './repositories/TransactionRepository.js';
@@ -79,7 +79,7 @@ async function authorize(req: Request, res: Response, next: NextFunction) {
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || [],
+    origin: process.env.ALLOWED_ORIGINS?.split(',') ?? ['*'],
     credentials: true,
   })
 );
@@ -415,17 +415,20 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT || '3000', 10);
 
 async function startServer() {
+  // Start HTTP server immediately
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+
+  // Connect to database in background
   try {
+    await initEncryptionPlugin();
     await connectDatabase();
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
-  } catch (error) {
-    console.error('Failed to start server:', error);
-    process.exit(1);
+  } catch (dbError) {
+    console.error('Database connection failed (continuing anyway):', dbError);
   }
 }
 
