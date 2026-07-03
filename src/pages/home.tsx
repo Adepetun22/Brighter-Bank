@@ -31,6 +31,8 @@ import image4T50 from '../assets/image-4-t-50.png';
 import quoteImage1 from '../assets/quote-image-1.png';
 import quoteImage2 from '../assets/quote-image-2.png';
 import quoteImage3 from '../assets/quote-image-3.png';
+import savingsImage from '../assets/savings-image.webp';
+import creditCardImage from '../assets/credit-card.webp';
 
 export default function HomePage() {
   type ProductTab = 'Checking' | 'Savings' | 'Credit Cards';
@@ -39,7 +41,7 @@ export default function HomePage() {
   const tabContents: Record<Lowercase<ProductTab>, JSX.Element> = {
     checking: (
       <div className="grid gap-10 desktop:grid-cols-2 rounded-xl border border-border bg-snow p-6 shadow-sm tablet:p-10">
-        <img alt="Brighter product overview" className="rounded-lg h-[400px] w-full object-cover" src="/src/assets/quote-image-1.png" />
+        <img alt="Brighter product overview" className="rounded-lg h-[400px] w-full object-cover" src={quoteImage1} />
         <div className="flex flex-col gap-6">
           <div className="inline-flex rounded-xl bg-cloud px-3 py-1">
             <span className="text-primary text-b3 uppercase">MOST POPULAR</span>
@@ -68,7 +70,7 @@ export default function HomePage() {
     ),
     savings: (
       <div className="grid gap-10 desktop:grid-cols-2 rounded-xl border border-border bg-snow p-6 shadow-sm tablet:p-10">
-        <img alt="Savings account features" className="rounded-lg h-[400px] w-full object-cover" src="/src/assets/savings-image.webp" />
+        <img alt="Savings account features" className="rounded-lg h-[400px] w-full object-cover" src={savingsImage} />
         <div className="flex flex-col gap-6">
           <div className="inline-flex rounded-xl bg-cloud px-3 py-1">
             <span className="text-primary text-b3 uppercase">FEATURED</span>
@@ -97,7 +99,7 @@ export default function HomePage() {
     ),
     'credit cards': (
       <div className="grid gap-10 desktop:grid-cols-2 rounded-xl border border-border bg-snow p-6 shadow-sm tablet:p-10">
-        <img alt="Credit card benefits" className="rounded-lg h-[400px] w-full object-cover" src="/src/assets/credit-card.webp" />
+        <img alt="Credit card benefits" className="rounded-lg h-[400px] w-full object-cover" src={creditCardImage} />
         <div className="flex flex-col gap-6">
           <div className="inline-flex rounded-xl bg-cloud px-3 py-1">
             <span className="text-primary text-b3 uppercase">FEATURED</span>
