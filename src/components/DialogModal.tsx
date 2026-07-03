@@ -36,9 +36,16 @@ export default function DialogModal({
       >
         <div className="flex flex-col gap-2">
           <h2 className="text-ink text-h3">{title}</h2>
-          <p className="text-slate text-p2">{description}</p>
+          <div className="text-slate text-p2 text-left">{description}</div>
         </div>
-        <div className="flex flex-col gap-3 tablet:flex-row tablet:justify-end">
+        <div className="flex flex-col gap-3">
+          <button
+            type="button"
+            className="btn btn-primary px-6 py-3 rounded-lg text-b2"
+            onClick={onPrimary}
+          >
+            <span className="text-snow">{primaryLabel}</span>
+          </button>
           {secondaryLabel && onSecondary && (
             <button
               type="button"
@@ -48,13 +55,6 @@ export default function DialogModal({
               {secondaryLabel}
             </button>
           )}
-          <button
-            type="button"
-            className="btn btn-primary px-6 py-3 rounded-lg text-b2"
-            onClick={onPrimary}
-          >
-            <span className="text-snow">{primaryLabel}</span>
-          </button>
         </div>
       </div>
     </div>

@@ -251,26 +251,14 @@ export default function SupportPage() {
             iconSrc={container4}
             title="FAQ"
             description={
-              <>
-                Find instant answers to
-                <br />
-                common questions about your
-                <br />
-                account and services.
-              </>
+              <>Find instant answers to common questions about your account and services.</>
             }
           />
           <SupportCard
             iconSrc={container6}
             title="Contact"
             description={
-              <>
-                Get in touch with our expert
-                <br />
-                team via chat, phone, or
-                <br />
-                secure message.
-              </>
+              <>Get in touch with our expert team via chat, phone, or secure message.</>
             }
           />
           <SupportCard
@@ -278,26 +266,14 @@ export default function SupportPage() {
             title="Security Center"
             variant="red"
             description={
-              <>
-                Protect your identity and
-                <br />
-                assets with our latest security
-                <br />
-                protocols and alerts.
-              </>
+              <>Protect your identity and assets with our latest security protocols and alerts.</>
             }
           />
           <SupportCard
             iconSrc={container10}
             title="Locator"
             description={
-              <>
-                Find the nearest Brighter Bank
-                <br />
-                branch or ATM location in your
-                <br />
-                area.
-              </>
+              <>Find the nearest Brighter Bank branch or ATM location in your area.</>
             }
           />
         </div>
@@ -317,11 +293,7 @@ export default function SupportPage() {
                       question: 'How do I reset my online banking password?',
                       answer: (
                         <div className="text-slate text-left text-p2">
-                          You can reset your password by clicking 'Forgot Password' on the sign-in screen.
-                          <br />
-                          We'll send a verification code to your registered mobile number or email to help you
-                          <br />
-                          set a new one securely.
+                          You can reset your password by clicking 'Forgot Password' on the sign-in screen. We'll send a verification code to your registered mobile number or email to help you set a new one securely.
                         </div>
                       ),
                     },
@@ -342,7 +314,6 @@ export default function SupportPage() {
                       answer: (
                         <div className="text-slate text-left text-p2">
                           International transfers can take anywhere from 1–5 business days depending on the destination
-                          <br />
                           and processing requirements. You can track status in your account once initiated.
                         </div>
                       ),
@@ -353,7 +324,6 @@ export default function SupportPage() {
                       answer: (
                         <div className="text-slate text-left text-p2">
                           Yes. You can apply for a joint account online. Both applicants will need to verify their details
-                          <br />
                           and complete the required consent steps before approval.
                         </div>
                       ),
