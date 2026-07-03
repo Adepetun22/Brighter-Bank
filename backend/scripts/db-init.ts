@@ -1,5 +1,5 @@
-import { connectDatabase } from './config/database.js';
-import './models/index.js';
+import { connectDatabase } from '../src/config/database.ts';
+import '../src/models/index.ts';
 
 async function initializeDatabase() {
   try {
