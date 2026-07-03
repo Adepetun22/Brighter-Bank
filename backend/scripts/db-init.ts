@@ -1,4 +1,4 @@
-import { connectToMongoDB, disconnectFromMongoDB } from '../src/config/mongoClient';
+import { connectToMongoDB, disconnectFromMongoDB } from '../src/config/mongoClient.ts';
 
 async function initializeDatabase() {
   try {
