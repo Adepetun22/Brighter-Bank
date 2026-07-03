@@ -1,5 +1,5 @@
-import { connectDatabase } from '../src/config/database.ts';
-import '../src/models/index.ts';
+import { connectDatabase } from '../src/config/database';
+import '../src/models/index';
 
 async function initializeDatabase() {
   try {
@@ -46,7 +46,8 @@ async function initializeDatabase() {
     for (const collection of collections) {
       try {
         await db.createCollection(collection.name);
-        await db.command({ collMod: collection.name, validator: collection.validator });
+        const clientDb = (db as any).getClient().db();
+        await clientDb.command({ collMod: collection.name, validator: collection.validator });
         console.log(`Collection ${collection.name} validated`);
       } catch (error) {
         console.log(`Collection ${collection.name} may already exist`);
