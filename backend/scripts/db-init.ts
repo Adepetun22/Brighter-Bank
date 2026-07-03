@@ -1,11 +1,9 @@
-import { connectDatabase } from '../src/config/database';
-import '../src/models/index';
+import { connectToMongoDB, disconnectFromMongoDB } from '../src/config/mongoClient';
 
 async function initializeDatabase() {
   try {
-    await connectDatabase();
-
-    const db = (await import('mongoose')).connection;
+    const client = await connectToMongoDB();
+    const db = client.db();
 
     const collections = [
       { name: 'users', validator: {
@@ -46,14 +44,18 @@ async function initializeDatabase() {
     for (const collection of collections) {
       try {
         await db.createCollection(collection.name);
-        const clientDb = (db as any).getClient().db();
-        await clientDb.command({ collMod: collection.name, validator: collection.validator });
+        await db.command({ collMod: collection.name, validator: collection.validator });
         console.log(`Collection ${collection.name} validated`);
-      } catch (error) {
-        console.log(`Collection ${collection.name} may already exist`);
+      } catch (error: any) {
+        if (error.codeName === 'NamespaceExists') {
+          console.log(`Collection ${collection.name} already exists`);
+        } else {
+          console.error(`Failed to create or validate ${collection.name}:`, error);
+        }
       }
     }
 
+    await disconnectFromMongoDB();
     console.log('Database initialization complete');
     process.exit(0);
   } catch (error) {
