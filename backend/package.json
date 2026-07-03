@@ -8,6 +8,7 @@
     "start": "node dist/index.js",
     "dev": "nodemon --watch src --exec ts-node-esm src/index.ts",
     "build": "tsc -b",
+    "db:init": "ts-node-esm scripts/db-init.ts",
     "lint": "eslint . --ext .ts",
     "test": "jest"
   },
