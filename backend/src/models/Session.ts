@@ -19,7 +19,7 @@ const sessionSchema = new mongoose.Schema<ISession>(
     refreshToken: { type: String, required: true },
     userAgent: { type: String, encrypted: true },
     ipAddress: { type: String, encrypted: true },
-    expiresAt: { type: Date, required: true, expires: '0' },
+    expiresAt: { type: Date, required: true },
     lastAccessedAt: { type: Date, default: Date.now },
     revokedAt: { type: Date },
   },
