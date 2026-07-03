@@ -1,5 +1,5 @@
-import { connectToMongoDB, disconnectFromMongoDB } from '../src/config/mongoClient.ts';
-import { ensureDatabaseSchema } from '../src/config/databaseSchema.ts';
+import { connectToMongoDB, disconnectFromMongoDB } from '../src/config/mongoClient';
+import { ensureDatabaseSchema } from '../src/config/databaseSchema';
 
 async function initializeDatabase() {
   try {

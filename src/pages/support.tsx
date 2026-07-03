@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import LoadingSpinner from '../components/LoadingSpinner';
+import DialogModal from '../components/DialogModal';
+import { useAuth } from '../contexts/AuthContext';
+import { supportService } from '../services/supportService';
 
 import container3 from '../assets/container3.svg';
 import container4 from '../assets/container4.svg';
@@ -106,9 +110,21 @@ function FooterLink({ children }: { children: React.ReactNode }) {
 }
 
 export default function SupportPage() {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [openFaqIndex, setOpenFaqIndex] = useState<number>(0);
   const [activeLocationId, setActiveLocationId] = useState<'main' | 'westside' | 'plaza' | 'northside'>('main');
   const [mapLoaded, setMapLoaded] = useState<boolean>(false);
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('Account help request');
+  const [message, setMessage] = useState('How can we help you?');
+  const [category, setCategory] = useState<'account' | 'technical' | 'security' | 'payment' | 'other'>('account');
+  const [priority, setPriority] = useState<'low' | 'medium' | 'high' | 'urgent'>('medium');
+  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
+  const [showSupportSuccess, setShowSupportSuccess] = useState(false);
+  const [supportError, setSupportError] = useState<string | null>(null);
+  const [submittingSupport, setSubmittingSupport] = useState(false);
   const mapIframeRef = React.useRef<HTMLIFrameElement>(null);
   const navItems: NavItem[] = [
 
@@ -139,6 +155,51 @@ export default function SupportPage() {
     sendToMap(id);
   };
 
+  const handleSupportSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isAuthenticated) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
+    if (!subject.trim()) {
+      setSupportError('Subject is required.');
+      return;
+    }
+    if (!message.trim()) {
+      setSupportError('Message cannot be empty.');
+      return;
+    }
+
+    setSupportError(null);
+    setSubmittingSupport(true);
+
+    try {
+      await supportService.createTicket({
+        subject: subject.trim(),
+        message: message.trim(),
+        category,
+        priority,
+      });
+      setShowSupportSuccess(true);
+      setFullName('');
+      setEmail('');
+      setSubject('Account help request');
+      setMessage('How can we help you?');
+      setCategory('account');
+      setPriority('medium');
+    } catch (error) {
+      console.error('Support ticket error', error);
+      if ((error as any)?.code === '401') {
+        setShowLoginPrompt(true);
+      } else {
+        setSupportError('Unable to send your message. Please try again later.');
+      }
+    } finally {
+      setSubmittingSupport(false);
+    }
+  };
+
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {
       if (e.data?.type === 'MAP_READY') {
@@ -147,6 +208,7 @@ export default function SupportPage() {
         sendToMap(activeLocationId);
       }
     };
+
     window.addEventListener('message', onMessage);
     return () => window.removeEventListener('message', onMessage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -327,27 +389,41 @@ export default function SupportPage() {
 
               <form
                 className="flex flex-col gap-4 self-stretch mt-6"
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={handleSupportSubmit}
               >
                 <div className="flex flex-col gap-1 self-stretch">
                   <div className="text-slate text-p3">Full Name</div>
                   <input
-                    className="bg-cloud rounded border border-border py-3 px-4 self-stretch text-slate text-p2 outline-none"
+                    className="bg-cloud rounded border border-border py-3 px-4 self-stretch text-ink text-p2 outline-none"
                     type="text"
                     placeholder="John Doe"
                     name="fullName"
-                    defaultValue=""
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
                   />
                 </div>
 
                 <div className="flex flex-col gap-1 self-stretch">
                   <div className="text-slate text-p3">Email Address</div>
                   <input
-                    className="bg-cloud rounded border border-border py-3 px-4 self-stretch text-slate text-p2 outline-none"
+                    className="bg-cloud rounded border border-border py-3 px-4 self-stretch text-ink text-p2 outline-none"
                     type="email"
                     placeholder="john@example.com"
                     name="email"
-                    defaultValue=""
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1 self-stretch">
+                  <div className="text-slate text-p3">Subject</div>
+                  <input
+                    className="bg-cloud rounded border border-border py-3 px-4 self-stretch text-ink text-p2 outline-none"
+                    type="text"
+                    placeholder="What can we help with?"
+                    name="subject"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
                   />
                 </div>
 
@@ -357,29 +433,55 @@ export default function SupportPage() {
                     <select
                       className="flex-1 bg-transparent outline-none text-ink text-p2"
                       name="inquiryType"
-                      defaultValue="general"
+                      value={category}
+                      onChange={(e) => setCategory(e.target.value as any)}
                     >
-                      <option value="general">General Inquiry</option>
+                      <option value="account">Account</option>
+                      <option value="technical">Technical</option>
+                      <option value="security">Security</option>
+                      <option value="payment">Payment</option>
+                      <option value="other">Other</option>
                     </select>
+                  </label>
+                </div>
 
+                <div className="flex flex-col gap-1 self-stretch">
+                  <div className="text-slate text-p3">Priority</div>
+                  <label className="bg-cloud rounded border border-border py-3 px-4 self-stretch flex items-center gap-3">
+                    <select
+                      className="flex-1 bg-transparent outline-none text-ink text-p2"
+                      name="priority"
+                      value={priority}
+                      onChange={(e) => setPriority(e.target.value as any)}
+                    >
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                      <option value="urgent">Urgent</option>
+                    </select>
                   </label>
                 </div>
 
                 <div className="flex flex-col gap-1 self-stretch">
                   <div className="text-slate text-p3">Message</div>
                   <textarea
-                    className="bg-cloud rounded border border-border py-3 px-4 self-stretch h-[84px] text-slate text-p2 outline-none resize-none"
+                    className="bg-cloud rounded border border-border py-3 px-4 self-stretch h-[84px] text-ink text-p2 outline-none resize-none"
                     name="message"
-                    defaultValue="How can we help you?"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                   />
                 </div>
 
+                {supportError ? (
+                  <div className="text-error text-p3">{supportError}</div>
+                ) : null}
 
                 <button
                   type="submit"
-                  className="btn btn-primary rounded-lg py-3 w-full flex items-center justify-center"
+                  disabled={submittingSupport}
+                  className={`btn btn-primary rounded-lg py-3 w-full flex items-center justify-center ${submittingSupport ? 'opacity-70 cursor-not-allowed' : ''}`}
                 >
-                  <div className="text-snow text-b2">Submit Message</div>
+                  <div className="text-snow text-b2">{submittingSupport ? 'Sending...' : 'Submit Message'}</div>
                 </button>
               </form>
             </div>
@@ -395,6 +497,29 @@ export default function SupportPage() {
                 </div>
               </div>
             </div>
+
+            <DialogModal
+              open={showLoginPrompt}
+              title="Login required"
+              description="Please sign in before submitting a secure support ticket."
+              primaryLabel="Go to Login"
+              onPrimary={() => {
+                setShowLoginPrompt(false);
+                navigate('/login');
+              }}
+              secondaryLabel="Cancel"
+              onSecondary={() => setShowLoginPrompt(false)}
+              onClose={() => setShowLoginPrompt(false)}
+            />
+
+            <DialogModal
+              open={showSupportSuccess}
+              title="Message sent"
+              description="Your request has been submitted. Our support team will contact you soon."
+              primaryLabel="Continue"
+              onPrimary={() => setShowSupportSuccess(false)}
+              onClose={() => setShowSupportSuccess(false)}
+            />
           </div>
         </div>
 

@@ -21,7 +21,11 @@ export class SessionRepository {
   }
 
   async findByTokenId(tokenId: string): Promise<ISession | null> {
-    return Session.findOne({ tokenId, expiresAt: { $gt: new Date() } }).exec();
+    return Session.findOne({ tokenId, expiresAt: { $gt: new Date() }, revokedAt: { $exists: false } }).exec();
+  }
+
+  async findByRefreshToken(refreshToken: string): Promise<ISession | null> {
+    return Session.findOne({ refreshToken, expiresAt: { $gt: new Date() }, revokedAt: { $exists: false } }).exec();
   }
 
   async revokeByTokenId(tokenId: string): Promise<void> {

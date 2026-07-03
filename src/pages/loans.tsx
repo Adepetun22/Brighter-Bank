@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { loanService } from '../services/loanService';
 
 import containerdiR0 from '../assets/containerdi-r0.svg';
 import containerea0 from '../assets/containerea0.svg';
@@ -55,8 +56,35 @@ export default function LoansPage() {
   const { isAuthenticated } = useAuth();
   const [showLoginPrompt, setShowLoginPrompt] = useState(false);
   const [showLoanSuccess, setShowLoanSuccess] = useState(false);
+  const [showError, setShowError] = useState<string | null>(null);
+  const [isApplying, setIsApplying] = useState(false);
 
   const loanAmount = useMemo(() => toNumber(loanAmountText), [loanAmountText]);
+
+  async function handleApply() {
+    setShowError(null);
+    setIsApplying(true);
+
+    try {
+      await loanService.apply({
+        amount: loanAmount,
+        termMonths,
+        purpose: 'personal',
+      });
+
+      localStorage.setItem(LOAN_STATUS_KEY, 'current');
+      setShowLoanSuccess(true);
+    } catch (error) {
+      console.error('Loan apply error', error);
+      if ((error as any)?.code === '401') {
+        setShowLoginPrompt(true);
+      } else {
+        setShowError('Unable to submit loan application. Please try again later.');
+      }
+    } finally {
+      setIsApplying(false);
+    }
+  }
 
   const { monthlyPayment, totalInterest, totalPayment } = useMemo(() => {
     return calculateAmortizedLoan(loanAmount, termMonths, APR);
@@ -307,16 +335,19 @@ export default function LoansPage() {
               type="button"
               onClick={() => {
                 if (isAuthenticated) {
-                  localStorage.setItem(LOAN_STATUS_KEY, 'current');
-                  setShowLoanSuccess(true);
+                  void handleApply();
                 } else {
                   setShowLoginPrompt(true);
                 }
               }}
-              className="btn btn-primary w-full py-4 mt-6"
+              disabled={isApplying}
+              className={`btn btn-primary w-full py-4 mt-6 ${isApplying ? 'opacity-70 cursor-not-allowed' : ''}`}
             >
-              Apply for Loan
+              {isApplying ? 'Submitting...' : 'Apply for Loan'}
             </button>
+            {showError ? (
+              <div className="text-error text-p3 mt-3">{showError}</div>
+            ) : null}
           </div>
         </div>
 

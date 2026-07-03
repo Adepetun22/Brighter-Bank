@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { api } from '../data/api';
+import { ENDPOINTS } from '../data/endpoints';
 import lifestyleImage from '../assets/left-side-lifestyle-image0.png';
 import protectionIcon from '../assets/protection-icon0.svg';
 import lockIcon from '../assets/lock-icon-3420.svg';
@@ -8,8 +10,8 @@ import checkIcon from '../assets/check-10.svg';
 
 type Country = { code: string; dial: string; flag: string; placeholder: string };
 
-type FormErrors = Partial<Record<'name' | 'email' | 'phone' | 'dob' | 'ssn' | 'address' | 'city' | 'zip' | 'agreed', string>>;
-type Step1Field = 'name' | 'email' | 'phone' | 'country';
+type FormErrors = Partial<Record<'name' | 'email' | 'phone' | 'dob' | 'ssn' | 'address' | 'city' | 'zip' | 'agreed' | 'password' | 'confirmPassword' | 'submission', string>>;
+type Step1Field = 'name' | 'email' | 'phone' | 'country' | 'password' | 'confirmPassword';
 type Step2Field = 'dob' | 'ssn' | 'address' | 'city' | 'zip';
 
 const COUNTRIES: Country[] = [
@@ -86,7 +88,7 @@ function TextInput({
 function Step1({
   data, errors, onChange,
 }: {
-  data: { name: string; email: string; phone: string; country: string };
+  data: { name: string; email: string; phone: string; country: string; password: string; confirmPassword: string };
   errors: FormErrors;
   onChange: (k: Step1Field, v: string) => void;
 }) {
@@ -117,6 +119,28 @@ function Step1({
             onChange={v => onChange('email', v)}
             placeholder="name@example.com"
             hasError={!!errors.email}
+          />
+        </Field>
+
+        {/* Password */}
+        <Field label="Password" error={errors.password ?? ''}>
+          <TextInput
+            type="password"
+            value={data.password}
+            onChange={v => onChange('password', v)}
+            placeholder="Create a strong password"
+            hasError={!!errors.password}
+          />
+        </Field>
+
+        {/* Confirm Password */}
+        <Field label="Confirm Password" error={errors.confirmPassword ?? ''}>
+          <TextInput
+            type="password"
+            value={data.confirmPassword}
+            onChange={v => onChange('confirmPassword', v)}
+            placeholder="Retype your password"
+            hasError={!!errors.confirmPassword}
           />
         </Field>
 
@@ -286,7 +310,7 @@ function Step3({
 function Step4({
   step1, step2, accountType, agreed, onAgree,
 }: {
-  step1: { name: string; email: string; phone: string; country: string };
+  step1: { name: string; email: string; phone: string; country: string; password: string; confirmPassword: string };
   step2: { dob: string; ssn: string; address: string; city: string; zip: string };
   accountType: string;
   agreed: boolean;
@@ -346,13 +370,17 @@ function Step4({
 
 // ─── Validation ───────────────────────────────────────────────────────────────
 
-function validateStep1(data: { name: string; email: string; phone: string }): FormErrors {
+function validateStep1(data: { name: string; email: string; phone: string; password: string; confirmPassword: string }): FormErrors {
   const e: FormErrors = {};
   if (!data.name.trim())  e.name  = 'Legal name is required.';
   if (!data.email.trim()) e.email = 'Email address is required.';
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) e.email = 'Enter a valid email address.';
   if (!data.phone.trim()) e.phone = 'Phone number is required.';
   else if (!/^\d[\d\s\-().]{6,}$/.test(data.phone)) e.phone = 'Enter a valid phone number.';
+  if (!data.password) e.password = 'Password is required.';
+  else if (data.password.length < 8) e.password = 'Password must be at least 8 characters.';
+  if (!data.confirmPassword) e.confirmPassword = 'Please confirm your password.';
+  else if (data.password !== data.confirmPassword) e.confirmPassword = 'Passwords do not match.';
   return e;
 }
 
@@ -372,7 +400,7 @@ export default function OpenAnAccountPage() {
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
 
-  const [s1, setS1] = useState({ name: '', email: '', phone: '', country: 'US' });
+  const [s1, setS1] = useState({ name: '', email: '', phone: '', country: 'US', password: '', confirmPassword: '' });
   const [s2, setS2] = useState({ dob: '', ssn: '', address: '', city: '', zip: '' });
   const [accountType, setAccountType] = useState('checking');
   const [agreed, setAgreed] = useState(false);
@@ -390,6 +418,10 @@ export default function OpenAnAccountPage() {
   function handleChange1(k: Step1Field, v: string) {
     setS1(p => ({ ...p, [k]: v }));
     if (k !== 'country') removeError(k);
+    if (k === 'password' || k === 'confirmPassword') {
+      removeError('password');
+      removeError('confirmPassword');
+    }
   }
   function handleChange2(k: Step2Field, v: string) {
     setS2(p => ({ ...p, [k]: v }));
@@ -409,19 +441,34 @@ export default function OpenAnAccountPage() {
     setStep(v => v + 1);
   }
 
-  function submit() {
+  async function submit() {
     if (!agreed) {
       setErrors({ agreed: 'You must agree to the terms.' });
       return;
     }
+
     setErrors({});
-    localStorage.setItem(STORAGE_KEYS.PROFILE, JSON.stringify({
-      ...s1,
-      ...s2,
-      accountType,
-    }));
-    localStorage.setItem(STORAGE_KEYS.LOAN_STATUS, 'none');
-    setSubmitted(true);
+
+    try {
+      await api.post(ENDPOINTS.AUTH.REGISTER, {
+        name: s1.name,
+        email: s1.email,
+        password: s1.password,
+        phone: s1.phone,
+        country: s1.country,
+        dob: s2.dob,
+        ssn: s2.ssn,
+        address: s2.address,
+        city: s2.city,
+        zip: s2.zip,
+        accountType,
+      });
+
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Registration failed', error);
+      setErrors({ submission: 'Unable to submit your application. Please try again later.' });
+    }
   }
 
   const progress = ((step + 1) / STEPS.length) * 100;
@@ -531,6 +578,9 @@ export default function OpenAnAccountPage() {
             )}
             {errors.agreed && (
               <span className="text-error text-p3 -mt-8">{errors.agreed}</span>
+            )}
+            {errors.submission && (
+              <span className="text-error text-p3 -mt-8">{errors.submission}</span>
             )}
 
             {/* Navigation buttons */}

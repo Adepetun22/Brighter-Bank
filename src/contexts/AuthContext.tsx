@@ -17,11 +17,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
 
   const login = useCallback(async (email: string, password: string) => {
-    const { token, user: me } = await api.post<{ token: string; user: User }>(
+    const { token, refreshToken, user: me } = await api.post<{ token: string; refreshToken?: string; user: User }>(
       ENDPOINTS.AUTH.LOGIN,
       { email, password }
     );
     sessionStorage.setItem(SESSION.TOKEN_KEY, token);
+    if (refreshToken) {
+      sessionStorage.setItem(SESSION.REFRESH_KEY, refreshToken);
+    }
     setUser(me);
   }, []);
 

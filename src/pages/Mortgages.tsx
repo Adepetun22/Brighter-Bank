@@ -1,4 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { mortgageService } from '../services/mortgageService';
+import DialogModal from '../components/DialogModal';
 
 import mortgagesHero from '../assets/mortgages-hero.png';
 
@@ -112,6 +116,13 @@ function WizardCard() {
     },
   } as const;
 
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [applicationError, setApplicationError] = React.useState<string | null>(null);
+  const [showLoginPrompt, setShowLoginPrompt] = React.useState(false);
+  const [showSuccess, setShowSuccess] = React.useState(false);
+
   const current = stepMeta[step];
 
   const onChoose = (key: string) => {
@@ -130,10 +141,63 @@ function WizardCard() {
     return Boolean(answers.credit);
   })();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const getMortgagePayload = () => {
+    const propertyType =
+      answers.property === 'property_primary'
+        ? 'single-family'
+        : answers.property === 'property_second'
+        ? 'condo'
+        : answers.property === 'property_invest'
+        ? 'townhouse'
+        : 'multi-family';
+
+    return {
+      propertyValue: 425000,
+      downPayment: 85000,
+      loanAmount: 340000,
+      termYears: 30,
+      propertyType,
+      propertyAddress: {
+        street: '123 Oak Avenue',
+        city: 'Portland',
+        state: 'OR',
+        zip: '97205',
+      },
+    };
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canContinue) return;
-    if (step < 4) setStep((s) => (s + 1) as 2 | 3 | 4);
+
+    if (step < 4) {
+      setStep((s) => (s + 1) as 2 | 3 | 4);
+      return;
+    }
+
+    if (!isAuthenticated) {
+      setShowLoginPrompt(true);
+      return;
+    }
+
+    setApplicationError(null);
+    setIsSubmitting(true);
+
+    try {
+      await mortgageService.apply(getMortgagePayload());
+      setShowSuccess(true);
+      setStep(1);
+      setAnswers({});
+    } catch (error) {
+      console.error('Mortgage application error', error);
+      if ((error as any)?.code === '401') {
+        setShowLoginPrompt(true);
+      } else {
+        setApplicationError('Unable to submit mortgage application. Please try again later.');
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const progressWidth = `${progressPercent}%`;
@@ -226,17 +290,44 @@ function WizardCard() {
 
           <button
             type="submit"
-            disabled={!canContinue}
+            disabled={!canContinue || isSubmitting}
             className={`bg-[#2563eb] rounded-lg pt-4 pr-10 pb-4 pl-10 flex flex-row gap-0 items-center justify-center shrink-0 relative self-stretch max-w-2xl transition cursor-pointer ${
-              canContinue ? 'hover:brightness-[1.05] hover:-translate-y-[1px]' : 'opacity-50 cursor-not-allowed'
+              !canContinue || isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:brightness-[1.05] hover:-translate-y-[1px]'
             }`}
           >
             <div className="text-[#eeefff] text-center font-['Inter-SemiBold',_sans-serif] text-lg leading-6 font-semibold relative flex items-center justify-center w-full">
-              {continueLabel}
+              {isSubmitting ? 'Submitting...' : continueLabel}
             </div>
           </button>
+
+          {applicationError ? (
+            <div className="text-error text-p3 mt-4">{applicationError}</div>
+          ) : null}
         </form>
       </div>
+
+      <DialogModal
+        open={showLoginPrompt}
+        title="Login required"
+        description="Please sign in before submitting a mortgage application."
+        primaryLabel="Go to Login"
+        onPrimary={() => {
+          setShowLoginPrompt(false);
+          navigate('/login');
+        }}
+        secondaryLabel="Cancel"
+        onSecondary={() => setShowLoginPrompt(false)}
+        onClose={() => setShowLoginPrompt(false)}
+      />
+
+      <DialogModal
+        open={showSuccess}
+        title="Application submitted"
+        description="Your mortgage application has been received. We will contact you shortly with next steps."
+        primaryLabel="Continue"
+        onPrimary={() => setShowSuccess(false)}
+        onClose={() => setShowSuccess(false)}
+      />
     </div>
   );
 }

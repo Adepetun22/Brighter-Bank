@@ -8,6 +8,19 @@ export class UserRepository {
     firstName: string;
     lastName: string;
     phone?: string;
+    dateOfBirth?: Date;
+    address?: {
+      street: string;
+      city: string;
+      state?: string;
+      zip: string;
+      country: string;
+    };
+    identity?: {
+      ssnLast4?: string;
+      verificationStatus?: 'pending' | 'verified' | 'rejected';
+      documents?: Array<{ type: string; url: string; verifiedAt?: Date }>;
+    };
   }): Promise<IUser> {
     const passwordHash = await bcrypt.hash(userData.password, 12);
     const user = new User({
