@@ -12,7 +12,7 @@ import officialTalks from '../assets/official-talks0.png';
 import technologyImage from '../assets/technology-image-led0.png';
 import sunsetBeach from '../assets/sunset-beach-image0.png';
 import officeSettings from '../assets/office-settings-enviroment0.png';
-import officeCinema from '../assets/video/3192362-uhd_3840_2160_25fps.webm';
+const officeCinema = '/video/3192362-uhd_3840_2160_25fps.webm';
 
 function VideoScene() {
   const videoRef = useRef<HTMLVideoElement>(null);
