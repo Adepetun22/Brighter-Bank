@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import { api } from '../data/api';
 import { ENDPOINTS } from '../data/endpoints';
 import { SESSION } from '../constants';
@@ -7,6 +7,7 @@ import type { User } from '../types';
 interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
+  initializing: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
@@ -15,6 +16,19 @@ const AuthContext = createContext<AuthState | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [initializing, setInitializing] = useState(true);
+
+  useEffect(() => {
+    const token = sessionStorage.getItem(SESSION.TOKEN_KEY);
+    if (!token) { setInitializing(false); return; }
+    api.get<User>(ENDPOINTS.AUTH.ME)
+      .then(setUser)
+      .catch(() => {
+        sessionStorage.removeItem(SESSION.TOKEN_KEY);
+        sessionStorage.removeItem(SESSION.REFRESH_KEY);
+      })
+      .finally(() => setInitializing(false));
+  }, []);
 
   const login = useCallback(async (email: string, password: string) => {
     const { token, refreshToken, user: me } = await api.post<{ token: string; refreshToken?: string; user: User }>(
@@ -35,7 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, initializing, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

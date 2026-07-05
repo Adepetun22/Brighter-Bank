@@ -7,9 +7,11 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 
 import LoadingSpinner from './LoadingSpinner';
+import { useAuth } from '../contexts/AuthContext';
 
 export default function HeroScene() {
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const [sceneReady, setSceneReady] = useState(false);
   const mountRef = useRef<HTMLDivElement>(null);
   const animationIdRef = useRef<number | null>(null);
@@ -500,14 +502,16 @@ export default function HeroScene() {
           Experience banking that grows with you. Secure, smart, and designed
           for your modern lifestyle.
         </p>
-        <button
-          type="button"
-          className="btn btn-primary pointer-events-auto px-9 py-4 text-b1"
-          style={{ animation: 'fadeInUp 1.2s ease 1.1s both' }}
-          onClick={() => navigate('/open-an-account')}
-        >
-          Open a Free Account
-        </button>
+        {!isAuthenticated ? (
+          <button
+            type="button"
+            className="btn btn-primary pointer-events-auto px-9 py-4 text-b1"
+            style={{ animation: 'fadeInUp 1.2s ease 1.1s both' }}
+            onClick={() => navigate('/open-an-account')}
+          >
+            Open a Free Account
+          </button>
+        ) : null}
       </div>
       <style>{`
         @keyframes fadeInUp {

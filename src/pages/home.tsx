@@ -1,6 +1,7 @@
 import React, { useState, lazy, Suspense, type JSX } from 'react';
 import { NavLink } from 'react-router-dom';
 const HeroScene = lazy(() => import('../components/HeroScene'));
+import { useAuth } from '../contexts/AuthContext';
 import CookieBanner from '../components/CookieBanner';
 import container16Hr0 from '../assets/container-16-hr0.svg';
 import container0 from '../assets/container0.svg';
@@ -36,6 +37,7 @@ import creditCardImage from '../assets/credit-card.webp';
 
 export default function HomePage() {
   type ProductTab = 'Checking' | 'Savings' | 'Credit Cards';
+  const { isAuthenticated } = useAuth();
   const [activeTab, setActiveTab] = useState<ProductTab>('Checking');
   const activeTabKey = activeTab.toLowerCase() as Lowercase<ProductTab>;
   const tabContents: Record<Lowercase<ProductTab>, JSX.Element> = {
@@ -357,33 +359,35 @@ export default function HomePage() {
       </section>
 
       {/* CTA */}
-      <section className="w-full px-6 tablet:px-10 desktop:px-24 mb-section">
-        <div
-          className="mx-auto relative overflow-hidden rounded-xl p-8 w-full max-w-[1200px] tablet:p-16"
-          style={{ background: 'linear-gradient(135deg, rgba(18, 28, 42, 1) 0%, rgba(0, 74, 198, 1) 100%)' }}
-        >
-          <img
-            src={image4T50}
-            alt="Subtle background"
-            className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-10"
-          />
-          <div className="relative flex flex-col gap-6 items-center text-center mx-auto">
-            <h2 className="text-white text-h2">Ready to start your journey?</h2>
-            <p className="max-w-2xl text-[#dbe1ff] text-p2">
-              Join over 2 million customers who have discovered a brighter way to bank. Set up your
-              account in less than 5 minutes.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 pt-4">
-              <NavLink to="/open-an-account" className="btn btn-primary rounded-lg px-10 py-4 text-snow text-b1">
-                Get Started Now
-              </NavLink>
-              <button type="button" className="btn btn-secondary rounded-lg px-10 py-4 text-b1">
-                Contact Sales
-              </button>
+      {!isAuthenticated ? (
+        <section className="w-full px-6 tablet:px-10 desktop:px-24 mb-section">
+          <div
+            className="mx-auto relative overflow-hidden rounded-xl p-8 w-full max-w-[1200px] tablet:p-16"
+            style={{ background: 'linear-gradient(135deg, rgba(18, 28, 42, 1) 0%, rgba(0, 74, 198, 1) 100%)' }}
+          >
+            <img
+              src={image4T50}
+              alt="Subtle background"
+              className="pointer-events-none absolute inset-0 h-full w-full object-cover opacity-10"
+            />
+            <div className="relative flex flex-col gap-6 items-center text-center mx-auto">
+              <h2 className="text-white text-h2">Ready to start your journey?</h2>
+              <p className="max-w-2xl text-[#dbe1ff] text-p2">
+                Join over 2 million customers who have discovered a brighter way to bank. Set up your
+                account in less than 5 minutes.
+              </p>
+              <div className="flex flex-wrap justify-center gap-4 pt-4">
+                <NavLink to="/open-an-account" className="btn btn-primary rounded-lg px-10 py-4 text-snow text-b1">
+                  Get Started Now
+                </NavLink>
+                <button type="button" className="btn btn-secondary rounded-lg px-10 py-4 text-b1">
+                  Contact Sales
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : null}
       <CookieBanner />
     </div>
   );

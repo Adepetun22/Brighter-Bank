@@ -122,6 +122,73 @@ function WizardCard() {
   const [applicationError, setApplicationError] = React.useState<string | null>(null);
   const [showLoginPrompt, setShowLoginPrompt] = React.useState(false);
   const [showSuccess, setShowSuccess] = React.useState(false);
+  const [showAdvice, setShowAdvice] = React.useState(false);
+
+  const getAdvice = (): { headline: string; strategy: string; type: string; tips: string[] } => {
+    const { goal, timing, property, credit } = answers;
+
+    // Determine mortgage type recommendation
+    let type = '30-Year Fixed';
+    let headline = 'A Steady, Predictable Path';
+    let strategy = '';
+    const tips: string[] = [];
+
+    if (goal === 'goal_refi') {
+      type = credit === 'credit_ready' ? '15-Year Fixed' : '30-Year Fixed Refinance';
+      headline = 'Refinancing for Long-Term Savings';
+      strategy = 'Refinancing now can lock in a lower rate and reduce your total interest paid. A 15-year fixed is ideal if you can handle higher monthly payments and want to build equity faster.';
+      tips.push('Compare your current rate vs. today\'s rates — even 0.5% savings matters.');
+      tips.push('Factor in closing costs (typically 2–5% of loan amount) to calculate your break-even point.');
+    } else if (goal === 'goal_equity') {
+      type = 'HELOC or Cash-Out Refinance';
+      headline = 'Unlocking Your Home\'s Equity';
+      strategy = 'A cash-out refinance replaces your mortgage with a larger one, giving you the difference in cash. A HELOC works like a credit line — more flexible but variable rate.';
+      tips.push('Use equity for high-ROI purposes: renovations, debt consolidation, or education.');
+      tips.push('Keep your LTV (loan-to-value) below 80% to avoid PMI.');
+    } else if (goal === 'goal_invest') {
+      type = property === 'property_invest' ? '30-Year Fixed (Investment)' : '5/1 ARM';
+      headline = 'Financing an Investment Property';
+      strategy = 'Investment property loans typically require 20–25% down and carry slightly higher rates. An ARM can work well if you plan to sell or refinance within 5–7 years.';
+      tips.push('Ensure rental income projections cover your mortgage + 20% buffer.');
+      tips.push('Consider an LLC structure for liability protection on rental properties.');
+    } else {
+      // goal_buy or default
+      if (timing === 'timing_asap' && credit === 'credit_ready') {
+        type = '30-Year Fixed';
+        headline = 'You\'re Ready — Let\'s Move Fast';
+        strategy = 'With strong credit and urgency, a 30-year fixed gives you the lowest monthly payment and rate certainty. Get pre-approved immediately to strengthen your offer.';
+        tips.push('Get a pre-approval letter before making any offers.');
+        tips.push('Lock your rate as soon as you\'re under contract — rates can shift daily.');
+      } else if (credit === 'credit_rebuilding' || credit === 'credit_improving') {
+        type = 'FHA Loan (3.5% Down)';
+        headline = 'Build Toward Homeownership';
+        strategy = 'An FHA loan is designed for buyers with credit scores as low as 580. It requires just 3.5% down, making it accessible while you continue improving your credit profile.';
+        tips.push('Target a credit score of 620+ before applying to get better rates.');
+        tips.push('Pay down revolving balances below 30% utilization — this boosts your score fastest.');
+      } else if (timing === 'timing_explore') {
+        type = '30-Year Fixed (Pre-plan)';
+        headline = 'Plan Now, Buy with Confidence Later';
+        strategy = 'You have time on your side. Use this period to save for a larger down payment (20% avoids PMI), monitor rates, and get your finances in order for the best possible terms.';
+        tips.push('A 20% down payment eliminates PMI, saving $100–$200/month on a $300K loan.');
+        tips.push('Set a rate alert — if rates drop 0.75%+, it may be time to act.');
+      } else {
+        type = '30-Year Fixed';
+        headline = 'The Most Flexible Path Forward';
+        strategy = 'A 30-year fixed mortgage offers the lowest monthly payment and full rate predictability. It\'s the most popular choice for primary home buyers at any stage.';
+        tips.push('Aim for at least 10% down to reduce your loan amount and monthly payment.');
+        tips.push('Shop at least 3 lenders — rates can vary by 0.5% or more between institutions.');
+      }
+    }
+
+    if (property === 'property_second') {
+      tips.push('Second homes require 10–15% down and slightly higher rates than primary residences.');
+    }
+    if (timing === 'timing_asap') {
+      tips.push('Move quickly — get your income docs, tax returns, and bank statements ready now.');
+    }
+
+    return { headline, strategy, type, tips };
+  };
 
   const current = stepMeta[step];
 
@@ -174,6 +241,13 @@ function WizardCard() {
       setStep((s) => (s + 1) as 2 | 3 | 4);
       return;
     }
+
+    // Show advice modal first — actual submission happens after user closes it
+    setShowAdvice(true);
+  };
+
+  const handleAdviceClosed = async () => {
+    setShowAdvice(false);
 
     if (!isAuthenticated) {
       setShowLoginPrompt(true);
@@ -328,6 +402,63 @@ function WizardCard() {
         onPrimary={() => setShowSuccess(false)}
         onClose={() => setShowSuccess(false)}
       />
+
+      {/* Advice Modal */}
+      {showAdvice && (() => {
+        const advice = getAdvice();
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4" style={{ background: 'rgba(0,0,0,0.45)' }}>
+            <div className="bg-snow rounded-2xl border border-border shadow-2xl w-full max-w-lg flex flex-col overflow-hidden">
+              {/* Header */}
+              <div className="bg-[#004ac6] px-8 py-6 flex flex-col gap-1">
+                <span className="text-[#dbe1ff] text-p3 uppercase tracking-[1.4px]">Your Personalised Strategy</span>
+                <h2 className="text-snow text-h3">{advice.headline}</h2>
+                <span className="inline-flex items-center gap-2 mt-2 bg-white/15 rounded-lg px-3 py-1 w-max">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="#dbe1ff" strokeWidth="1.5"/><path d="M7 4v3.5l2 1.5" stroke="#dbe1ff" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                  <span className="text-[#dbe1ff] text-p3">Recommended: <strong className="text-snow">{advice.type}</strong></span>
+                </span>
+              </div>
+
+              {/* Body */}
+              <div className="px-8 py-6 flex flex-col gap-5">
+                <p className="text-slate text-p2">{advice.strategy}</p>
+
+                <div className="flex flex-col gap-2">
+                  <span className="text-ink text-b2">Key Tips for You</span>
+                  <ul className="flex flex-col gap-2">
+                    {advice.tips.map((tip, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <span className="mt-1 w-4 h-4 rounded-full bg-[#e6eeff] flex items-center justify-center shrink-0">
+                          <svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1.5 4L3.5 6L6.5 2" stroke="#004ac6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                        </span>
+                        <span className="text-slate text-p3">{tip}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="px-8 pb-7 flex flex-col gap-3">
+                <button
+                  type="button"
+                  onClick={handleAdviceClosed}
+                  className="btn btn-primary w-full py-4 rounded-lg"
+                >
+                  <span className="text-snow text-b1">Got it — Submit My Application</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowAdvice(false)}
+                  className="btn btn-secondary w-full py-3 rounded-lg"
+                >
+                  <span className="text-primary text-b2">Go Back & Review Answers</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

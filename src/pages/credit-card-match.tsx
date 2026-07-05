@@ -65,24 +65,24 @@ export default function CreditCardMatchPage() {
         </div>
 
         {/* Result Card */}
-        <div className="bg-snow rounded-lg border border-border p-8 tablet:p-16 flex flex-col gap-0 items-center justify-center self-stretch shadow-sm max-w-2xl w-full">
-          <div className="flex flex-col tablet:flex-row gap-8 items-center">
+        <div className="bg-snow rounded-lg border border-border p-8 tablet:p-16 flex flex-col gap-0 items-center justify-center self-center mx-auto shadow-sm max-w-2xl w-full text-center">
+          <div className="flex flex-col tablet:flex-row gap-8 items-center justify-center">
             <img src={cardData[recommendedKey].image} alt={cardData[recommendedKey].name} className="rounded w-32 h-32 object-cover" />
-            <div className="flex flex-col gap-3 items-start">
+            <div className="flex flex-col gap-3 items-center text-center">
               <h2 className="text-ink text-h2">{cardData[recommendedKey].name}</h2>
               <p className="text-slate text-p2 max-w-sm">
                 {cardData[recommendedKey].description}
               </p>
               <div className="flex flex-col gap-2 pt-2">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center gap-2 flex-wrap">
                   <span className="text-slate text-b3">Rewards Rate:</span>
                   <span className="text-ink text-b2 font-semibold">{cardData[recommendedKey].rate}</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center gap-2 flex-wrap">
                   <span className="text-slate text-b3">Annual Fee:</span>
                   <span className="text-ink text-b2 font-semibold">{cardData[recommendedKey].fee}</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center gap-2 flex-wrap">
                   <span className="text-slate text-b3">Intro Offer:</span>
                   <span className="text-ink text-b2 font-semibold">{cardData[recommendedKey].intro}</span>
                 </div>
@@ -90,7 +90,7 @@ export default function CreditCardMatchPage() {
             </div>
           </div>
 
-          <div className="pt-8 flex flex-col tablet:flex-row gap-4 w-full">
+          <div className="pt-8 flex flex-col tablet:flex-row gap-4 w-full justify-center items-center">
             <Link to="/credit-cards" className="btn btn-secondary rounded-lg px-6 py-3 text-b2 text-center">
               Compare Other Cards
             </Link>
@@ -101,7 +101,7 @@ export default function CreditCardMatchPage() {
         </div>
 
         {/* Estimated Rewards */}
-        <div className="bg-[#eff4ff] rounded-lg p-6 tablet:p-8 flex flex-col gap-2 items-center self-stretch max-w-2xl">
+        <div className="bg-[#eff4ff] rounded-lg p-6 tablet:p-8 flex flex-col gap-2 items-center self-center mx-auto max-w-2xl">
           <span className="text-ink text-p3 uppercase tracking-[0.7px]">ESTIMATED YEARLY REWARDS</span>
           <span className="text-[#004ac6] text-[48px] leading-[56px] font-bold">
             ${yearly.toLocaleString()}
