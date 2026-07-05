@@ -1,4 +1,4 @@
-Brighter Bank is a digital-first banking brand. This website serves as the primary public-facing platform for customers to:
+Brighter Bank is fully developed through MERN-STACK. This website serves as the primary public-facing platform for customers to:
 
 - Explore personal, business, lending, mortgage, credit card, investing, and insurance products.
 - Compare rates and features through interactive tools.
@@ -16,5 +16,6 @@ Brighter Bank is a digital-first banking brand. This website serves as the prima
 | **Styling** | [Tailwind CSS](https://tailwindcss.com/) |
 | **3D Rendering** | [Three.js](https://threejs.org/) |
 | **Carousels / Sliders** | [Swiper](https://swiperjs.com/) |
-| **Framework** (optional integration) | React / Next.js 
+| **Backend Code**  [Node.js + TypeScript + Express.js]
+| **Backend Server** [Fly.io + MongoDB] 
 <img width="1900" height="912" alt="Screenshot 2026-06-23 204240" src="https://github.com/user-attachments/assets/f3476a9d-77ab-4fe0-b1fa-88bca20af237" />
