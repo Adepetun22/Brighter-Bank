@@ -1,5 +1,5 @@
 import React, { useState, lazy, Suspense, type JSX } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 const HeroScene = lazy(() => import('../components/HeroScene'));
 import { useAuth } from '../contexts/AuthContext';
 import CookieBanner from '../components/CookieBanner';
@@ -38,6 +38,7 @@ import creditCardImage from '../assets/credit-card.webp';
 export default function HomePage() {
   type ProductTab = 'Checking' | 'Savings' | 'Credit Cards';
   const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<ProductTab>('Checking');
   const activeTabKey = activeTab.toLowerCase() as Lowercase<ProductTab>;
   const tabContents: Record<Lowercase<ProductTab>, JSX.Element> = {
@@ -64,7 +65,7 @@ export default function HomePage() {
               <span className="text-ink text-p2">Fee-free ATM access nationwide</span>
             </div>
           </div>
-          <button type="button" className="btn btn-primary rounded-lg px-8 py-4 w-max">
+          <button type="button" onClick={() => navigate('/learn-more/checking')} className="btn btn-primary rounded-lg px-8 py-4 w-max">
             <span className="text-snow text-b1">Learn More</span>
           </button>
         </div>
@@ -93,7 +94,7 @@ export default function HomePage() {
               <span className="text-ink text-p2">Instant transfers</span>
             </div>
           </div>
-          <button type="button" className="btn btn-primary rounded-lg px-8 py-4 w-max">
+          <button type="button" onClick={() => navigate('/learn-more/savings')} className="btn btn-primary rounded-lg px-8 py-4 w-max">
             <span className="text-snow text-b1">Learn More</span>
           </button>
         </div>
@@ -122,7 +123,7 @@ export default function HomePage() {
               <span className="text-ink text-p2">Instant transfers</span>
             </div>
           </div>
-          <button type="button" className="btn btn-primary rounded-lg px-8 py-4 w-max">
+          <button type="button" onClick={() => navigate('/learn-more/credit-cards')} className="btn btn-primary rounded-lg px-8 py-4 w-max">
             <span className="text-snow text-b1">Learn More</span>
           </button>
         </div>

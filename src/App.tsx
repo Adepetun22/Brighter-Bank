@@ -18,6 +18,10 @@ const InvestPage = lazy(() => import('./pages/investing'));
 const LoginPage = lazy(() => import('./pages/login'));
 const OpenAnAccountPage = lazy(() => import('./pages/open-an-account'));
 const ProfilePage = lazy(() => import('./pages/profile'));
+const CheckingLearnMorePage = lazy(() => import('./pages/learn-more/checking'));
+const SavingsLearnMorePage = lazy(() => import('./pages/learn-more/savings'));
+const CreditCardsLearnMorePage = lazy(() => import('./pages/learn-more/credit-cards'));
+
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -49,6 +53,10 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/open-an-account" element={<OpenAnAccountPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/learn-more/checking" element={<CheckingLearnMorePage />} />
+            <Route path="/learn-more/savings" element={<SavingsLearnMorePage />} />
+            <Route path="/learn-more/credit-cards" element={<CreditCardsLearnMorePage />} />
+
 
             {/* Default */}
             <Route path="/" element={<HomePage />} />
