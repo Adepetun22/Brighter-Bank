@@ -35,6 +35,10 @@ function App() {
     <AuthProvider>
     <div className="flex flex-col min-h-screen">
       <ScrollToTop />
+      <div className="bg-yellow-400 text-black text-center text-sm py-2 px-4 font-medium z-50">
+        ⚠️ This is a demo website for portfolio purposes only. Not a real bank. No real financial services are offered.
+      </div>
+
       <Navigation />
 
       <main className="flex-1">
