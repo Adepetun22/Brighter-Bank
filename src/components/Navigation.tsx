@@ -15,7 +15,7 @@ const navLinks = [
 function Navigation() {
   const { isAuthenticated, logout } = useAuth();
   return (
-    <div className="w-full bg-snow border-b border-border shadow-sm sticky top-0 z-50">
+    <div className="w-full bg-snow border-b border-border shadow-sm sticky top-9 z-40">
       <div className="px-6 h-20 flex items-center justify-between max-w-[1440px] mx-auto">
         <NavLink to="/" className="text-primary text-h2">Brighter Bank</NavLink>
 

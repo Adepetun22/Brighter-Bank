@@ -33,9 +33,9 @@ function ScrollToTop() {
 function App() {
   return (
     <AuthProvider>
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen pt-9">
       <ScrollToTop />
-      <div className="bg-yellow-400 text-black text-center text-sm py-2 px-4 font-medium z-50">
+      <div className="bg-yellow-400 text-black text-center text-sm py-2 px-4 font-medium fixed top-0 left-0 right-0 z-50">
         ⚠️ This is a demo website for portfolio purposes only. Not a real bank. No real financial services are offered.
       </div>
 
