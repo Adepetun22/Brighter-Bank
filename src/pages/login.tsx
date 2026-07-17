@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import lockIcon from '../assets/lock-icon-110.svg';
@@ -12,22 +12,62 @@ export default function LoginPage() {
   const [remember, setRemember] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [errors, setErrors] = useState<{ email?: string; password?: string; general?: string }>({});
   const [showConfirm, setShowConfirm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loginAttempts, setLoginAttempts] = useState(0);
+  const lastAttemptTime = useRef<number>(0);
+
+  // Rate limiting check
+  const checkRateLimit = (): boolean => {
+    const now = Date.now();
+    const timeSinceLastAttempt = now - lastAttemptTime.current;
+    
+    // Reset attempts if it's been more than 1 minute
+    if (timeSinceLastAttempt > 60000) {
+      setLoginAttempts(0);
+    }
+    
+    // Check if too many attempts
+    if (loginAttempts >= 3) {
+      if (timeSinceLastAttempt < 300000) { // 5 minutes lockout
+        setErrors({ general: 'Too many failed attempts. Please wait 5 minutes before trying again.' });
+        return false;
+      } else {
+        setLoginAttempts(0); // Reset after lockout period
+      }
+    }
+    
+    lastAttemptTime.current = now;
+    return true;
+  };
 
   function validate() {
     const errs: { email?: string; password?: string } = {};
     if (!email) errs.email = 'Email is required.';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = 'Enter a valid email address.';
     if (!password) errs.password = 'Password is required.';
+    else if (password.length < 8) errs.password = 'Password must be at least 8 characters.';
     return errs;
   }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    
+    // Check rate limit before processing
+    if (!checkRateLimit()) {
+      return;
+    }
+    
     const errs = validate();
-    if (Object.keys(errs).length) { setErrors(errs); return; }
+    if (Object.keys(errs).length) { 
+      setErrors(errs); 
+      setLoginAttempts(prev => prev + 1);
+      return; 
+    }
+    
     setErrors({});
+    setIsSubmitting(true);
     setShowConfirm(true);
   }
 
@@ -35,10 +75,14 @@ export default function LoginPage() {
     setShowConfirm(false);
     try {
       await login(email, password);
+      setLoginAttempts(0); // Reset on successful login
       navigate('/');
     } catch (err) {
       console.error('Login failed', err);
-      setErrors({ email: 'Invalid credentials' });
+      setLoginAttempts(prev => prev + 1);
+      setErrors({ general: 'Invalid credentials. Please try again.' });
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -68,6 +112,9 @@ export default function LoginPage() {
 
         {/* Form */}
         <form onSubmit={handleSubmit} noValidate className="pt-6 pb-8 flex flex-col gap-6">
+          {/* General error message */}
+          {errors.general && <div className="text-error text-p3 text-center bg-red-50 p-3 rounded-md">{errors.general}</div>}
+          
           {/* Email */}
           <div className="flex flex-col gap-1">
             <div className="relative">
@@ -75,13 +122,14 @@ export default function LoginPage() {
                 id="email"
                 type="email"
                 placeholder=" "
-                autoComplete="email"
+                autoComplete="username"
                 value={email}
                 onChange={e => {
                   setEmail(e.target.value);
                   setErrors(prev => {
                     const next = { ...prev };
                     delete next.email;
+                    delete next.general;
                     return next;
                   });
                 }}
@@ -111,6 +159,7 @@ export default function LoginPage() {
                   setErrors(prev => {
                     const next = { ...prev };
                     delete next.password;
+                    delete next.general;
                     return next;
                   });
                 }}
@@ -164,8 +213,12 @@ export default function LoginPage() {
           </div>
 
           {/* Sign In */}
-          <button type="submit" className="btn btn-primary w-full py-4">
-            <span className="text-snow text-b1">Sign In</span>
+          <button 
+            type="submit" 
+            disabled={isSubmitting} 
+            className={`btn btn-primary w-full py-4 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+          >
+            <span className="text-snow text-b1">{isSubmitting ? 'Signing in...' : 'Sign In'}</span>
           </button>
         </form>
 

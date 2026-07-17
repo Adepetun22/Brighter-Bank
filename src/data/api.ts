@@ -11,6 +11,11 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
 
+  // Validate the URL to prevent SSRF attacks
+  if (path.startsWith('//') || path.includes('..')) {
+    throw new Error('Invalid request path');
+  }
+
   let res: Response;
   try {
     res = await fetch(`${BASE_URL}${path}`, {
@@ -18,6 +23,10 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
       signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest', // Prevent simple form submissions
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin',
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...options.headers,
       },
@@ -25,6 +34,11 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   } finally {
     clearTimeout(timer);
     loadingService.stop();
+  }
+
+  // Check for security-related response issues
+  if (res.type === 'opaque' || res.status === 0) {
+    throw new Error('Network error or blocked request');
   }
 
   if (!res.ok) {
