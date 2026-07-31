@@ -19,3 +19,22 @@ Brighter Bank is fully developed through MERN-STACK. This website serves as the 
 | **Backend Code**  [Node.js + TypeScript + Express.js]
 | **Backend Server** [Fly.io + MongoDB] 
 <img width="1900" height="912" alt="Screenshot 2026-06-23 204240" src="https://github.com/user-attachments/assets/f3476a9d-77ab-4fe0-b1fa-88bca20af237" />
+
+Scripts
+npm run dev: Start development server
+npm run server: Start AI proxy backend
+npm run dev:all: Start both frontend and backend
+npm run build: Build for production
+npm run preview: Preview production build
+npm run lint: Run ESLint
+npm run serve: Serve production build
+Contributing
+We welcome contributions to Zac-AI Dashboard! To contribute:
+
+Fork the repository
+Create a feature branch (git checkout -b feature/amazing-feature)
+Make your changes
+Add tests if applicable
+Commit your changes (git commit -m 'Add amazing feature')
+Push to the branch (git push origin feature/amazing-feature)
+Open a Pull Request
