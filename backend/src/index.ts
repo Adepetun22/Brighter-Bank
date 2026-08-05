@@ -205,6 +205,10 @@ app.post('/auth/login', async (req, res) => {
       return res.status(401).json({ code: '401', message: 'Invalid credentials.' });
     }
 
+    if (!user.emailVerified) {
+      return res.status(403).json({ code: '403', message: 'Please verify your email address before signing in. Check your inbox for the confirmation link.' });
+    }
+
     const tokenId = crypto.randomUUID();
     const refreshToken = crypto.randomUUID();
     await sessionRepository.create(
@@ -446,8 +450,7 @@ app.get('/auth/verify-email', async (req, res) => {
       emailVerificationToken: undefined,
       emailVerificationExpires: undefined,
     } as any);
-    const appUrl = process.env.APP_URL ?? 'http://localhost:5173';
-    return res.redirect(`${appUrl}/login?verified=1`);
+    return res.status(200).json({ message: 'Email verified successfully.' });
   } catch (error) {
     console.error('Email verification error:', error);
     return res.status(500).json({ code: '500', message: 'Verification failed.' });

@@ -18,6 +18,7 @@ const InvestPage = lazy(() => import('./pages/investing'));
 const LoginPage = lazy(() => import('./pages/login'));
 const OpenAnAccountPage = lazy(() => import('./pages/open-an-account'));
 const ProfilePage = lazy(() => import('./pages/profile'));
+const VerifyEmailPage = lazy(() => import('./pages/verify-email'));
 const CheckingLearnMorePage = lazy(() => import('./pages/learn-more/checking'));
 const SavingsLearnMorePage = lazy(() => import('./pages/learn-more/savings'));
 const CreditCardsLearnMorePage = lazy(() => import('./pages/learn-more/credit-cards'));
@@ -60,6 +61,7 @@ function App() {
             <Route path="/advisor" element={<AdvisorPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/open-an-account" element={<OpenAnAccountPage />} />
+            <Route path="/verify-email" element={<VerifyEmailPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/learn-more/checking" element={<CheckingLearnMorePage />} />
             <Route path="/learn-more/savings" element={<SavingsLearnMorePage />} />

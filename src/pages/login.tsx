@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import lockIcon from '../assets/lock-icon-110.svg';
 import eyeIcon from '../assets/eye-icon0.svg';
@@ -7,6 +7,8 @@ import DialogModal from '../components/DialogModal';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const isVerified = searchParams.get('verified') === '1';
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
@@ -77,10 +79,10 @@ export default function LoginPage() {
       await login(email, password);
       setLoginAttempts(0); // Reset on successful login
       navigate('/');
-    } catch (err) {
+    } catch (err: any) {
       console.error('Login failed', err);
       setLoginAttempts(prev => prev + 1);
-      setErrors({ general: 'Invalid credentials. Please try again.' });
+      setErrors({ general: err?.message ?? 'Invalid credentials. Please try again.' });
     } finally {
       setIsSubmitting(false);
     }
@@ -92,6 +94,16 @@ export default function LoginPage() {
         className="bg-snow rounded-xl border border-border w-full max-w-[440px] p-6 tablet:p-10 flex flex-col gap-2"
         style={{ boxShadow: '0px 1px 2px 0px rgba(0,0,0,0.05)' }}
       >
+        {/* Verified banner */}
+        {isVerified && (
+          <div className="bg-success/10 border border-success/30 rounded-lg px-4 py-3 flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M20 6L9 17l-5-5" />
+            </svg>
+            <span className="text-success text-p3">Email verified! You can now sign in.</span>
+          </div>
+        )}
+
         {/* Secure login badge */}
         <div className="flex flex-row gap-2 items-center">
           <img src={lockIcon} alt="Secure login" className="h-auto shrink-0" />
