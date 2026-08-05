@@ -26,4 +26,5 @@ export const REGEX = {
   SSN_LAST4: /^\d{4}$/,
 } as const;
 
-export const API_TIMEOUT_MS = 15_000;
+export const API_TIMEOUT_MS = 30_000;
+export const API_TIMEOUT_SLOW_MS = 60_000; // for cold-start sensitive endpoints like register

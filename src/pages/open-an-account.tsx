@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { api } from '../data/api';
 import { ENDPOINTS } from '../data/endpoints';
+import { API_TIMEOUT_SLOW_MS } from '../constants';
 import lifestyleImage from '../assets/left-side-lifestyle-image0.png';
 import protectionIcon from '../assets/protection-icon0.svg';
 import lockIcon from '../assets/lock-icon-3420.svg';
@@ -400,6 +401,9 @@ export default function OpenAnAccountPage() {
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
 
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => { window.scrollTo(0, 0); }, [step]);
+
   const [s1, setS1] = useState({ name: '', email: '', phone: '', country: 'US', password: '', confirmPassword: '' });
   const [s2, setS2] = useState({ dob: '', ssn: '', address: '', city: '', zip: '' });
   const [accountType, setAccountType] = useState('checking');
@@ -462,7 +466,7 @@ export default function OpenAnAccountPage() {
         city: s2.city,
         zip: s2.zip,
         accountType,
-      });
+      }, API_TIMEOUT_SLOW_MS);
 
       setSubmitted(true);
     } catch (error) {

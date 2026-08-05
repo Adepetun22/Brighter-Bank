@@ -1,15 +1,15 @@
-import { API_TIMEOUT_MS, SESSION } from '../constants';
+import { API_TIMEOUT_MS, API_TIMEOUT_SLOW_MS, SESSION } from '../constants';
 import { loadingService } from '../services/loadingService';
 import type { ApiError } from '../types';
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? '';
 
-async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+async function request<T>(path: string, options: RequestInit = {}, timeout = API_TIMEOUT_MS): Promise<T> {
   const token = sessionStorage.getItem(SESSION.TOKEN_KEY);
   loadingService.start();
 
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+  const timer = setTimeout(() => controller.abort(), timeout);
 
   // Validate the URL to prevent SSRF attacks
   if (path.startsWith('//') || path.includes('..')) {
@@ -54,8 +54,8 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
 export const api = {
   get: <T>(path: string) => request<T>(path),
-  post: <T>(path: string, body: unknown) =>
-    request<T>(path, { method: 'POST', body: JSON.stringify(body) }),
+  post: <T>(path: string, body: unknown, timeout?: number) =>
+    request<T>(path, { method: 'POST', body: JSON.stringify(body) }, timeout),
   put: <T>(path: string, body: unknown) =>
     request<T>(path, { method: 'PUT', body: JSON.stringify(body) }),
   del: <T>(path: string) => request<T>(path, { method: 'DELETE' }),
