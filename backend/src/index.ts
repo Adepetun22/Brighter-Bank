@@ -6,6 +6,8 @@ import dotenv from 'dotenv';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { connectDatabase, disconnectDatabase, initEncryptionPlugin } from './config/database.js';
+import { transporter, FROM_ADDRESS } from './config/mailer.js';
+import { verificationEmailHtml } from './config/emailTemplates.js';
 import { UserRepository } from './repositories/UserRepository.js';
 import { AccountRepository } from './repositories/AccountRepository.js';
 import { TransactionRepository } from './repositories/TransactionRepository.js';
@@ -151,6 +153,21 @@ app.post('/auth/register', async (req, res) => {
       balance: 0,
       currency: 'USD',
     });
+
+    const verificationToken = crypto.randomUUID();
+    await userRepository.update(createdUser._id.toString(), {
+      emailVerificationToken: verificationToken,
+      emailVerificationExpires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    } as any);
+
+    const appUrl = process.env.APP_URL ?? 'http://localhost:5173';
+    const verifyUrl = `${appUrl}/verify-email?token=${verificationToken}`;
+    transporter.sendMail({
+      from: FROM_ADDRESS,
+      to: createdUser.email,
+      subject: 'Verify your Brighter Bank email',
+      html: verificationEmailHtml(createdUser.firstName, verifyUrl),
+    }).catch(err => console.error('Verification email failed:', err));
 
     const tokenId = crypto.randomUUID();
     const refreshToken = crypto.randomUUID();
@@ -408,6 +425,32 @@ app.post('/support/tickets', authorize, async (req, res) => {
   } catch (error) {
     console.error('Support ticket error:', error);
     return res.status(500).json({ code: '500', message: 'Failed to create support ticket.' });
+  }
+});
+
+app.get('/auth/verify-email', async (req, res) => {
+  try {
+    const { token } = req.query;
+    if (!token || typeof token !== 'string') {
+      return res.status(400).json({ code: '400', message: 'Invalid or missing token.' });
+    }
+    const user = await userRepository.findOne({ emailVerificationToken: token } as any);
+    if (!user) {
+      return res.status(400).json({ code: '400', message: 'Invalid or expired verification link.' });
+    }
+    if (user.emailVerificationExpires && user.emailVerificationExpires < new Date()) {
+      return res.status(400).json({ code: '400', message: 'Verification link has expired.' });
+    }
+    await userRepository.update(user._id.toString(), {
+      emailVerified: true,
+      emailVerificationToken: undefined,
+      emailVerificationExpires: undefined,
+    } as any);
+    const appUrl = process.env.APP_URL ?? 'http://localhost:5173';
+    return res.redirect(`${appUrl}/login?verified=1`);
+  } catch (error) {
+    console.error('Email verification error:', error);
+    return res.status(500).json({ code: '500', message: 'Verification failed.' });
   }
 });
 

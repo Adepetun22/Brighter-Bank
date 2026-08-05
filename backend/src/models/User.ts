@@ -38,6 +38,9 @@ export interface IUser extends mongoose.Document {
   };
   isActive: boolean;
   lastLoginAt?: Date;
+  emailVerified: boolean;
+  emailVerificationToken?: string;
+  emailVerificationExpires?: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -87,6 +90,9 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     isActive: { type: Boolean, default: true },
     lastLoginAt: { type: Date },
+    emailVerified: { type: Boolean, default: false },
+    emailVerificationToken: { type: String },
+    emailVerificationExpires: { type: Date },
   },
   { timestamps: true }
 );

@@ -13,6 +13,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@types/nodemailer": "^8.0.1",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -23,7 +24,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^7.4.0",
     "mongoose": "^8.10.0",
-    "mongoose-field-encryption": "^7.0.1"
+    "mongoose-field-encryption": "^7.0.1",
+    "nodemailer": "^9.0.4"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

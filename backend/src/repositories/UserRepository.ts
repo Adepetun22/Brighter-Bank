@@ -39,6 +39,10 @@ export class UserRepository {
     return User.findById(id).exec();
   }
 
+  async findOne(filter: Record<string, unknown>): Promise<IUser | null> {
+    return User.findOne(filter).exec();
+  }
+
   async update(id: string, updates: Partial<IUser>): Promise<IUser | null> {
     return User.findByIdAndUpdate(id, updates, { new: true }).exec();
   }
