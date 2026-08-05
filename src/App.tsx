@@ -21,6 +21,10 @@ const ProfilePage = lazy(() => import('./pages/profile'));
 const CheckingLearnMorePage = lazy(() => import('./pages/learn-more/checking'));
 const SavingsLearnMorePage = lazy(() => import('./pages/learn-more/savings'));
 const CreditCardsLearnMorePage = lazy(() => import('./pages/learn-more/credit-cards'));
+const BusinessCheckingLearnMorePage = lazy(() => import('./pages/learn-more/business-checking'));
+const BusinessSavingsLearnMorePage = lazy(() => import('./pages/learn-more/business-savings'));
+const MerchantServicesLearnMorePage = lazy(() => import('./pages/learn-more/merchant-services'));
+const LoansLinesLearnMorePage = lazy(() => import('./pages/learn-more/loans-lines'));
 
 
 function ScrollToTop() {
@@ -60,6 +64,10 @@ function App() {
             <Route path="/learn-more/checking" element={<CheckingLearnMorePage />} />
             <Route path="/learn-more/savings" element={<SavingsLearnMorePage />} />
             <Route path="/learn-more/credit-cards" element={<CreditCardsLearnMorePage />} />
+            <Route path="/learn-more/business-checking" element={<BusinessCheckingLearnMorePage />} />
+            <Route path="/learn-more/business-savings" element={<BusinessSavingsLearnMorePage />} />
+            <Route path="/learn-more/merchant-services" element={<MerchantServicesLearnMorePage />} />
+            <Route path="/learn-more/loans-lines" element={<LoansLinesLearnMorePage />} />
 
 
             {/* Default */}

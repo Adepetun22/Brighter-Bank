@@ -497,7 +497,7 @@ export default function OpenAnAccountPage() {
             <h1 className="text-ink text-h2">You're all set, {s1.name.split(' ')[0]}!</h1>
             <p className="text-slate text-p2">
               Your Brighter Bank <strong>{ACCOUNT_TYPES.find(a => a.id === accountType)?.label}</strong> account
-              application has been submitted. Check <strong>{s1.email}</strong> for next steps.
+              application has been submitted. We've sent a confirmation link to <strong>{s1.email}</strong> — please check your inbox to verify your account.
             </p>
           </div>
           <a href="/" className="btn btn-primary w-full py-4 rounded text-snow text-p2">Back to Home</a>

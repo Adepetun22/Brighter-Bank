@@ -75,10 +75,22 @@ export default function BusinessPage() {
   const [showAdvisorModal, setShowAdvisorModal] = useState(false);
 
   const handleOpenAccount = () => {
-    if (!isAuthenticated) {
-      navigate('/login');
+    if (isAuthenticated) {
+      navigate('/profile');
+    } else {
+      navigate('/open-an-account');
     }
   };
+
+  const handleProductCTA = () => {
+    if (isAuthenticated) {
+      navigate('/profile');
+    } else {
+      navigate('/open-an-account');
+    }
+  };
+
+  const productsRef = useRef<HTMLDivElement>(null);
 
   const handleTalkToAdvisor = () => {
     if (isAuthenticated) {
@@ -139,12 +151,13 @@ export default function BusinessPage() {
               companies.
             </p>
             <div className="pt-4 flex flex-row gap-4 flex-wrap">
-              <button type="button" className="btn btn-primary rounded-lg py-4 px-8 cursor-pointer shadow-md">
+              <button type="button" className="btn btn-primary rounded-lg py-4 px-8 cursor-pointer shadow-md" onClick={handleOpenAccount}>
                 <span className="text-snow text-b1">Get Started</span>
               </button>
               <button
                 type="button"
                 className="btn btn-secondary rounded-lg py-4 px-8 cursor-pointer border-[#737686]"
+                onClick={() => productsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
               >
                 <span className="text-[#004ac6] text-b1">View Products</span>
               </button>
@@ -159,7 +172,7 @@ export default function BusinessPage() {
       </div>
 
       {/* Product Tabs + Cards */}
-      <div className="w-full max-w-[1200px] px-6 flex flex-col gap-8">
+      <div ref={productsRef} className="w-full max-w-[1200px] px-6 flex flex-col gap-8">
         {/* Tabs */}
         <div className="border-b border-border flex flex-row gap-6 overflow-x-auto">
           {tabs.map((tab, i) => {
@@ -201,10 +214,10 @@ export default function BusinessPage() {
                     </div>
                   ))}
                 </div>
-                <div className="pt-4 flex flex-row gap-2 items-center">
+                <button type="button" onClick={() => navigate('/learn-more/business-checking')} className="pt-4 flex flex-row gap-2 items-center cursor-pointer">
                   <span className="text-[#004ac6] text-b2">Learn More</span>
                   <img src={containerArrow0} alt="" />
-                </div>
+                </button>
               </div>
 
               <div className="bg-[#2563eb] rounded-lg p-8 flex flex-col justify-between gap-6">
@@ -218,6 +231,7 @@ export default function BusinessPage() {
                 <button
                   type="button"
                   className="btn btn-secondary-on-white btn-no-hover rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
+                  onClick={handleProductCTA}
                 >
                   <span className="text-[#004ac6] text-b2">Claim Offer</span>
                 </button>
@@ -251,10 +265,10 @@ export default function BusinessPage() {
                   ))}
                 </div>
 
-                <div className="pt-4 flex flex-row gap-2 items-center">
+                <button type="button" onClick={() => navigate('/learn-more/business-savings')} className="pt-4 flex flex-row gap-2 items-center cursor-pointer">
                   <span className="text-[#004ac6] text-b2">View Rates</span>
                   <img src={containerArrow0} alt="" />
-                </div>
+                </button>
               </div>
 
               <div className="bg-[#004ac6] rounded-lg p-8 flex flex-col justify-between gap-6">
@@ -268,6 +282,7 @@ export default function BusinessPage() {
                 <button
                   type="button"
                   className="btn btn-secondary-on-white btn-no-hover bg-snow rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
+                  onClick={handleProductCTA}
                 >
                   <span className="text-[#004ac6] text-b2">Start Saving</span>
                 </button>
@@ -301,10 +316,10 @@ export default function BusinessPage() {
                   ))}
                 </div>
 
-                <div className="pt-4 flex flex-row gap-2 items-center">
+                <button type="button" onClick={() => navigate('/learn-more/merchant-services')} className="pt-4 flex flex-row gap-2 items-center cursor-pointer">
                   <span className="text-[#004ac6] text-b2">Explore Tools</span>
                   <img src={containerArrow0} alt="" />
-                </div>
+                </button>
               </div>
 
               <div className="bg-snow rounded-lg p-8 flex flex-col justify-between gap-6 border border-border">
@@ -318,6 +333,7 @@ export default function BusinessPage() {
                 <button
                   type="button"
                   className="btn btn-secondary-on-white bg-snow hover:bg-snow rounded-lg py-3 w-full flex items-center justify-center cursor-pointer"
+                  onClick={handleProductCTA}
                 >
                   <span className="text-[#004ac6] text-b2">Estimate Now</span>
                 </button>
@@ -351,10 +367,10 @@ export default function BusinessPage() {
                   ))}
                 </div>
 
-                <div className="pt-4 flex flex-row gap-2 items-center">
+                <button type="button" onClick={() => navigate('/learn-more/loans-lines')} className="pt-4 flex flex-row gap-2 items-center cursor-pointer">
                   <span className="text-[#004ac6] text-b2">See Options</span>
                   <img src={containerArrow0} alt="" />
-                </div>
+                </button>
               </div>
 
               <div className="bg-[#2563eb] rounded-lg p-8 flex flex-col justify-between gap-6">
